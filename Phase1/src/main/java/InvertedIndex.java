@@ -135,10 +135,10 @@ public class InvertedIndex {
         Set<String> res3 = new HashSet<>();
         for (String term : searchingTerm.split("\\s")) {
             if (term.startsWith("-")) {
+                //System.out.println(table.get(term.substring(1).toLowerCase()));
                 res3.addAll(table.get(term.substring(1).toLowerCase()));
             }
         }
-        System.out.println(res3);
         tempResult = new ArrayList<>(result);
         for (String term : result) {
             if (res3.contains(term)) {
