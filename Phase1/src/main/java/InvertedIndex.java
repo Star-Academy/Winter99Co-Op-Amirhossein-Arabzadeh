@@ -2,11 +2,10 @@ import java.io.IOException;
 import java.util.*;
 
 public class InvertedIndex {
-    //HashMap<String, Token> hash = new HashMap<>();
 
     private static List<Token> tokens = new ArrayList<>();
     public static void main(String[] args) {
-        // read files and initiate tokens which may have tokens which need to be merged
+        // read files and initiate tokens which may have tokens which may need to be merged
         try {
             MyFileReader.readFiles();
         } catch (IOException e) {
@@ -14,20 +13,19 @@ public class InvertedIndex {
         }
 
 
-
-        //String content = MyFileReader.getContent().toString();
-
+        //sort the tokens by their term
         Collections.sort(tokens);
+        //create a hashmap to reach search in O(1)
         HashMap<String, ArrayList<String>> table = new HashMap<>();
 
+        //iterate the tokensArray to find the identical words to merge them
         for (int i=0; i < (tokens.size() -1); i++) {
+            //check if two neare tokens are identical and merge un
             if (tokens.get(i).getTerm().equals(tokens.get(i+1).getTerm())) {
                 ArrayList<String> docs = new ArrayList<>();
                 docs.add(tokens.get(i).getDoc());
-                //tokens.get(i).addToDocs(tokens.get(i+1).getDoc());
                 i++;
                 while (tokens.get(i).getTerm().equals(tokens.get(i+1).getTerm()) && i<(tokens.size() - 1)) {
-                    //tokens.get(i).addToDocs(tokens.get(i+1).getDoc());
                     if (!docs.contains(tokens.get(i).getDoc())) {
                         docs.add(tokens.get(i).getDoc());
                     }
@@ -41,10 +39,6 @@ public class InvertedIndex {
             }
         }
 
-//        Set<String> terms = new HashSet<>();
-//        for (Token token : tokens) {
-//            terms.add(token.getTerm());
-//        }
 
 
         //one word search
@@ -55,12 +49,20 @@ public class InvertedIndex {
 //                System.out.println(doc);
 //            }
 //        }
+
+
+        //get input
         Scanner scanner = new Scanner(System.in);
         String searchingTerm = scanner.nextLine();
+
+
         ArrayList<String> result = null;
         ArrayList<String> tempResult = null;
+
+        //get the result for not signed words
         for (String term : searchingTerm.split("\\s")) {
             if (!term.startsWith("+") && !term.startsWith("-")) {
+                //if result is not initiated
                 if (result == null) {
                     result = new ArrayList<>();
                     if (table.get(term.toLowerCase()) != null) {
@@ -70,6 +72,8 @@ public class InvertedIndex {
                 }
                 else {
                     for (String doc : result) {
+                        //the result has wanted words plus words that are not wanted so we should & it by the set for
+                        // the other unsigned word
                         if (!table.get(term.toLowerCase()).contains(doc)) {
                             tempResult.remove(doc);
                         }
@@ -77,9 +81,10 @@ public class InvertedIndex {
                 }
             }
         }
-
+        //set the new array after process to the result array
         result = tempResult;
 
+        //get set of the or of plus signed words
         Set<String> res2 = new HashSet<>();
         for (String term : searchingTerm.split("\\s")) {
             if (term.startsWith("+")) {
@@ -87,16 +92,21 @@ public class InvertedIndex {
             }
         }
 
-        System.out.println(result);
-        tempResult = new ArrayList<>(result);
-        for (String term : result) {
-            if (!res2.contains(term)) {
-                tempResult.remove(term);
-            }
+        if (result == null) {
+            result = new ArrayList<>(res2);
         }
-        result = tempResult;
+        //clean the result of docs which have not at least one of the plus sugned words
+        else {
+            tempResult = new ArrayList<>(result);
+            for (String term : result) {
+                if (!res2.contains(term)) {
+                    tempResult.remove(term);
+                }
+            }
+            result = tempResult;
+        }
 
-
+        //just like plus signed words
         Set<String> res3 = new HashSet<>();
         for (String term : searchingTerm.split("\\s")) {
             if (term.startsWith("-")) {
@@ -111,9 +121,12 @@ public class InvertedIndex {
             }
         }
         result = tempResult;
+        System.out.println(result);
 
 
     }
+
+
 
     public static void addTokens(Token token) {
         tokens.add(token);
