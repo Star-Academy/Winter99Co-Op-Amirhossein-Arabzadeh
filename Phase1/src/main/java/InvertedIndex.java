@@ -52,14 +52,25 @@ public class InvertedIndex {
 
 
         //get input
-        Scanner scanner = new Scanner(System.in);
-        String searchingTerm = scanner.nextLine();
+        String searchingTerm = getInput();
 
 
         ArrayList<String> result = null;
         ArrayList<String> tempResult = null;
 
         //get the result for not signed words
+        result = getNotSignedDocs(table, searchingTerm, result, tempResult);
+
+        //get set of the or of plus signed words
+        result = plusSigneds(table, searchingTerm, result);
+
+        //just like plus signed words
+        result = minusDocs(table, searchingTerm, result);
+        System.out.println(result);
+
+    }
+
+    private static ArrayList<String> getNotSignedDocs(HashMap<String, ArrayList<String>> table, String searchingTerm, ArrayList<String> result, ArrayList<String> tempResult) {
         for (String term : searchingTerm.split("\\s")) {
             if (!term.startsWith("+") && !term.startsWith("-")) {
                 //if result is not initiated
@@ -83,8 +94,18 @@ public class InvertedIndex {
         }
         //set the new array after process to the result array
         result = tempResult;
+        return result;
+    }
 
-        //get set of the or of plus signed words
+    private static String getInput() {
+        Scanner scanner = new Scanner(System.in);
+        String searchingTerm = scanner.nextLine();
+        return searchingTerm;
+    }
+
+    //@org.jetbrains.annotations.NotNull
+    private static ArrayList<String> plusSigneds(HashMap<String, ArrayList<String>> table, String searchingTerm, ArrayList<String> result) {
+        ArrayList<String> tempResult;
         Set<String> res2 = new HashSet<>();
         for (String term : searchingTerm.split("\\s")) {
             if (term.startsWith("+")) {
@@ -105,15 +126,19 @@ public class InvertedIndex {
             }
             result = tempResult;
         }
+        return result;
+    }
 
-        //just like plus signed words
+    private static ArrayList<String> minusDocs(HashMap<String, ArrayList<String>> table, String searchingTerm, ArrayList<String> result) {
+
+        ArrayList<String> tempResult;
         Set<String> res3 = new HashSet<>();
         for (String term : searchingTerm.split("\\s")) {
             if (term.startsWith("-")) {
                 res3.addAll(table.get(term.substring(1).toLowerCase()));
             }
         }
-
+        System.out.println(res3);
         tempResult = new ArrayList<>(result);
         for (String term : result) {
             if (res3.contains(term)) {
@@ -121,11 +146,9 @@ public class InvertedIndex {
             }
         }
         result = tempResult;
-        System.out.println(result);
-
+        return result;
 
     }
-
 
 
     public static void addTokens(Token token) {
