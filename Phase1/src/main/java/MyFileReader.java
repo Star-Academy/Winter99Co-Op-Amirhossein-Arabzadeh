@@ -1,4 +1,3 @@
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
@@ -40,7 +39,7 @@ public class MyFileReader {
 
     private static void addNewToken(String fileName, String word) {
         Token token = createToken(fileName, word);
-        InvertedIndex.addTokens(token);
+        InvertedIndex.addToken(token);
     }
 
 //    @org.jetbrains.annotations.NotNull
