@@ -19,11 +19,10 @@ public class View {
         for (String term : searchingTerm.split("\\s")) {
             if (term.startsWith("+")) {
                 InvertedIndex.setPlusSignedWords(term.substring(1));
-                continue;
+
             }
-            if (term.startsWith("-")) {
+            else if (term.startsWith("-")) {
                 InvertedIndex.setMinusSignedWords(term.substring(1));
-                continue;
             }
             else {
                 InvertedIndex.addTUnSignedWords(term);
