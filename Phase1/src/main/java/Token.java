@@ -1,21 +1,13 @@
-import java.util.ArrayList;
-import java.util.List;
-
 public class Token implements Comparable {
-    private List<String> docs;
+    private String doc;
     private String term;
 
     public Token(String term) {
-        this.docs = new ArrayList<>();
         this.term = term;
     }
 
-    public void addToDocs(String docName) {
-        this.docs.add(docName);
-    }
-
     public String getDoc() {
-        return docs.get(0);
+        return doc;
     }
 
 
@@ -23,12 +15,9 @@ public class Token implements Comparable {
         return term;
     }
 
-    public void setDocs(List<String> docs) {
-        this.docs = docs;
-    }
 
-    public List<String> getDocs() {
-        return docs;
+    public void setDoc(String doc) {
+        this.doc = doc;
     }
 
     @Override

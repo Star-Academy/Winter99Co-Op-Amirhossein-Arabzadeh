@@ -6,15 +6,10 @@ public class InvertedIndex {
     private static List<Token> tokens = new ArrayList<>();
     public static void main(String[] args) {
         // read files and initiate tokens which may have tokens which may need to be merged
-        try {
-            MyFileReader.readFiles();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        tokenizeContentsOfDocs();
 
-
-        //sort the tokens by their term
         Collections.sort(tokens);
+
         //create a hashmap to reach search in O(1)
         HashMap<String, ArrayList<String>> table = new HashMap<>();
 
@@ -68,6 +63,14 @@ public class InvertedIndex {
         result = minusDocs(table, searchingTerm, result);
         System.out.println(result);
 
+    }
+
+    private static void tokenizeContentsOfDocs() {
+        try {
+            MyFileReader.readFiles();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private static ArrayList<String> getNotSignedDocs(HashMap<String, ArrayList<String>> table, String searchingTerm, ArrayList<String> result, ArrayList<String> tempResult) {

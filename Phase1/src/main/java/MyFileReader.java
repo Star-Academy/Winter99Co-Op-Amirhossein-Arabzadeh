@@ -1,42 +1,53 @@
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.util.Scanner;
 
 public class MyFileReader {
     private static StringBuilder content = new StringBuilder();
-    public static void readFiles() throws IOException, IOException {
-        // create instance of directory
+    public static void readFiles() throws IOException {
         File dir = new File("C:\\Users\\Amirhossein\\Desktop\\EnglishData");
 
-        // Get list of all the files in form of String Array
         String[] fileNames = dir.list();
 
-        // loop for reading the contents of all the files
-        // in the wanted directory
         for (String fileName : fileNames) {
-            System.out.println("Reading from " + fileName);
-
-            // create instance of file from Name of
-            // the file stored in string Array
-            File f = new File(dir, fileName);
-
-            // create object of BufferedReader
-            BufferedReader br = new BufferedReader(new java.io.FileReader(f));
-
-            // Read one line from current file
-            String line = br.readLine();
-            while (line != null) {
-                //read line by line and add tokens to tokens array in the invertedIndex class
-                for (String word : line.split("\\W+")) {
-                    Token token = new Token(word.toLowerCase());
-                    token.addToDocs(fileName);
-                    InvertedIndex.addTokens(token);
-                }
-                line = br.readLine();
-            }
+            tokenizeOneDoc(dir, fileName);
         }
-        System.out.println("Reading from all files" +
-                " in directory " + dir.getName() + " Completed");
+
+    }
+
+    private static void tokenizeOneDoc(File dir, String fileName) throws IOException {
+        File file = new File(dir, fileName);
+
+        Scanner scanner = new Scanner(file);
+
+        tokenizeLineByLine(fileName, scanner);
+    }
+
+    private static void tokenizeLineByLine(String fileName, Scanner scanner) {
+
+        while (scanner.hasNextLine()) {
+
+            String line = scanner.nextLine();
+
+            for (String word : line.split("\\W+")) {
+                addNewToken(fileName, word);
+            }
+
+        }
+
+    }
+
+    private static void addNewToken(String fileName, String word) {
+        Token token = createToken(fileName, word);
+        InvertedIndex.addTokens(token);
+    }
+
+//    @org.jetbrains.annotations.NotNull
+    private static Token createToken(String fileName, String word) {
+        Token token = new Token(word.toLowerCase());
+        token.setDoc(fileName);
+        return token;
     }
 
 }
