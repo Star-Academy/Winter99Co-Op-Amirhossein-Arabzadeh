@@ -11,14 +11,14 @@ public class InvertedIndex {
     private static ArrayList<String> plusSignedWords = new ArrayList<>();
     private static ArrayList<String> minusSignedWords = new ArrayList<>();
 
-    public static void main(String[] args) {
+    public static ArrayList<String> getResult() {
         tokenizeContentsOfDocs();
 
         Collections.sort(tokens);
 
 
         //iterate the tokensArray to find the identical words to merge them
-        createHashTableOfWords();
+        mergeIdenticalWordsAndCreateHashTableOfWords();
 
 
         //one word search
@@ -31,26 +31,26 @@ public class InvertedIndex {
 //        }
 
 
-        //get input
-        String searchingTerm = getInput();
+
+
 
 
         ArrayList<String> result = new ArrayList<>();
-        ArrayList<String> tempResult = new ArrayList<>();
+        ArrayList<String> tempResult;
 
 
 
         initiateResult(table, result);
         tempResult = result;
-        result = getNotSignedDocs(table, searchingTerm, result, tempResult);
+        result = getNotSignedDocs(table, result, tempResult);
 
 
-        result = plusDocs(table, searchingTerm, result);
+        result = plusDocs(table, result);
         System.out.println(result);
 
-        result = minusDocs(table, searchingTerm, result);
+        result = minusDocs(table, result);
 
-        System.out.println(result);
+        return result;
 
     }
 
@@ -60,7 +60,7 @@ public class InvertedIndex {
         }
     }
 
-    private static void createHashTableOfWords() {
+    private static void mergeIdenticalWordsAndCreateHashTableOfWords() {
         for (int i=0; i < (tokens.size() -1); i++) {
             //check if two nere tokens are identical and merge un
             if (tokens.get(i).getTerm().equals(tokens.get(i+1).getTerm())) {
@@ -90,7 +90,7 @@ public class InvertedIndex {
         }
     }
 
-    private static ArrayList<String> getNotSignedDocs(HashMap<String, ArrayList<String>> table, String searchingTerm, ArrayList<String> result, ArrayList<String> tempResult) {
+    private static ArrayList<String> getNotSignedDocs(HashMap<String, ArrayList<String>> table, ArrayList<String> result, ArrayList<String> tempResult) {
         for (String term : unSignedWords) {
             for (String doc : result) {
                 if (!table.get(term.toLowerCase()).contains(doc)) {
@@ -102,33 +102,12 @@ public class InvertedIndex {
         return result;
     }
 
-    private static String getInput() {
-        Scanner scanner = new Scanner(System.in);
-        String searchingTerm = scanner.nextLine();
-        partitionInputs(searchingTerm);
-        return searchingTerm;
-    }
 
-    private static void partitionInputs(String searchingTerm) {
-        for (String term : searchingTerm.split("\\s")) {
-            if (term.startsWith("+")) {
-                plusSignedWords.add(term.substring(1));
-                System.out.println("plus isgned word: " + term);
-                continue;
-            }
-            if (term.startsWith("-")) {
-                minusSignedWords.add(term.substring(1));
-                continue;
-            }
-            else {
-                unSignedWords.add(term);
-            }
-        }
-    }
 
-    private static ArrayList<String> plusDocs(HashMap<String, ArrayList<String>> table, String searchingTerm, ArrayList<String> result) {
+
+    private static ArrayList<String> plusDocs(HashMap<String, ArrayList<String>> table, ArrayList<String> result) {
         Set<String> docsWitchHasPlusWords = new HashSet<>();
-        createSetOfDifferentModeledInputs(table, searchingTerm, docsWitchHasPlusWords, plusSignedWords);
+        createSetOfDifferentModeledInputs(table, docsWitchHasPlusWords, plusSignedWords);
 
 
         //clean the result of docs which have not at least one of the plus sugned words
@@ -150,10 +129,10 @@ public class InvertedIndex {
         return result;
     }
 
-    private static ArrayList<String> minusDocs(HashMap<String, ArrayList<String>> table, String searchingTerms, ArrayList<String> result) {
+    private static ArrayList<String> minusDocs(HashMap<String, ArrayList<String>> table, ArrayList<String> result) {
 
         Set<String> docsWitchHasMinusWords = new HashSet<>();
-        createSetOfDifferentModeledInputs(table, searchingTerms, docsWitchHasMinusWords, minusSignedWords);
+        createSetOfDifferentModeledInputs(table, docsWitchHasMinusWords, minusSignedWords);
         result = minusResultSet(result, docsWitchHasMinusWords);
         return result;
 
@@ -171,7 +150,7 @@ public class InvertedIndex {
         return result;
     }
 
-    private static void createSetOfDifferentModeledInputs(HashMap<String, ArrayList<String>> table, String searchingTerms, Set<String> docsWitchHasMinusWords, ArrayList<String> partition) {
+    private static void createSetOfDifferentModeledInputs(HashMap<String, ArrayList<String>> table, Set<String> docsWitchHasMinusWords, ArrayList<String> partition) {
         for (String term : partition) {
             if (table.containsKey(term.toLowerCase())) {
                 docsWitchHasMinusWords.addAll(table.get(term.toLowerCase()));
@@ -183,5 +162,18 @@ public class InvertedIndex {
     public static void addToken(Token token) {
         tokens.add(token);
     }
+
+    public static void addTUnSignedWords(String unSignedWord) {
+        InvertedIndex.unSignedWords.add(unSignedWord);
+    }
+
+    public static void setPlusSignedWords(String plusSignedWord) {
+        InvertedIndex.plusSignedWords.add(plusSignedWord);
+    }
+
+    public static void setMinusSignedWords(String minusSignedWord) {
+        InvertedIndex.minusSignedWords.add(minusSignedWord);
+    }
+
 
 }

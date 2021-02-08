@@ -3,7 +3,6 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class MyFileReader {
-    private static StringBuilder content = new StringBuilder();
     public static void readFiles() throws IOException {
         File dir = new File("C:\\Users\\Amirhossein\\Desktop\\EnglishData");
 
