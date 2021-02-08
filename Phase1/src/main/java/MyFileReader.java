@@ -42,7 +42,7 @@ public class MyFileReader {
         InvertedIndex.addToken(token);
     }
 
-//    @org.jetbrains.annotations.NotNull
+
     private static Token createToken(String fileName, String word) {
         Token token = new Token(word.toLowerCase());
         token.setDoc(fileName);
