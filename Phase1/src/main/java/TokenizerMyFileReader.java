@@ -5,7 +5,8 @@ import java.util.Scanner;
 public class TokenizerMyFileReader implements MyFileReader{
     InvertedIndex hashedInvertedIndex;
     public void readFiles(InvertedIndex hashedInvertedIndex) throws IOException {
-        File dir = new File("C:\\Users\\Amirhossein\\Desktop\\EnglishData");
+        String path = new File("EnglishData").getAbsolutePath();
+        File dir = new File(path);
         this.hashedInvertedIndex = hashedInvertedIndex;
         String[] fileNames = dir.list();
 

@@ -48,7 +48,6 @@ public class HashedInvertedIndex implements InvertedIndex{
 
 
         result = plusDocs(table);
-        System.out.println(result);
 
         result = minusDocs(table);
 
@@ -115,7 +114,6 @@ public class HashedInvertedIndex implements InvertedIndex{
 
         //clean the result of docs which have not at least one of the plus sugned words
         result = andResultSet(docsWitchHasPlusWords);
-//        System.out.println("docsWitchHasPlusWords " + plusSignedWords);
 
         return result;
     }
