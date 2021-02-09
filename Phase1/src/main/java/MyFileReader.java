@@ -38,7 +38,7 @@ public class MyFileReader {
 
     private static void addNewToken(String fileName, String word) {
         Token token = createToken(fileName, word);
-        InvertedIndex.addToken(token);
+        HashedInvertedIndex.addToken(token);
     }
 
 

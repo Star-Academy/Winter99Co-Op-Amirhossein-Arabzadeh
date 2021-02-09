@@ -4,7 +4,7 @@ import java.util.Scanner;
 public class View {
     public static void main(String[] args) {
         getInput();
-        ArrayList<String> result = InvertedIndex.getResult();
+        ArrayList<String> result = HashedInvertedIndex.getResult();
         System.out.println(result);
     }
 
@@ -18,14 +18,14 @@ public class View {
     private static void partitionInputs(String searchingTerm) {
         for (String term : searchingTerm.split("\\s")) {
             if (term.startsWith("+")) {
-                InvertedIndex.setPlusSignedWords(term.substring(1));
+                HashedInvertedIndex.setPlusSignedWords(term.substring(1));
 
             }
             else if (term.startsWith("-")) {
-                InvertedIndex.setMinusSignedWords(term.substring(1));
+                HashedInvertedIndex.setMinusSignedWords(term.substring(1));
             }
             else {
-                InvertedIndex.addTUnSignedWords(term);
+                HashedInvertedIndex.addTUnSignedWords(term);
             }
         }
     }
