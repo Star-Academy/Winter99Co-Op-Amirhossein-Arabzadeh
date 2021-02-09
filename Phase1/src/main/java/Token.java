@@ -1,34 +1,11 @@
-public class Token implements Comparable {
-    private String doc;
-    private String term;
-
-    public Token(String term) {
-        this.term = term;
-    }
-
-    public String getDoc() {
-        return doc;
-    }
+public interface Token {
+    String getDoc();
 
 
-    public String getTerm() {
-        return term;
-    }
+    String getTerm();
 
 
-    public void setDoc(String doc) {
-        this.doc = doc;
-    }
+    void setDoc(String doc);
 
-    @Override
-    public int compareTo(Object o) {
-        if (this.getTerm().compareTo(((Token) o).getTerm()) == 0) {
-            return 0;
-        }
-        if (this.getTerm().compareTo(((Token) o).getTerm()) < 0) {
-            return -1;
-        }
-
-        return 1;
-    }
+    int compareTo(Object o);
 }

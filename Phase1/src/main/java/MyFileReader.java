@@ -2,50 +2,19 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
 
-public class MyFileReader {
-    public static void readFiles() throws IOException {
-        File dir = new File("C:\\Users\\Amirhossein\\Desktop\\EnglishData");
+public interface MyFileReader {
+    //takes hashedInvertedIndex to have a HashedInvertedIndex to operate on the tokens
+    void readFiles(InvertedIndex hashedInvertedIndex) throws IOException;
 
-        String[] fileNames = dir.list();
+    void tokenizeOneDoc(File dir, String fileName) throws IOException;
 
-        for (String fileName : fileNames) {
-            tokenizeOneDoc(dir, fileName);
-        }
+    void tokenizeLineByLine(String fileName, Scanner scanner);
 
-    }
-
-    private static void tokenizeOneDoc(File dir, String fileName) throws IOException {
-        File file = new File(dir, fileName);
-
-        Scanner scanner = new Scanner(file);
-
-        tokenizeLineByLine(fileName, scanner);
-    }
-
-    private static void tokenizeLineByLine(String fileName, Scanner scanner) {
-
-        while (scanner.hasNextLine()) {
-
-            String line = scanner.nextLine();
-
-            for (String word : line.split("\\W+")) {
-                addNewToken(fileName, word);
-            }
-
-        }
-
-    }
-
-    private static void addNewToken(String fileName, String word) {
-        Token token = createToken(fileName, word);
-        HashedInvertedIndex.addToken(token);
-    }
+    //adds token to tokensArray in the HashedInverted obj
+    //file name is name of the doc and word is the word witch is in the doc
+    void addNewToken(String fileName, String word);
 
 
-    private static Token createToken(String fileName, String word) {
-        Token token = new Token(word.toLowerCase());
-        token.setDoc(fileName);
-        return token;
-    }
-
+    // file name is name of the doc and word is the word witch is in the doc
+    MyToken createToken(String fileName, String word);
 }

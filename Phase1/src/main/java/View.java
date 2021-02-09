@@ -1,33 +1,10 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class View {
-    public static void main(String[] args) {
-        getInput();
-        ArrayList<String> result = HashedInvertedIndex.getResult();
-        System.out.println(result);
-    }
+public interface View {
+    String getInput();
 
-    private static String getInput() {
-        Scanner scanner = new Scanner(System.in);
-        String searchingTerm = scanner.nextLine();
-        partitionInputs(searchingTerm);
-        return searchingTerm;
-    }
-
-    private static void partitionInputs(String searchingTerm) {
-        for (String term : searchingTerm.split("\\s")) {
-            if (term.startsWith("+")) {
-                HashedInvertedIndex.setPlusSignedWords(term.substring(1));
-
-            }
-            else if (term.startsWith("-")) {
-                HashedInvertedIndex.setMinusSignedWords(term.substring(1));
-            }
-            else {
-                HashedInvertedIndex.addTUnSignedWords(term);
-            }
-        }
-    }
-
+    //departs input words to different ArrayList with attention to signs before the input words
+    // takes searchingTerm witch is input line by the user
+    void partitionInputs(String searchingTerm);
 }
