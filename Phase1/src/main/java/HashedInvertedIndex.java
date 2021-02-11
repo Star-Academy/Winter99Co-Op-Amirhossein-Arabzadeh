@@ -63,23 +63,14 @@ public class HashedInvertedIndex implements InvertedIndex{
 
     public void mergeIdenticalWordsAndCreateHashTableOfWords() {
         for (int i = 0; i < (myTokens.size() -1); i++) {
-            //check if two nere tokens are identical and merge un
-            if (myTokens.get(i).getTerm().equals(myTokens.get(i+1).getTerm())) {
-                ArrayList<String> docs = new ArrayList<>();
+            Set<String> docs = new HashSet<>();
+            while (i<(myTokens.size() - 2) && myTokens.get(i).getTerm().equals(myTokens.get(i+1).getTerm())) {
                 docs.add(myTokens.get(i).getDoc());
                 i++;
-                while (myTokens.get(i).getTerm().equals(myTokens.get(i+1).getTerm()) && i<(myTokens.size() - 1)) {
-                    if (!docs.contains(myTokens.get(i).getDoc())) {
-                        docs.add(myTokens.get(i).getDoc());
-                    }
-                    i++;
-                }
-                if (!docs.contains(myTokens.get(i).getDoc())) {
-                    docs.add(myTokens.get(i).getDoc());
-                }
-                i++;
-                table.put(myTokens.get(i-1).getTerm(), docs);
             }
+            docs.add(myTokens.get(i).getDoc());
+            table.put(myTokens.get(i).getTerm(), new ArrayList<>(docs));
+            i++;
         }
     }
 
