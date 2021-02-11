@@ -5,15 +5,15 @@ public class HashedInvertedIndex implements InvertedIndex{
 
     private List<MyToken> myTokens = new ArrayList<>();
 
-    private ArrayList<String> result = new ArrayList<>();
+    private List<String> result = new ArrayList<>();
 
-    private HashMap<String, ArrayList<String>> table = new HashMap<>();
+    private HashMap<String, List<String>> table = new HashMap<>();
 
-    private ArrayList<String> unSignedWords = new ArrayList<>();
-    private ArrayList<String> plusSignedWords = new ArrayList<>();
-    private ArrayList<String> minusSignedWords = new ArrayList<>();
+    private List<String> unSignedWords = new ArrayList<>();
+    private List<String> plusSignedWords = new ArrayList<>();
+    private List<String> minusSignedWords = new ArrayList<>();
 
-    public ArrayList<String> getResult() {
+    public List<String> getResult() {
         tokenizeContentsOfDocs();
 
         Collections.sort(this.myTokens);
@@ -38,7 +38,7 @@ public class HashedInvertedIndex implements InvertedIndex{
 
 
 
-        ArrayList<String> tempResult;
+        List<String> tempResult;
 
 
 
@@ -55,7 +55,7 @@ public class HashedInvertedIndex implements InvertedIndex{
 
     }
 
-    public void initiateResult(HashMap<String, ArrayList<String>> table) {
+    public void initiateResult(HashMap<String, List<String>> table) {
         if (table.containsKey(unSignedWords.get(0).toLowerCase())) {
             result.addAll(table.get(unSignedWords.get(0).toLowerCase()));
         }
@@ -92,7 +92,7 @@ public class HashedInvertedIndex implements InvertedIndex{
         }
     }
 
-    public ArrayList<String> getNotSignedDocs(HashMap<String, ArrayList<String>> table, ArrayList<String> tempResult) {
+    public List<String> getNotSignedDocs(HashMap<String, List<String>> table, List<String> tempResult) {
         for (String term : unSignedWords) {
             for (String doc : result) {
                 if (!table.get(term.toLowerCase()).contains(doc)) {
@@ -107,7 +107,7 @@ public class HashedInvertedIndex implements InvertedIndex{
 
 
 
-    public ArrayList<String> plusDocs(HashMap<String, ArrayList<String>> table) {
+    public List<String> plusDocs(HashMap<String, List<String>> table) {
         Set<String> docsWitchHasPlusWords = new HashSet<>();
         createSetOfDifferentModeledInputs(table, docsWitchHasPlusWords, plusSignedWords);
 
@@ -118,7 +118,7 @@ public class HashedInvertedIndex implements InvertedIndex{
         return result;
     }
 
-    public ArrayList<String> andResultSet(Set<String> docsWitchHasPlusWords) {
+    public List<String> andResultSet(Set<String> docsWitchHasPlusWords) {
         ArrayList<String> tempResult;
         tempResult = new ArrayList<>(result);
         for (String term : result) {
@@ -130,7 +130,7 @@ public class HashedInvertedIndex implements InvertedIndex{
         return result;
     }
 
-    public ArrayList<String> minusDocs(HashMap<String, ArrayList<String>> table) {
+    public List<String> minusDocs(HashMap<String, List<String>> table) {
 
         Set<String> docsWitchHasMinusWords = new HashSet<>();
         createSetOfDifferentModeledInputs(table, docsWitchHasMinusWords, minusSignedWords);
@@ -139,7 +139,7 @@ public class HashedInvertedIndex implements InvertedIndex{
 
     }
 
-    public ArrayList<String> minusResultSet(Set<String> anotherSet) {
+    public List<String> minusResultSet(Set<String> anotherSet) {
         ArrayList<String> tempResult;
         tempResult = new ArrayList<>(result);
         for (String term : result) {
@@ -151,7 +151,7 @@ public class HashedInvertedIndex implements InvertedIndex{
         return result;
     }
 
-    public void createSetOfDifferentModeledInputs(HashMap<String, ArrayList<String>> table, Set<String> docsWitchHasMinusWords, ArrayList<String> partition) {
+    public void createSetOfDifferentModeledInputs(HashMap<String, List<String>> table, Set<String> docsWitchHasMinusWords, List<String> partition) {
         for (String term : partition) {
             if (table.containsKey(term.toLowerCase())) {
                 docsWitchHasMinusWords.addAll(table.get(term.toLowerCase()));

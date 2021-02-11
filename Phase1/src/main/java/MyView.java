@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class MyView {
@@ -6,7 +7,7 @@ public class MyView {
     public static void main(String[] args) {
         InvertedIndex hashedInvertedIndex = new HashedInvertedIndex();
         getInput(hashedInvertedIndex);
-        ArrayList<String> result = hashedInvertedIndex.getResult();
+        List<String> result = hashedInvertedIndex.getResult();
         System.out.println(result);
     }
 
