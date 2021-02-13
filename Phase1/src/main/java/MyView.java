@@ -8,7 +8,8 @@ public class MyView implements View {
     static List<String> unSignedInputWords = new ArrayList<>();
 
     public void run() {
-        getInput();
+        String userInput = getInput();
+        partitionInputs(userInput);
         Controller controller = new ControllerImpl();
         List<String> result = controller.getResult(plusSignedInputWords, minusSignedInputWords, unSignedInputWords);
         System.out.println(result);
@@ -17,21 +18,21 @@ public class MyView implements View {
     private static String getInput() {
         Scanner scanner = new Scanner(System.in);
         String searchingTerm = scanner.nextLine();
-        partitionInputs(searchingTerm);
         return searchingTerm;
     }
 
     private static void partitionInputs(String searchingTerm) {
         for (String term : searchingTerm.split("\\s")) {
             if (term.startsWith("+")) {
-                plusSignedInputWords.add(term.substring(1));
-
+                String plusSignedWord = term.substring(1).toLowerCase();
+                plusSignedInputWords.add(plusSignedWord);
             }
             else if (term.startsWith("-")) {
-                minusSignedInputWords.add(term.substring(1));
+                String minusSignedWord = term.substring(1).toLowerCase();
+                minusSignedInputWords.add(minusSignedWord);
             }
             else {
-                unSignedInputWords.add(term);
+                unSignedInputWords.add(term.toLowerCase());
             }
         }
     }
