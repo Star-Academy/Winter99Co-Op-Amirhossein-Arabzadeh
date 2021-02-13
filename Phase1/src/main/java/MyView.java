@@ -10,7 +10,7 @@ public class MyView implements View {
     public void run() {
         String userInput = getInput();
         partitionInputs(userInput);
-        Controller controller = new ControllerImpl();
+        Controller controller = new InvertedIndexController();
         List<String> result = controller.getResult(plusSignedInputWords, minusSignedInputWords, unSignedInputWords);
         System.out.println(result);
     }

@@ -1,11 +1,8 @@
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
-public class TokenizerMyFileReader implements MyFileReader{
+public class TokenizingMyFileReader implements MyFileReader{
     List<MyToken> tokens = new ArrayList<>();
     public List<MyToken> readFiles() {
 
@@ -13,7 +10,7 @@ public class TokenizerMyFileReader implements MyFileReader{
         File dir = new File(path);
         String[] fileNames = dir.list();
 
-        Tokenize myTokenizer = new MyTokenizer();
+        Tokenizer myTokenizer = new LineByLineTokenizer();
         for (String fileName : fileNames) {
             tokens = myTokenizer.tokenizeOneDoc(dir, fileName);
         }

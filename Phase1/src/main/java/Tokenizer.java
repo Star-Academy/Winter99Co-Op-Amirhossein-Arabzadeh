@@ -2,6 +2,6 @@ import java.io.File;
 import java.util.List;
 import java.util.Scanner;
 
-public interface Tokenize {
+public interface Tokenizer {
     List<MyToken>tokenizeOneDoc(File dir, String fileName);
 }

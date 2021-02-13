@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class SetCalculator implements SetCalculate{
+public class IteratingListCalculator implements ListCalculator {
     public List<String> minusResultSet(Set<String> anotherSet, List<String> result) {
         ArrayList<String> tempResult;
         tempResult = new ArrayList<>(result);

@@ -1,6 +1,6 @@
 public class Main {
     public static void main(String[] args) {
-        ControllerImpl myController = new ControllerImpl();
+        InvertedIndexController myController = new InvertedIndexController();
         myController.processDocs();
         View view = new MyView();
         view.run();

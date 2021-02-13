@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class ControllerImpl implements Controller {
+public class InvertedIndexController implements Controller {
     private List<MyToken> myTokens = new ArrayList<>();
     private static HashMap<String, List<String>> table = new HashMap<>();
     private InvertedIndex invertedIndex;
@@ -8,7 +8,7 @@ public class ControllerImpl implements Controller {
 
     @Override
     public List<String> getResult(List<String> plusSignedInputWords, List<String> minusSignedInputWords, List<String> unSignedInputWords) {
-        invertedIndex = new HashedInvertedIndex(unSignedInputWords, plusSignedInputWords, minusSignedInputWords);
+        invertedIndex = new HashInvertedIndex(unSignedInputWords, plusSignedInputWords, minusSignedInputWords);
         return invertedIndex.prepareResultSet();
     }
 
@@ -18,12 +18,12 @@ public class ControllerImpl implements Controller {
         Collections.sort(this.myTokens);
 
         //iterate the tokensArray to find the identical words to merge them
-        Merge myMerger = new MyMerger();
+        Merger myMerger = new TokensTableMerger();
         table = myMerger.mergeIdenticalWordsAndCreateHashTableOfWords(myTokens);
     }
 
     private List<MyToken> tokenizeContentsOfDocs() {
-        MyFileReader tokenizedMyFileReader = new TokenizerMyFileReader();
+        MyFileReader tokenizedMyFileReader = new TokenizingMyFileReader();
         return tokenizedMyFileReader.readFiles();
     }
 

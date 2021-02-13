@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class HashedInvertedIndex implements InvertedIndex{
+public class HashInvertedIndex implements InvertedIndex{
 
     private List<String> result = new ArrayList<>();
 
@@ -10,20 +10,20 @@ public class HashedInvertedIndex implements InvertedIndex{
     private List<String> plusSignedWords;
     private List<String> minusSignedWords;
 
-    public HashedInvertedIndex(List<String> unSignedWords, List<String> plusSignedWords, List<String> minusSignedWords) {
+    public HashInvertedIndex(List<String> unSignedWords, List<String> plusSignedWords, List<String> minusSignedWords) {
         this.unSignedWords = unSignedWords;
         this.plusSignedWords = plusSignedWords;
         this.minusSignedWords = minusSignedWords;
     }
 
     public List<String> prepareResultSet() {
-        SetOperate setOperator = new SetOperator();
+        ListOperator listOperator = new ArrayListOperator();
 
-        table = ControllerImpl.getInvertedIndexTable();
+        table = InvertedIndexController.getInvertedIndexTable();
         result = initiateResultSetWithDocsContainingFirstUnsignedWords();
-        result = setOperator.addUnSignedWordsContainingDocsToResult(result, unSignedWords, table);
-        result = setOperator.andResultWithSetOfDocsContainingPlusSignedWords(plusSignedWords, result, table);
-        result = setOperator.removeMinusSignedContainingDocsFromResult(minusSignedWords, result, table);
+        result = listOperator.addUnSignedWordsContainingDocsToResult(result, unSignedWords, table);
+        result = listOperator.andResultWithSetOfDocsContainingPlusSignedWords(plusSignedWords, result, table);
+        result = listOperator.removeMinus(minusSignedWords, result, table);
         return result;
 
     }
