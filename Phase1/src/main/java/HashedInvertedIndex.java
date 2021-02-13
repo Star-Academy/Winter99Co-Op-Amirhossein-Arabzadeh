@@ -1,27 +1,21 @@
-import java.io.IOException;
 import java.util.*;
 
 public class HashedInvertedIndex implements InvertedIndex{
 
-    private List<MyToken> myTokens = new ArrayList<>();
-
     private List<String> result = new ArrayList<>();
 
-    private HashMap<String, List<String>> table = new HashMap<>();
+    private HashMap<String, List<String>> table;
 
-    private List<String> unSignedWords = new ArrayList<>();
-    private List<String> plusSignedWords = new ArrayList<>();
-    private List<String> minusSignedWords = new ArrayList<>();
+    private List<String> unSignedWords;
+    private List<String> plusSignedWords;
+    private List<String> minusSignedWords;
 
-    public List<String> getResult() {
-        tokenizeContentsOfDocs();
+    public List<String> prepareResult(List<String> plusSignedInputWords, List<String> minusSignedInputWords, List<String> unSignedInputWords) {
 
-        Collections.sort(this.myTokens);
-
-
-        //iterate the tokensArray to find the identical words to merge them
-        mergeIdenticalWordsAndCreateHashTableOfWords();
-
+        this.minusSignedWords = minusSignedInputWords;
+        this.plusSignedWords = plusSignedInputWords;
+        this.unSignedWords = unSignedInputWords;
+        table = ControllerImpl.getInvertedIndexTable();
 
         //one word search
 //        Scanner scanner = new Scanner(System.in);
@@ -33,14 +27,7 @@ public class HashedInvertedIndex implements InvertedIndex{
 //        }
 
 
-
-
-
-
-
         List<String> tempResult;
-
-
 
         initiateResult(this.table);
         tempResult = result;
@@ -55,33 +42,17 @@ public class HashedInvertedIndex implements InvertedIndex{
 
     }
 
+
+
     public void initiateResult(HashMap<String, List<String>> table) {
         if (table.containsKey(unSignedWords.get(0).toLowerCase())) {
             result.addAll(table.get(unSignedWords.get(0).toLowerCase()));
         }
     }
 
-    public void mergeIdenticalWordsAndCreateHashTableOfWords() {
-        for (int i = 0; i < (myTokens.size() -1); i++) {
-            Set<String> docs = new HashSet<>();
-            while (i<(myTokens.size() - 2) && myTokens.get(i).getTerm().equals(myTokens.get(i+1).getTerm())) {
-                docs.add(myTokens.get(i).getDoc());
-                i++;
-            }
-            docs.add(myTokens.get(i).getDoc());
-            table.put(myTokens.get(i).getTerm(), new ArrayList<>(docs));
-            i++;
-        }
-    }
 
-    public void tokenizeContentsOfDocs() {
-        MyFileReader tokenizedMyFileReader = new TokenizerMyFileReader();
-        try {
-            tokenizedMyFileReader.readFiles(this);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+
+
 
     public List<String> getNotSignedDocs(HashMap<String, List<String>> table, List<String> tempResult) {
         for (String term : unSignedWords) {
@@ -99,8 +70,8 @@ public class HashedInvertedIndex implements InvertedIndex{
 
 
     public List<String> plusDocs(HashMap<String, List<String>> table) {
-        Set<String> docsWitchHasPlusWords = new HashSet<>();
-        createSetOfDifferentModeledInputs(table, docsWitchHasPlusWords, plusSignedWords);
+        Set<String> docsWitchHasPlusWords;
+        docsWitchHasPlusWords = createSetOfDifferentModeledInputs(table, plusSignedWords);
 
 
         //clean the result of docs which have not at least one of the plus sugned words
@@ -123,8 +94,8 @@ public class HashedInvertedIndex implements InvertedIndex{
 
     public List<String> minusDocs(HashMap<String, List<String>> table) {
 
-        Set<String> docsWitchHasMinusWords = new HashSet<>();
-        createSetOfDifferentModeledInputs(table, docsWitchHasMinusWords, minusSignedWords);
+        Set<String> docsWitchHasMinusWords;
+        docsWitchHasMinusWords = createSetOfDifferentModeledInputs(table, minusSignedWords);
         result = minusResultSet(docsWitchHasMinusWords);
         return result;
 
@@ -142,29 +113,14 @@ public class HashedInvertedIndex implements InvertedIndex{
         return result;
     }
 
-    public void createSetOfDifferentModeledInputs(HashMap<String, List<String>> table, Set<String> docsWitchHasMinusWords, List<String> partition) {
+    public Set<String> createSetOfDifferentModeledInputs(HashMap<String, List<String>> table, List<String> partition) {
+        Set<String> docsWitchHasMinusWords = new HashSet<>();
         for (String term : partition) {
             if (table.containsKey(term.toLowerCase())) {
                 docsWitchHasMinusWords.addAll(table.get(term.toLowerCase()));
             }
         }
-    }
-
-
-    public void addToken(MyToken myToken) {
-        myTokens.add(myToken);
-    }
-
-    public void addToUnSignedWords(String unSignedWord) {
-        this.unSignedWords.add(unSignedWord);
-    }
-
-    public void addToPlusSignedWords(String plusSignedWord) {
-        this.plusSignedWords.add(plusSignedWord);
-    }
-
-    public void addToMinusSignedWords(String minusSignedWord) {
-        this.minusSignedWords.add(minusSignedWord);
+        return docsWitchHasMinusWords;
     }
 
 

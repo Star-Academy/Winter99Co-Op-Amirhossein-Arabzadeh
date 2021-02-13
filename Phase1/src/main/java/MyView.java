@@ -2,33 +2,36 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class MyView {
+public class MyView implements View {
+    static List<String> plusSignedInputWords = new ArrayList<>();
+    static List<String> minusSignedInputWords = new ArrayList<>();
+    static List<String> unSignedInputWords = new ArrayList<>();
 
-    public static void main(String[] args) {
-        InvertedIndex hashedInvertedIndex = new HashedInvertedIndex();
-        getInput(hashedInvertedIndex);
-        List<String> result = hashedInvertedIndex.getResult();
+    public void run() {
+        getInput();
+        Controller controller = new ControllerImpl();
+        List<String> result = controller.getResult(plusSignedInputWords, minusSignedInputWords, unSignedInputWords);
         System.out.println(result);
     }
 
-    private static String getInput(InvertedIndex hashedInvertedIndex) {
+    private static String getInput() {
         Scanner scanner = new Scanner(System.in);
         String searchingTerm = scanner.nextLine();
-        partitionInputs(searchingTerm, hashedInvertedIndex);
+        partitionInputs(searchingTerm);
         return searchingTerm;
     }
 
-    private static void partitionInputs(String searchingTerm, InvertedIndex hashedInvertedIndex) {
+    private static void partitionInputs(String searchingTerm) {
         for (String term : searchingTerm.split("\\s")) {
             if (term.startsWith("+")) {
-                hashedInvertedIndex.addToPlusSignedWords(term.substring(1));
+                plusSignedInputWords.add(term.substring(1));
 
             }
             else if (term.startsWith("-")) {
-                hashedInvertedIndex.addToMinusSignedWords(term.substring(1));
+                minusSignedInputWords.add(term.substring(1));
             }
             else {
-                hashedInvertedIndex.addToUnSignedWords(term);
+                unSignedInputWords.add(term);
             }
         }
     }
