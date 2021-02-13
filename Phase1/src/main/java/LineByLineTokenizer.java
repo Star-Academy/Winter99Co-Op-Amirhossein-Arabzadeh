@@ -37,7 +37,7 @@ public class LineByLineTokenizer implements Tokenizer {
     }
 
     private void addNewToken(String fileName, String word) {
-        MyToken myToken = new MyToken(word, fileName);
+        MyToken myToken = new MyToken(word.toLowerCase(), fileName);
         tokens.add(myToken);
     }
 

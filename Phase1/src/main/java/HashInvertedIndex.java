@@ -32,14 +32,16 @@ public class HashInvertedIndex implements InvertedIndex{
 
     private List<String> initiateResultSetWithDocsContainingFirstUnsignedWords() {
         List<String> result = new ArrayList<>();
-        if (table.containsKey(unSignedWords.get(0))) {
+        if (isThereAnyUnsignedWord()) {
             List<String> firstUnSignedInputWordContainingDocs = table.get(unSignedWords.get(0));
             result.addAll(firstUnSignedInputWordContainingDocs);
         }
         return result;
     }
 
-
+    private boolean isThereAnyUnsignedWord() {
+        return unSignedWords.size() != 0 && table.containsKey(unSignedWords.get(0));
+    }
 
 
 }

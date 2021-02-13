@@ -7,9 +7,11 @@ public class ArrayListOperator implements ListOperator {
     public List<String> addUnSignedWordsContainingDocsToResult(List<String> result, List<String> unSignedWords, Map<String, List<String>> table) {
         List<String> tempResult = new ArrayList<>(result);
         for (String term : unSignedWords) {
-            List<String> listOfDocsContainingUnsignedWord = table.get(term);
-            Set<String> setOfDocsContainingUnsignedWord = new HashSet<>(listOfDocsContainingUnsignedWord);
-            tempResult = listCalculator.andResultSet(setOfDocsContainingUnsignedWord, result);
+            if (table.containsKey(term)){
+                List<String> listOfDocsContainingUnsignedWord = table.get(term);
+                Set<String> setOfDocsContainingUnsignedWord = new HashSet<>(listOfDocsContainingUnsignedWord);
+                tempResult = listCalculator.andResultSet(setOfDocsContainingUnsignedWord, result);
+            }
         }
         return tempResult;
     }
