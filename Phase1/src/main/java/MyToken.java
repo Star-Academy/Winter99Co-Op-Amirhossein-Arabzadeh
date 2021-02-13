@@ -2,7 +2,8 @@ public class MyToken implements Comparable {
     private String doc;
     private String term;
 
-    public MyToken(String term) {
+    public MyToken(String term, String doc) {
+        this.doc = doc;
         this.term = term;
     }
 

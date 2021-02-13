@@ -19,7 +19,7 @@ public class InvertedIndexController implements Controller {
 
         //iterate the tokensArray to find the identical words to merge them
         Merger myMerger = new TokensTableMerger();
-        table = myMerger.mergeIdenticalWordsAndCreateHashTableOfWords(myTokens);
+        table = myMerger.createHashTableOfWords(myTokens);
     }
 
     private List<MyToken> tokenizeContentsOfDocs() {

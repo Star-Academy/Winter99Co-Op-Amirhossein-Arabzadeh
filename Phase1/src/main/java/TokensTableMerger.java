@@ -1,7 +1,7 @@
 import java.util.*;
 
 public class TokensTableMerger implements Merger {
-    public HashMap<String, List<String>> mergeIdenticalWordsAndCreateHashTableOfWords(List<MyToken> tokens) {
+    public HashMap<String, List<String>> createHashTableOfWords(List<MyToken> tokens) {
         HashMap<String, List<String>> table = new HashMap<>();
         for (int i = 0; i < (tokens.size() -1); i++) {
             Set<String> docs = new HashSet<>();

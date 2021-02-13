@@ -10,9 +10,9 @@ public class TokenizingMyFileReader implements MyFileReader{
         File dir = new File(path);
         String[] fileNames = dir.list();
 
-        Tokenizer myTokenizer = new LineByLineTokenizer();
+        Tokenizer lineByLineTokenizer = new LineByLineTokenizer();
         for (String fileName : fileNames) {
-            tokens = myTokenizer.tokenizeOneDoc(dir, fileName);
+            tokens = lineByLineTokenizer.tokenizeOneDoc(dir, fileName);
         }
 
         return tokens;

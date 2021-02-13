@@ -1,7 +1,8 @@
 import java.util.*;
 
 public class ArrayListOperator implements ListOperator {
-    ListCalculator listCalculator = new IteratingListCalculator();
+
+    private ListCalculator listCalculator = new IteratingListCalculator();
 
     public List<String> addUnSignedWordsContainingDocsToResult(List<String> result, List<String> unSignedWords, Map<String, List<String>> table) {
         List<String> tempResult = new ArrayList<>(result);

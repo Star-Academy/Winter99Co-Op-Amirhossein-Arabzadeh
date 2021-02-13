@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 public class LineByLineTokenizer implements Tokenizer {
 
-    List<MyToken> tokens = new ArrayList<>();
+    private List<MyToken> tokens = new ArrayList<>();
 
     public List<MyToken> tokenizeOneDoc(File dir, String fileName) {
         File file = new File(dir, fileName);
@@ -37,14 +37,8 @@ public class LineByLineTokenizer implements Tokenizer {
     }
 
     private void addNewToken(String fileName, String word) {
-        MyToken myToken = createToken(fileName, word);
+        MyToken myToken = new MyToken(word, fileName);
         tokens.add(myToken);
     }
 
-
-    private MyToken createToken(String fileName, String word) {
-        MyToken myToken = new MyToken(word.toLowerCase());
-        myToken.setDoc(fileName);
-        return myToken;
-    }
 }
