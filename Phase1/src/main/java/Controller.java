@@ -5,6 +5,6 @@ import java.util.Set;
 public interface Controller {
     List<String> getResult(List<String> plusSignedInputWords, List<String> minusSignedInputWords, List<String> unSignedInputWords);
     //HashMap<String, List<String>> getInvertedIndexTable();
-    void processDocs();
+    void processDocs(String folderName);
 
 }

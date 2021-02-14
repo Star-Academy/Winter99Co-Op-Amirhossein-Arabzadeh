@@ -15,27 +15,23 @@ public class HashInvertedIndexTest {
     @BeforeClass
     public static void setUp() {
         myController = new InvertedIndexController();
-        myController.processDocs();
+        myController.processDocs("EnglishData");
 
         List<String> unsignedWords = new ArrayList<>();
-        unsignedWords.add("Street");
+        unsignedWords.add("amirhossein");
         List<String> plusSignedWords = new ArrayList<>();
-        unsignedWords.add("Stories");
+        plusSignedWords.add("arabzadeh");
         List<String> minusSignedWords = new ArrayList<>();
-        unsignedWords.add("last");
+        minusSignedWords.add("last");
         hashedInvertedIndex = new HashInvertedIndex(unsignedWords, plusSignedWords, minusSignedWords);
     }
 
 
     @Test
     public void prepareResultSet() {
-
-
-        ListOperator listOperator = new ArrayListOperator();
-        Map<String, List<String>> table = InvertedIndexController.getInvertedIndexTable();
-
         List<String> result = new ArrayList<>();
-        result.add("59286");
+        //result.add("amir");
         Assert.assertEquals(result, hashedInvertedIndex.prepareResultSet());
     }
+
 }

@@ -4,6 +4,7 @@ public class InvertedIndexController implements Controller {
     private List<MyToken> myTokens = new ArrayList<>();
     private static HashMap<String, List<String>> table = new HashMap<>();
     private InvertedIndex invertedIndex;
+    private String folderName;
 
 
     @Override
@@ -12,7 +13,8 @@ public class InvertedIndexController implements Controller {
         return invertedIndex.prepareResultSet();
     }
 
-    public void processDocs() {
+    public void processDocs(String folderName) {
+        this.folderName = folderName;
         myTokens = tokenizeContentsOfDocs();
 
         Collections.sort(this.myTokens);
@@ -24,7 +26,7 @@ public class InvertedIndexController implements Controller {
 
     private List<MyToken> tokenizeContentsOfDocs() {
         MyFileReader tokenizedMyFileReader = new TokenizingMyFileReader();
-        return tokenizedMyFileReader.readFiles();
+        return tokenizedMyFileReader.readFiles(folderName);
     }
 
     public static HashMap<String, List<String>> getInvertedIndexTable() {

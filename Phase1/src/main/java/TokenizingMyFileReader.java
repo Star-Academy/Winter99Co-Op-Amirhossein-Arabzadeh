@@ -4,9 +4,9 @@ import java.util.List;
 
 public class TokenizingMyFileReader implements MyFileReader{
     List<MyToken> tokens = new ArrayList<>();
-    public List<MyToken> readFiles() {
+    public List<MyToken> readFiles(String folderName) {
 
-        String path = new File("EnglishData").getAbsolutePath();
+        String path = new File(folderName).getAbsolutePath();
         File dir = new File(path);
         String[] fileNames = dir.list();
 

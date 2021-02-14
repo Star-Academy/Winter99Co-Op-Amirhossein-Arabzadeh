@@ -17,10 +17,6 @@ public class MyToken implements Comparable {
     }
 
 
-    public void setDoc(String doc) {
-        this.doc = doc;
-    }
-
     @Override
     public int compareTo(Object o) {
         if (this.getTerm().compareTo(((MyToken) o).getTerm()) == 0) {
