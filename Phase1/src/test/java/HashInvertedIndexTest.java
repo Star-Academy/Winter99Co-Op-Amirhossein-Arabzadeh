@@ -1,48 +1,41 @@
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
+import org.mockito.Mock;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 
 public class HashInvertedIndexTest {
 
-    @Before
-    public void setUp() throws Exception {
+    static InvertedIndexController myController;
+    static InvertedIndex hashedInvertedIndex;
+    @BeforeClass
+    public static void setUp() {
+        myController = new InvertedIndexController();
+        myController.processDocs();
+
+        List<String> unsignedWords = new ArrayList<>();
+        unsignedWords.add("Street");
+        List<String> plusSignedWords = new ArrayList<>();
+        unsignedWords.add("Stories");
+        List<String> minusSignedWords = new ArrayList<>();
+        unsignedWords.add("last");
+        hashedInvertedIndex = new HashInvertedIndex(unsignedWords, plusSignedWords, minusSignedWords);
     }
 
-    @After
-    public void tearDown() throws Exception {
-    }
 
     @Test
-    public void prepareResult() {
+    public void prepareResultSet() {
 
-    }
 
-    @Test
-    public void getNotSignedDocs() {
-    }
+        ListOperator listOperator = new ArrayListOperator();
+        Map<String, List<String>> table = InvertedIndexController.getInvertedIndexTable();
 
-    @Test
-    public void plusDocs() {
-    }
-
-    @Test
-    public void andResultSet() {
-    }
-
-    @Test
-    public void minusDocs() {
-    }
-
-    @Test
-    public void minusResultSet() {
-    }
-
-    @Test
-    public void createSetOfDifferentModeledInputs() {
+        List<String> result = new ArrayList<>();
+        result.add("59286");
+        Assert.assertEquals(result, hashedInvertedIndex.prepareResultSet());
     }
 }
