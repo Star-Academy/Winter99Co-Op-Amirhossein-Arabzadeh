@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static org.mockito.Mockito.mock;
+
 public class ArrayListOperatorTest {
     static ListOperator arrayListOperator;
 
@@ -13,7 +15,9 @@ public class ArrayListOperatorTest {
     public static void setUp() {
         myIndexController = new MyIndexController();
         myIndexController.processDocs("EnglishData");
-        arrayListOperator = new ArrayListOperator();
+        ListCalculator listCalculator = mock(ListCalculator.class);
+        IndexController indexController = mock(IndexController.class);
+        arrayListOperator = new ArrayListOperator(listCalculator, indexController);
 
     }
 

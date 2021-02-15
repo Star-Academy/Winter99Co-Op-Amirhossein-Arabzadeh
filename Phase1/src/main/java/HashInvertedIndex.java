@@ -6,14 +6,15 @@ public class HashInvertedIndex implements InvertedIndex{
 
     private IndexController indexController;
     private HashMap<String, List<String>> table;
+    private ListOperator listOperator;
 
-    public HashInvertedIndex() {
-        indexController = new MyIndexController();
+    public HashInvertedIndex(IndexController myIndexController) {
+        indexController = myIndexController;
         table = indexController.getInvertedIndexTable();
     }
 
-    public List<String> prepareResultSet(List<String> plusSignedInputWords, List<String> minusSignedInputWords, List<String> unSignedInputWords) {
-        ListOperator listOperator = new ArrayListOperator();
+    public List<String> prepareResultSet(List<String> plusSignedInputWords, List<String> minusSignedInputWords, List<String> unSignedInputWords, ListOperator listOperator) {
+        this.listOperator = listOperator;
 
         result = initiateResultSetWithDocsContainingFirstUnsignedWords(unSignedInputWords);
         result = listOperator.intersectUnsignedWordsContainingDocs(result, unSignedInputWords);

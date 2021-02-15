@@ -6,8 +6,11 @@ public class MySearchController implements SearchController {
 
     @Override
     public List<String> searchDocs(List<String> plusSignedInputWords, List<String> minusSignedInputWords, List<String> unSignedInputWords) {
-        invertedIndex = new HashInvertedIndex();
-        return invertedIndex.prepareResultSet(plusSignedInputWords, minusSignedInputWords, unSignedInputWords);
+        ListCalculator listCalculator = new IteratingListCalculator();
+        IndexController indexController = new MyIndexController();
+        ListOperator listOperator = new ArrayListOperator(listCalculator, indexController);
+        invertedIndex = new HashInvertedIndex(indexController);
+        return invertedIndex.prepareResultSet(plusSignedInputWords, minusSignedInputWords, unSignedInputWords, listOperator);
     }
 
 

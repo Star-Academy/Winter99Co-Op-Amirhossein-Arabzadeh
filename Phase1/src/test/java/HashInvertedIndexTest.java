@@ -3,6 +3,8 @@ import org.junit.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.mockito.Mockito.mock;
+
 public class HashInvertedIndexTest {
 
     static IndexController myController;
@@ -12,8 +14,8 @@ public class HashInvertedIndexTest {
         myController = new MyIndexController();
         myController.processDocs("EnglishData");
 
-
-        hashedInvertedIndex = new HashInvertedIndex();
+        IndexController indexController = mock(IndexController.class);
+        hashedInvertedIndex = new HashInvertedIndex(indexController);
     }
 
 
@@ -27,7 +29,8 @@ public class HashInvertedIndexTest {
         minusSignedWords.add("last");
         List<String> result = new ArrayList<>();
         //result.add("amir");
-        Assert.assertEquals(result, hashedInvertedIndex.prepareResultSet(unsignedWords, plusSignedWords, minusSignedWords));
+        ListOperator listOperator = mock(ListOperator.class);
+        Assert.assertEquals(result, hashedInvertedIndex.prepareResultSet(unsignedWords, plusSignedWords, minusSignedWords, listOperator));
     }
 
 }

@@ -15,7 +15,8 @@ public class MyIndexController implements IndexController{
 
     private List<DocsWordOccurrence> tokenizeContentsOfDocs(String folderName) {
         DocsFileReader tokenizedDocsFileReader = new TokenizingDocsFileReader();
-        return tokenizedDocsFileReader.readFiles(folderName);
+        Tokenizer lineByLineTokenizer = new LineByLineTokenizer();
+        return tokenizedDocsFileReader.readFiles(folderName, lineByLineTokenizer);
     }
 
     public HashMap<String, List<String>> getInvertedIndexTable() {

@@ -6,9 +6,9 @@ public class ArrayListOperator implements ListOperator {
     private IndexController indexController;
     private Map<String, List<String>> table;
 
-    public ArrayListOperator() {
-        this.listCalculator = new IteratingListCalculator();
-        this.indexController = new MyIndexController();
+    public ArrayListOperator(ListCalculator listCalculator, IndexController indexController) {
+        this.listCalculator = listCalculator;
+        this.indexController = indexController;
         this.table = indexController.getInvertedIndexTable();
     }
 
