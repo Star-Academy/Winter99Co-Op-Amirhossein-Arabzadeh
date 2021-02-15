@@ -10,13 +10,15 @@ public class ArrayListOperatorTest {
     static ListOperator arrayListOperator;
 
     static IndexController myIndexController;
+    static ListCalculator listCalculator;
+    static IndexController indexController;
 
     @BeforeClass
     public static void setUp() {
         myIndexController = new MyIndexController();
         myIndexController.processDocs("EnglishData");
-        ListCalculator listCalculator = mock(ListCalculator.class);
-        IndexController indexController = mock(IndexController.class);
+        ListCalculator listCalculator = new IteratingListCalculator();
+        IndexController indexController = new MyIndexController();
         arrayListOperator = new ArrayListOperator(listCalculator, indexController);
 
     }

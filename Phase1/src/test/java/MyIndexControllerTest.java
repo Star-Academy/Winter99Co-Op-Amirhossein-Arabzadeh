@@ -18,6 +18,13 @@ public class MyIndexControllerTest {
         List<String> amirHosseinDocs = new ArrayList<>();
         amirHosseinDocs.add("amir");
         expectedTable.put("amirhossein", amirHosseinDocs);
+        List<String> arabzadehDocs = new ArrayList<>();
+        arabzadehDocs.add("amir");
+        expectedTable.put("arabzadeh", arabzadehDocs);
+        List<String> lastDocs = new ArrayList<>();
+        lastDocs.add("amir");
+        lastDocs.add("last");
+        expectedTable.put("last", lastDocs);
         for (String word: expectedTable.keySet()) {
             Assert.assertEquals(expectedTable.get(word), myIndexController.getInvertedIndexTable().get(word));
         }

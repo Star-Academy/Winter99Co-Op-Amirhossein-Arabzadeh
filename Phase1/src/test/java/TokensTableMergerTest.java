@@ -12,11 +12,31 @@ public class TokensTableMergerTest {
 
     @Test
     public void createHashTableOfWordsFromSortedList() {
-//        Merger merger = new TokensTableMerger();
-//        List<String> tokens = new ArrayList<>();
-//        tokens.add()
-//        Map<String, List<String>> table = new HashMap<>();
-//
-//        Assert.assertEquals(, merger.createHashTableOfWordsFromSortedList());
+        MyIndexController myIndexController = new MyIndexController();
+        myIndexController.processDocs("amir");
+
+        Merger merger = new TokensTableMerger();
+        List<DocsWordOccurrence> testDocsWordOccurrences = new ArrayList<>();
+        testDocsWordOccurrences.add(new DocsWordOccurrence("amirhossein", "amir"));
+        testDocsWordOccurrences.add(new DocsWordOccurrence("arabzadeh", "amir"));
+        testDocsWordOccurrences.add(new DocsWordOccurrence("last", "amir"));
+        testDocsWordOccurrences.add(new DocsWordOccurrence("amirhossein", "last"));
+        testDocsWordOccurrences.add(new DocsWordOccurrence("arabzadeh", "last"));
+
+        Map<String, List<String>> table = new HashMap<>();
+        List<String> amirhosseinDocs = new ArrayList<>();
+        amirhosseinDocs.add("amir");
+        amirhosseinDocs.add("last");
+        List<String> arabzadehDocs = new ArrayList<>();
+        arabzadehDocs.add("amir");
+        arabzadehDocs.add("last");
+        List<String> lastDocs = new ArrayList<>();
+        lastDocs.add("amir");
+
+        table.put("amirhossein", amirhosseinDocs);
+        table.put("arabzadeh", arabzadehDocs);
+        table.put("last", lastDocs);
+
+        Assert.assertEquals(table, merger.createHashTableOfWordsFromSortedList(testDocsWordOccurrences));
     }
 }

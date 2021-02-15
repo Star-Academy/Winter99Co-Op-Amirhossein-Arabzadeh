@@ -13,9 +13,7 @@ public class HashInvertedIndexTest {
     public static void setUp() {
         myController = new MyIndexController();
         myController.processDocs("EnglishData");
-
-        IndexController indexController = mock(IndexController.class);
-        hashedInvertedIndex = new HashInvertedIndex(indexController);
+        hashedInvertedIndex = new HashInvertedIndex(myController);
     }
 
 
@@ -28,9 +26,10 @@ public class HashInvertedIndexTest {
         List<String> minusSignedWords = new ArrayList<>();
         minusSignedWords.add("last");
         List<String> result = new ArrayList<>();
-        //result.add("amir");
-        ListOperator listOperator = mock(ListOperator.class);
-        Assert.assertEquals(result, hashedInvertedIndex.prepareResultSet(unsignedWords, plusSignedWords, minusSignedWords, listOperator));
+        result.add("amir");
+        ListCalculator listCalculator = new IteratingListCalculator();
+        ListOperator listOperator = new ArrayListOperator(listCalculator, myController);
+        Assert.assertEquals(result, hashedInvertedIndex.prepareResultSet(plusSignedWords, minusSignedWords, unsignedWords, listOperator));
     }
 
 }

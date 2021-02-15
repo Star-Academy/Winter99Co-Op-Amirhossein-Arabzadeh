@@ -18,7 +18,7 @@ public class ArrayListOperator implements ListOperator {
             if (table.containsKey(term)){
                 List<String> listOfDocsContainingUnsignedWord = table.get(term);
                 Set<String> setOfDocsContainingUnsignedWord = new HashSet<>(listOfDocsContainingUnsignedWord);
-                tempResult = listCalculator.andResultSet(setOfDocsContainingUnsignedWord, result);
+                tempResult = listCalculator.andResultSet(setOfDocsContainingUnsignedWord, tempResult);
             }
         }
         return tempResult;
