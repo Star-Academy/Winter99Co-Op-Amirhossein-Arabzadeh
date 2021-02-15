@@ -2,9 +2,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TokenizingMyFileReader implements MyFileReader{
-    List<MyToken> tokens = new ArrayList<>();
-    public List<MyToken> readFiles(String folderName) {
+public class TokenizingDocsFileReader implements docsFileReader {
+    List<DocsWordOccurrence> tokens = new ArrayList<>();
+    public List<DocsWordOccurrence> readFiles(String folderName) {
 
         String path = new File(folderName).getAbsolutePath();
         File dir = new File(path);

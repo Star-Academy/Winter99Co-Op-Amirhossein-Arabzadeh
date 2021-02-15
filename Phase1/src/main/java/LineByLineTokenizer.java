@@ -6,9 +6,16 @@ import java.util.Scanner;
 
 public class LineByLineTokenizer implements Tokenizer {
 
-    private List<MyToken> tokens = new ArrayList<>();
+    private List<DocsWordOccurrence> tokens = new ArrayList<>();
 
-    public List<MyToken> tokenizeOneDoc(File dir, String fileName) {
+    public List<DocsWordOccurrence> tokenizeOneDoc(File dir, String fileName) {
+        Scanner scanner = getScannerForFile(dir, fileName);
+        tokenizeLineByLine(fileName, scanner);
+        scanner.close();
+        return tokens;
+    }
+
+    private Scanner getScannerForFile(File dir, String fileName) {
         File file = new File(dir, fileName);
 
         Scanner scanner = null;
@@ -17,9 +24,7 @@ public class LineByLineTokenizer implements Tokenizer {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-
-        tokenizeLineByLine(fileName, scanner);
-        return tokens;
+        return scanner;
     }
 
     private void tokenizeLineByLine(String fileName, Scanner scanner) {
@@ -37,7 +42,7 @@ public class LineByLineTokenizer implements Tokenizer {
     }
 
     private void addNewToken(String fileName, String word) {
-        MyToken myToken = new MyToken(word.toLowerCase(), fileName);
+        DocsWordOccurrence myToken = new DocsWordOccurrence(word.toLowerCase(), fileName);
         tokens.add(myToken);
     }
 

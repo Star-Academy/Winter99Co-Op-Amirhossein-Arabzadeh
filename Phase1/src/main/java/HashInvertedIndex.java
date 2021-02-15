@@ -6,41 +6,31 @@ public class HashInvertedIndex implements InvertedIndex{
 
     private HashMap<String, List<String>> table;
 
-    private List<String> unSignedWords;
-    private List<String> plusSignedWords;
-    private List<String> minusSignedWords;
-
-    public HashInvertedIndex(List<String> unSignedWords, List<String> plusSignedWords, List<String> minusSignedWords) {
-        this.unSignedWords = unSignedWords;
-        this.plusSignedWords = plusSignedWords;
-        this.minusSignedWords = minusSignedWords;
-    }
-
-    public List<String> prepareResultSet() {
+    public List<String> prepareResultSet(List<String> plusSignedInputWords, List<String> minusSignedInputWords, List<String> unSignedInputWords) {
         ListOperator listOperator = new ArrayListOperator();
 
-        table = InvertedIndexController.getInvertedIndexTable();
-        result = initiateResultSetWithDocsContainingFirstUnsignedWords();
-        result = listOperator.addUnSignedWordsContainingDocsToResult(result, unSignedWords, table);
-        result = listOperator.andResultWithSetOfDocsContainingPlusSignedWords(plusSignedWords, result, table);
-        result = listOperator.removeMinus(minusSignedWords, result, table);
+        table = MyIndexController.getInvertedIndexTable();
+        result = initiateResultSetWithDocsContainingFirstUnsignedWords(unSignedInputWords);
+        result = listOperator.addUnSignedWordsContainingDocsToResult(result, unSignedInputWords, table);
+        result = listOperator.removeDocsWithoutPlusWords(plusSignedInputWords, result, table);
+        result = listOperator.removeMinus(minusSignedInputWords, result, table);
         return result;
 
     }
 
 
 
-    private List<String> initiateResultSetWithDocsContainingFirstUnsignedWords() {
+    private List<String> initiateResultSetWithDocsContainingFirstUnsignedWords(List<String> unSignedInputWords) {
         List<String> result = new ArrayList<>();
-        if (isThereAnyUnsignedWord()) {
-            List<String> firstUnSignedInputWordContainingDocs = table.get(unSignedWords.get(0));
+        if (isThereAnyUnsignedWord(unSignedInputWords)) {
+            List<String> firstUnSignedInputWordContainingDocs = table.get(unSignedInputWords.get(0));
             result.addAll(firstUnSignedInputWordContainingDocs);
         }
         return result;
     }
 
-    private boolean isThereAnyUnsignedWord() {
-        return unSignedWords.size() != 0 && table.containsKey(unSignedWords.get(0));
+    private boolean isThereAnyUnsignedWord(List<String> unSignedInputWords) {
+        return unSignedInputWords.size() != 0 && table.containsKey(unSignedInputWords.get(0));
     }
 
 

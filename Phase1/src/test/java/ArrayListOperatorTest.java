@@ -4,18 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.*;
-
 public class ArrayListOperatorTest {
     static ListOperator arrayListOperator;
 
-    static InvertedIndexController myController;
+    static IndexController myIndexController;
 
     @BeforeClass
     public static void setUp() throws Exception {
         arrayListOperator = new ArrayListOperator();
-        myController = new InvertedIndexController();
-        myController.processDocs("EnglishData");
+        myIndexController = new MyIndexController();
+        myIndexController.processDocs("EnglishData");
 
     }
 
@@ -32,7 +30,7 @@ public class ArrayListOperatorTest {
         testResult.add("amir2");
         testResult.add("amir3");
 
-        Map<String, List<String>> table = InvertedIndexController.getInvertedIndexTable();
+        Map<String, List<String>> table = MyIndexController.getInvertedIndexTable();
 
         Assert.assertEquals(result, arrayListOperator.addUnSignedWordsContainingDocsToResult(testResult, unsignedWords, table));
     }

@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class MyView implements View {
     private List<String> plusSignedInputWords = new ArrayList<>();
@@ -9,19 +8,19 @@ public class MyView implements View {
 
     private InputGetter myInputGetter;
     private Partitioner threePartitioner;
-    private Controller controller;
+    private SearchController searchController;
 
-    public MyView(InputGetter myInputGetter, Partitioner threePartitioner, Controller controller) {
+    public MyView(InputGetter myInputGetter, Partitioner threePartitioner, SearchController searchController) {
         this.myInputGetter = myInputGetter;
         this.threePartitioner = threePartitioner;
-        this.controller = controller;
+        this.searchController = searchController;
     }
 
     public void run() {
         String userInput = myInputGetter.getInput();
         threePartitioner.partitionInputs(userInput, plusSignedInputWords, minusSignedInputWords, unSignedInputWords);
 
-        List<String> result = controller.getResult(plusSignedInputWords, minusSignedInputWords, unSignedInputWords);
+        List<String> result = searchController.getSetOfDocsForUser(plusSignedInputWords, minusSignedInputWords, unSignedInputWords);
         System.out.println(result);
     }
 }

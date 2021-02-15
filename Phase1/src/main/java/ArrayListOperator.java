@@ -16,13 +16,13 @@ public class ArrayListOperator implements ListOperator {
         return tempResult;
     }
 
-    public List<String> andResultWithSetOfDocsContainingPlusSignedWords(List<String> plusSignedWords, List<String> result, Map<String, List<String>> table) {
-        Set<String> docsWitchHasPlusWords;
-        docsWitchHasPlusWords = listCalculator.createSetOfDifferentModeledInputs(plusSignedWords, table);
+    public List<String> removeDocsWithoutPlusWords(List<String> plusSignedWords, List<String> result, Map<String, List<String>> table) {
+        Set<String> docsContainingPlusWords;
+        docsContainingPlusWords = listCalculator.createSetOfDifferentModeledInputs(plusSignedWords, table);
 
         //clean the result of docs which have not at least one of the plus sugned words
 
-        return listCalculator.andResultSet(docsWitchHasPlusWords, result);
+        return listCalculator.andResultSet(docsContainingPlusWords, result);
     }
 
 
