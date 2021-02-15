@@ -10,15 +10,15 @@ public class ArrayListOperatorTest {
     static IndexController myIndexController;
 
     @BeforeClass
-    public static void setUp() throws Exception {
-        arrayListOperator = new ArrayListOperator();
+    public static void setUp() {
         myIndexController = new MyIndexController();
         myIndexController.processDocs("EnglishData");
+        arrayListOperator = new ArrayListOperator();
 
     }
 
     @Test
-    public void addUnSignedWordsContainingDocsToResult() {
+    public void intersectUnsignedWordsContainingDocs() {
         List<String> unsignedWords = new ArrayList<>();
         unsignedWords.add("amirhossein");
         unsignedWords.add("javad");
@@ -30,8 +30,36 @@ public class ArrayListOperatorTest {
         testResult.add("amir2");
         testResult.add("amir3");
 
-        Map<String, List<String>> table = MyIndexController.getInvertedIndexTable();
+        Assert.assertEquals(result, arrayListOperator.intersectUnsignedWordsContainingDocs(testResult, unsignedWords));
+    }
 
-        Assert.assertEquals(result, arrayListOperator.addUnSignedWordsContainingDocsToResult(testResult, unsignedWords, table));
+    @Test
+    public void removeDocsWithoutPlusWords() {
+        List<String> plusSignedWords = new ArrayList<>();
+        plusSignedWords.add("arabzadeh");
+        List<String> result = new ArrayList<>();
+        result.add("amir");
+
+        List<String> testResult = new ArrayList<>();
+        testResult.add("amir");
+        testResult.add("amir2");
+        testResult.add("amir3");
+
+        Assert.assertEquals(result, arrayListOperator.removeDocsWithoutPlusWords(plusSignedWords, testResult));
+    }
+
+    @Test
+    public void removeMinus() {
+        List<String> minusSignedWords = new ArrayList<>();
+        minusSignedWords.add("arabzadeh");
+        List<String> result = new ArrayList<>();
+        result.add("amir2");
+        result.add("amir3");
+
+        List<String> testResult = new ArrayList<>();
+        testResult.add("amir");
+        testResult.add("amir2");
+        testResult.add("amir3");
+        Assert.assertEquals(result, arrayListOperator.removeDocsContainingMinusSignedWords(minusSignedWords, testResult));
     }
 }

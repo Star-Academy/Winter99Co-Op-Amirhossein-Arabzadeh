@@ -30,4 +30,9 @@ public class DocsWordOccurrence implements Comparable, WordOccurrence {
         }
         return 1;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return ((DocsWordOccurrence)obj).getTerm().equals(this.getTerm()) && ((DocsWordOccurrence)obj).getDoc().equals(this.getDoc());
+    }
 }

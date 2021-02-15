@@ -2,7 +2,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TokenizingDocsFileReader implements docsFileReader {
+public class TokenizingDocsFileReader implements DocsFileReader {
     List<DocsWordOccurrence> tokens = new ArrayList<>();
     public List<DocsWordOccurrence> readFiles(String folderName) {
 
@@ -12,7 +12,7 @@ public class TokenizingDocsFileReader implements docsFileReader {
 
         Tokenizer lineByLineTokenizer = new LineByLineTokenizer();
         for (String fileName : fileNames) {
-            tokens = lineByLineTokenizer.tokenizeOneDoc(dir, fileName);
+            tokens.addAll(lineByLineTokenizer.tokenizeOneDoc(dir, fileName));
         }
 
         return tokens;

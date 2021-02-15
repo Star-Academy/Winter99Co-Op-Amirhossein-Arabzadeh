@@ -20,10 +20,10 @@ public class MyViewTest {
         SearchController mySearchController = mock(SearchController.class);
         when(myInputGetter.getInput()).thenReturn("book");
         doNothing().when(threePartitioner).partitionInputs(anyString(), anyList(), anyList(), anyList());
-        when(mySearchController.getSetOfDocsForUser(anyList(), anyList(), anyList())).thenReturn(new ArrayList());
+        when(mySearchController.searchDocs(anyList(), anyList(), anyList())).thenReturn(new ArrayList());
         View myView = new MyView(myInputGetter, threePartitioner, mySearchController);
         myView.run();
-        verify(mySearchController).getSetOfDocsForUser(anyList(), anyList(), anyList());
+        verify(mySearchController).searchDocs(anyList(), anyList(), anyList());
     }
 
 }

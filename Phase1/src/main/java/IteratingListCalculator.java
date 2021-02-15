@@ -13,13 +13,13 @@ public class IteratingListCalculator implements ListCalculator {
     }
 
     public Set<String> createSetOfDifferentModeledInputs(List<String> partition, Map<String, List<String>> table) {
-        Set<String> docsContainingMinusWords = new HashSet<>();
+        Set<String> docsContainingPartitionWords = new HashSet<>();
         for (String term : partition) {
             if (table.containsKey(term.toLowerCase())) {
-                docsContainingMinusWords.addAll(table.get(term.toLowerCase()));
+                docsContainingPartitionWords.addAll(table.get(term.toLowerCase()));
             }
         }
-        return docsContainingMinusWords;
+        return docsContainingPartitionWords;
     }
     public List<String> andResultSet(Set<String> docs, List<String> result) {
         ArrayList<String> tempResult = new ArrayList<>(result);

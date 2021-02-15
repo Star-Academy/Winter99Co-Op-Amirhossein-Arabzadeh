@@ -4,16 +4,21 @@ public class HashInvertedIndex implements InvertedIndex{
 
     private List<String> result = new ArrayList<>();
 
+    private IndexController indexController;
     private HashMap<String, List<String>> table;
+
+    public HashInvertedIndex() {
+        indexController = new MyIndexController();
+        table = indexController.getInvertedIndexTable();
+    }
 
     public List<String> prepareResultSet(List<String> plusSignedInputWords, List<String> minusSignedInputWords, List<String> unSignedInputWords) {
         ListOperator listOperator = new ArrayListOperator();
 
-        table = MyIndexController.getInvertedIndexTable();
         result = initiateResultSetWithDocsContainingFirstUnsignedWords(unSignedInputWords);
-        result = listOperator.addUnSignedWordsContainingDocsToResult(result, unSignedInputWords, table);
-        result = listOperator.removeDocsWithoutPlusWords(plusSignedInputWords, result, table);
-        result = listOperator.removeMinus(minusSignedInputWords, result, table);
+        result = listOperator.intersectUnsignedWordsContainingDocs(result, unSignedInputWords);
+        result = listOperator.removeDocsWithoutPlusWords(plusSignedInputWords, result);
+        result = listOperator.removeDocsContainingMinusSignedWords(minusSignedInputWords, result);
         return result;
 
     }

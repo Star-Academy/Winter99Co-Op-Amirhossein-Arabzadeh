@@ -1,30 +1,24 @@
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class MyIndexController implements IndexController{
     private List<DocsWordOccurrence> myTokens = new ArrayList<>();
     private static HashMap<String, List<String>> table = new HashMap<>();
-    private String folderName;
-
     public void processDocs(String folderName) {
-        this.folderName = folderName;
-        myTokens = tokenizeContentsOfDocs();
-
-        Collections.sort(this.myTokens);
-
+        table = getTableOfWordsAsKeyAndDocsAsValue(folderName);
+    }
+    private HashMap<String, List<String>> getTableOfWordsAsKeyAndDocsAsValue(String folderName) {
+        myTokens = tokenizeContentsOfDocs(folderName);
         //iterate the tokensArray to find the identical words to merge them
         Merger myMerger = new TokensTableMerger();
-        table = myMerger.createHashTableOfWordsFromSortedList(myTokens);
+        return myMerger.createHashTableOfWordsFromSortedList(myTokens);
     }
 
-    private List<DocsWordOccurrence> tokenizeContentsOfDocs() {
-        docsFileReader tokenizedDocsFileReader = new TokenizingDocsFileReader();
+    private List<DocsWordOccurrence> tokenizeContentsOfDocs(String folderName) {
+        DocsFileReader tokenizedDocsFileReader = new TokenizingDocsFileReader();
         return tokenizedDocsFileReader.readFiles(folderName);
     }
 
-    public static HashMap<String, List<String>> getInvertedIndexTable() {
+    public HashMap<String, List<String>> getInvertedIndexTable() {
         return table;
     }
 }

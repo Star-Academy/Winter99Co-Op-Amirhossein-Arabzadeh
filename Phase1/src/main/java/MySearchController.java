@@ -5,7 +5,7 @@ public class MySearchController implements SearchController {
 
 
     @Override
-    public List<String> getSetOfDocsForUser(List<String> plusSignedInputWords, List<String> minusSignedInputWords, List<String> unSignedInputWords) {
+    public List<String> searchDocs(List<String> plusSignedInputWords, List<String> minusSignedInputWords, List<String> unSignedInputWords) {
         invertedIndex = new HashInvertedIndex();
         return invertedIndex.prepareResultSet(plusSignedInputWords, minusSignedInputWords, unSignedInputWords);
     }

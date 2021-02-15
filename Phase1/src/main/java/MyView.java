@@ -20,7 +20,7 @@ public class MyView implements View {
         String userInput = myInputGetter.getInput();
         threePartitioner.partitionInputs(userInput, plusSignedInputWords, minusSignedInputWords, unSignedInputWords);
 
-        List<String> result = searchController.getSetOfDocsForUser(plusSignedInputWords, minusSignedInputWords, unSignedInputWords);
+        List<String> result = searchController.searchDocs(plusSignedInputWords, minusSignedInputWords, unSignedInputWords);
         System.out.println(result);
     }
 }
