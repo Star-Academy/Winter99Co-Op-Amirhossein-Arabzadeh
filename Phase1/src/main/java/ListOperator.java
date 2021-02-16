@@ -1,6 +1,4 @@
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 public interface ListOperator {
     List<String> intersectUnsignedWordsContainingDocs(List<String> result, List<String> unSignedWords);

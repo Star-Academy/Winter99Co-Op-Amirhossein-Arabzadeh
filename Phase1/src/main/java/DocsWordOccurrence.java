@@ -19,13 +19,11 @@ public class DocsWordOccurrence implements Comparable, WordOccurrence {
 
     @Override
     public int compareTo(Object o) {
-//        if (!o.getClass().equals(MyToken.class)){
-//            return
-//        }
-        if (this.getTerm().compareTo(((DocsWordOccurrence) o).getTerm()) == 0) {
+        int oneDocsWordOccurrenceComparingToAnother = this.getTerm().compareTo(((DocsWordOccurrence) o).getTerm());
+        if (oneDocsWordOccurrenceComparingToAnother == 0) {
             return 0;
         }
-        if (this.getTerm().compareTo(((DocsWordOccurrence) o).getTerm()) < 0) {
+        if (oneDocsWordOccurrenceComparingToAnother < 0) {
             return -1;
         }
         return 1;
