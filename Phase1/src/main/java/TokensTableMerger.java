@@ -1,17 +1,16 @@
 import java.util.*;
 
 public class TokensTableMerger implements Merger {
-    public HashMap<String, List<String>> createHashTableOfWords(List<MyToken> tokens) {
+    public HashMap<String, List<String>> createHashTableOfWordsFromSortedList(List<DocsWordOccurrence> tokens) {
         HashMap<String, List<String>> table = new HashMap<>();
-        for (int i = 0; i < (tokens.size() -1); i++) {
-            Set<String> docs = new HashSet<>();
-            while (i<(tokens.size() - 2) && tokens.get(i).getTerm().equals(tokens.get(i+1).getTerm())) {
-                docs.add(tokens.get(i).getDoc());
-                i++;
+        for (WordOccurrence token: tokens){
+            if (!table.containsKey(token.getTerm())){
+                List<String> docs = new ArrayList<>();
+                docs.add(token.getDoc());
+                table.put(token.getTerm(), docs);
+                continue;
             }
-            docs.add(tokens.get(i).getDoc());
-            table.put(tokens.get(i).getTerm(), new ArrayList<>(docs));
-            i++;
+            table.get(token.getTerm()).add(token.getDoc());
         }
         return table;
     }

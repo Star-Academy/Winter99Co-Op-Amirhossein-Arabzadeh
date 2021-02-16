@@ -1,41 +1,35 @@
 import org.junit.*;
-import org.mockito.Mock;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
 
 public class HashInvertedIndexTest {
 
-    static InvertedIndexController myController;
+    static IndexController myController;
     static InvertedIndex hashedInvertedIndex;
     @BeforeClass
     public static void setUp() {
-        myController = new InvertedIndexController();
-        myController.processDocs();
-
-        List<String> unsignedWords = new ArrayList<>();
-        unsignedWords.add("Street");
-        List<String> plusSignedWords = new ArrayList<>();
-        unsignedWords.add("Stories");
-        List<String> minusSignedWords = new ArrayList<>();
-        unsignedWords.add("last");
-        hashedInvertedIndex = new HashInvertedIndex(unsignedWords, plusSignedWords, minusSignedWords);
+        myController = new MyIndexController();
+        myController.processDocs("EnglishData");
+        hashedInvertedIndex = new HashInvertedIndex(myController);
     }
 
 
     @Test
     public void prepareResultSet() {
-
-
-        ListOperator listOperator = new ArrayListOperator();
-        Map<String, List<String>> table = InvertedIndexController.getInvertedIndexTable();
-
+        List<String> unsignedWords = new ArrayList<>();
+        unsignedWords.add("amirhossein");
+        List<String> plusSignedWords = new ArrayList<>();
+        plusSignedWords.add("arabzadeh");
+        List<String> minusSignedWords = new ArrayList<>();
+        minusSignedWords.add("last");
         List<String> result = new ArrayList<>();
-        result.add("59286");
-        Assert.assertEquals(result, hashedInvertedIndex.prepareResultSet());
+        result.add("amir");
+        ListCalculator listCalculator = new IteratingListCalculator();
+        ListOperator listOperator = new ArrayListOperator(listCalculator, myController);
+        Assert.assertEquals(result, hashedInvertedIndex.prepareResultSet(plusSignedWords, minusSignedWords, unsignedWords, listOperator));
     }
+
 }

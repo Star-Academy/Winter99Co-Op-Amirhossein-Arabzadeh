@@ -4,43 +4,39 @@ public class HashInvertedIndex implements InvertedIndex{
 
     private List<String> result = new ArrayList<>();
 
+    private IndexController indexController;
     private HashMap<String, List<String>> table;
+    private ListOperator listOperator;
 
-    private List<String> unSignedWords;
-    private List<String> plusSignedWords;
-    private List<String> minusSignedWords;
-
-    public HashInvertedIndex(List<String> unSignedWords, List<String> plusSignedWords, List<String> minusSignedWords) {
-        this.unSignedWords = unSignedWords;
-        this.plusSignedWords = plusSignedWords;
-        this.minusSignedWords = minusSignedWords;
+    public HashInvertedIndex(IndexController myIndexController) {
+        indexController = myIndexController;
+        table = indexController.getInvertedIndexTable();
     }
 
-    public List<String> prepareResultSet() {
-        ListOperator listOperator = new ArrayListOperator();
+    public List<String> prepareResultSet(List<String> plusSignedInputWords, List<String> minusSignedInputWords, List<String> unSignedInputWords, ListOperator listOperator) {
+        this.listOperator = listOperator;
 
-        table = InvertedIndexController.getInvertedIndexTable();
-        result = initiateResultSetWithDocsContainingFirstUnsignedWords();
-        result = listOperator.addUnSignedWordsContainingDocsToResult(result, unSignedWords, table);
-        result = listOperator.andResultWithSetOfDocsContainingPlusSignedWords(plusSignedWords, result, table);
-        result = listOperator.removeMinus(minusSignedWords, result, table);
+        result = initiateResultSetWithDocsContainingFirstUnsignedWords(unSignedInputWords);
+        result = listOperator.intersectUnsignedWordsContainingDocs(result, unSignedInputWords);
+        result = listOperator.removeDocsWithoutPlusWords(plusSignedInputWords, result);
+        result = listOperator.removeDocsContainingMinusSignedWords(minusSignedInputWords, result);
         return result;
 
     }
 
 
 
-    private List<String> initiateResultSetWithDocsContainingFirstUnsignedWords() {
+    private List<String> initiateResultSetWithDocsContainingFirstUnsignedWords(List<String> unSignedInputWords) {
         List<String> result = new ArrayList<>();
-        if (isThereAnyUnsignedWord()) {
-            List<String> firstUnSignedInputWordContainingDocs = table.get(unSignedWords.get(0));
+        if (isThereAnyUnsignedWord(unSignedInputWords)) {
+            List<String> firstUnSignedInputWordContainingDocs = table.get(unSignedInputWords.get(0));
             result.addAll(firstUnSignedInputWordContainingDocs);
         }
         return result;
     }
 
-    private boolean isThereAnyUnsignedWord() {
-        return unSignedWords.size() != 0 && table.containsKey(unSignedWords.get(0));
+    private boolean isThereAnyUnsignedWord(List<String> unSignedInputWords) {
+        return unSignedInputWords.size() != 0 && table.containsKey(unSignedInputWords.get(0));
     }
 
 

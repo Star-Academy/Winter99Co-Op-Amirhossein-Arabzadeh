@@ -1,11 +1,8 @@
-public interface Token {
+public interface WordOccurrence {
     String getDoc();
 
 
     String getTerm();
-
-
-    void setDoc(String doc);
 
     int compareTo(Object o);
 }
