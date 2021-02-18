@@ -17,6 +17,12 @@ namespace Phase04
         public string Lesson { get; set; }
         public float Score { get; set; }
 
-
+        public override bool Equals(object obj)
+        {
+            return obj is Course course &&
+                   StudentNumber == course.StudentNumber &&
+                   Lesson == course.Lesson &&
+                   Score == course.Score;
+        }
     }
 }

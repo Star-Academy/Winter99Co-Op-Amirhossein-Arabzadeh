@@ -17,5 +17,13 @@ namespace Phase04
         public string LastName { get; set; }
         public int StudentNumber { get; set; }
 
+        public override bool Equals(object obj)
+        {
+            if(!(obj is Student))
+            {
+                return false;
+            }
+            return this.StudentNumber.Equals(((Student)obj).StudentNumber);
+        }
     }
 }
