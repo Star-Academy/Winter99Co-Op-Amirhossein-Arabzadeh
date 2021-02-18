@@ -1,26 +1,32 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Text;
 
 namespace Phase04
 {
-    class Decerialize
+    public class Decerialize : IDecerialize
     {
-        public List<Student> ReadStudents() {
-            string path = Path.GetFullPath("../../../../Resources/Students.txt");
-            var read = File.ReadAllText(path);
+        public IFileReader FileReader { get; set; }
+
+        public Decerialize(IFileReader fileReader)
+        {
+            FileReader = fileReader;
+        }
+
+        public List<Student> ReadStudents(string relatedPath)
+        {
+            string read = FileReader.getTextOfFile(relatedPath);
             List<Student> students = JsonConvert.DeserializeObject<List<Student>>(read);
             return students;
         }
-        public List<Lessons> ReadScores()
+        public List<Course> ReadScores(string relatedPath)
         {
-            string path = Path.GetFullPath("../../../../Resources/Scores.txt");
-            var read = File.ReadAllText(path);
-            List<Lessons> scores = JsonConvert.DeserializeObject<List<Lessons>>(read);
+            string read = FileReader.getTextOfFile(relatedPath);
+            List<Course> scores = JsonConvert.DeserializeObject<List<Course>>(read);
             return scores;
         }
+
 
     }
 }

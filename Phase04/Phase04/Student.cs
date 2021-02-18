@@ -4,15 +4,18 @@ using System.Text;
 
 namespace Phase04
 {
-    class Student
+    public class Student : IStudent
     {
+        public Student(string firstName, string lastName, int studentNumber)
+        {
+            FirstName = firstName;
+            LastName = lastName;
+            StudentNumber = studentNumber;
+        }
+
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public int StudentNumber { get; set; }
 
-        public override string ToString()
-        {
-            return this.FirstName + " " + this.LastName;
-        }
     }
 }

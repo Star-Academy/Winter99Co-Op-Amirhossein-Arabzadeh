@@ -2,16 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 
+
 namespace Phase04
 {
-    class Program
+    public class Program
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
-            Decerialize decerialize = new Decerialize();
-            List<Student> students = decerialize.ReadStudents();
-            List<Lessons> scores = decerialize.ReadScores();
+            FileReader fileReader = new FileReader();
+            Decerialize decerialize = new Decerialize(fileReader);
+            List<Student> students = decerialize.ReadStudents("../../../../Resources/Students.txt");
+            List<Course> scores = decerialize.ReadScores("../../../../Resources/Scores.txt");
 
             var joinList = students.GroupJoin(scores,
                 student => student.StudentNumber,
@@ -28,12 +29,14 @@ namespace Phase04
             var orderByResult = from s in joinList
                                 orderby s.StudentAverage descending
                                 select s;
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 3; i++)
             {
                 var student = orderByResult.ElementAt(i);
                 Console.WriteLine(student.StudentFirstname + " " + student.StudentLastname + " " + student.StudentAverage);
             }
 
         }
+
+
     }
 }
