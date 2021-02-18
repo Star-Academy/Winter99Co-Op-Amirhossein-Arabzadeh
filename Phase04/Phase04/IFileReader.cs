@@ -2,6 +2,6 @@
 {
     public interface IFileReader
     {
-        abstract string getTextOfFile(string relatedPath);
+        abstract string GetTextOfFile(string relatedPath);
     }
 }

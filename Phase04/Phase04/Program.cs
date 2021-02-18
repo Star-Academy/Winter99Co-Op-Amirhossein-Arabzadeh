@@ -5,38 +5,47 @@ using System.Linq;
 
 namespace Phase04
 {
-    public class Program
+    static class Program
     {
         static void Main(string[] args)
         {
-            FileReader fileReader = new FileReader();
-            Decerialize decerialize = new Decerialize(fileReader);
-            List<Student> students = decerialize.ReadStudents("../../../../Resources/Students.txt");
-            List<Course> scores = decerialize.ReadScores("../../../../Resources/Scores.txt");
+            var fileReader = new FileReader();
+            var deserialize = new Deserialize(fileReader);
+            var students = deserialize.ReadStudents("../../../../Resources/Students.txt");
+            var scores = deserialize.ReadScores("../../../../Resources/Scores.txt");
 
-            var joinList = students.GroupJoin(scores,
-                student => student.StudentNumber,
-                score => score.StudentNumber,
-                (student, studentPointes) => new
-                {
-                    StudentNo = student.StudentNumber,
-                    StudentFirstname = student.FirstName,
-                    StudentLastname = student.LastName,
-                    StudentAverage = studentPointes.Average(course => course.Score),
-
-                });
-
-            var orderByResult = from s in joinList
-                                orderby s.StudentAverage descending
-                                select s;
-            for (int i = 0; i < 3; i++)
-            {
-                var student = orderByResult.ElementAt(i);
-                Console.WriteLine(student.StudentFirstname + " " + student.StudentLastname + " " + student.StudentAverage);
-            }
+            var joinList = JoinScoresWithStudents(students, scores);
+            var orderByResult = OrderByAverage(joinList);
+            
+            var resultPrinter = new OrderedEnumerableResultPrinter();
+            resultPrinter.PrintResult(orderByResult);
 
         }
 
+        private static IOrderedEnumerable<StudentInfo> OrderByAverage(IEnumerable<StudentInfo> joinList)
+        {
+            var orderByResult = from s in joinList
+                orderby s.AverageScore descending
+                select s;
+            return orderByResult;
+        }
 
+
+        private static IEnumerable<StudentInfo> JoinScoresWithStudents(List<Student> students, List<Course> scores)
+        {
+            var joinList = students.GroupJoin(scores,
+                student => student.StudentNumber,
+                score => score.StudentNumber,
+                (student, studentPoints) => new StudentInfo(
+                    studentPoints.Average(course => course.Score),
+                    student.FirstName,
+                    student.LastName
+                    )
+                );
+            return joinList;
+        }
     }
+
+    
+    
 }

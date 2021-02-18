@@ -14,26 +14,26 @@ namespace XUnitTestProjectPhase04
         public void ReadStudents()
         {
             var fileReader = new Mock<IFileReader>();
-            fileReader.Setup(x => x.getTextOfFile(It.IsAny<string>())).Returns("[{\"StudentNumber\": 1,\"FirstName\": \"Mahdi\",\"LastName\": \"Malverdi\"}]");
+            fileReader.Setup(x => x.GetTextOfFile(It.IsAny<string>())).Returns("[{\"StudentNumber\": 1,\"FirstName\": \"Mahdi\",\"LastName\": \"Malverdi\"}]");
 
-            Decerialize decerialize = new Decerialize(fileReader.Object);
+            Deserialize deserialize = new Deserialize(fileReader.Object);
 
             var expectedStudentsList = new List<Student>() { new Student("Mahdi", "Malverdi", 1) };
 
-            Assert.Equal(expectedStudentsList, decerialize.ReadStudents(It.IsAny<string>()));
+            Assert.Equal(expectedStudentsList, deserialize.ReadStudents(It.IsAny<string>()));
 
         }
         [Fact]
         public void ReadScores()
         {
             var fileReader = new Mock<IFileReader>();
-            fileReader.Setup(x => x.getTextOfFile(It.IsAny<string>())).Returns("[{\"StudentNumber\": 1,\"Lesson\": \"DB\",\"Score\": 14.63433486}]");
+            fileReader.Setup(x => x.GetTextOfFile(It.IsAny<string>())).Returns("[{\"StudentNumber\": 1,\"Lesson\": \"DB\",\"Score\": 14.63433486}]");
 
-            Decerialize decerialize = new Decerialize(fileReader.Object);
+            Deserialize deserialize = new Deserialize(fileReader.Object);
 
             var expectedStudentsList = new List<Course>() { new Course(1, "DB", (float)14.63433486) };
 
-            Assert.Equal(expectedStudentsList, decerialize.ReadScores(It.IsAny<string>()));
+            Assert.Equal(expectedStudentsList, deserialize.ReadScores(It.IsAny<string>()));
 
         }
     }

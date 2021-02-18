@@ -1,6 +1,6 @@
 
-# Created by https://www.toptal.com/developers/gitignore/api/java,intellij,visualstudio,csharp,maven
-# Edit at https://www.toptal.com/developers/gitignore?templates=java,intellij,visualstudio,csharp,maven
+# Created by https://www.toptal.com/developers/gitignore/api/intellij,java,maven,csharp,visualstudio,rider
+# Edit at https://www.toptal.com/developers/gitignore?templates=intellij,java,maven,csharp,visualstudio,rider
 
 ### Csharp ###
 ## Ignore Visual Studio temporary files, build results, and
@@ -497,6 +497,51 @@ buildNumber.properties
 # https://github.com/takari/maven-wrapper#usage-without-binary-jar
 .mvn/wrapper/maven-wrapper.jar
 
+### Rider ###
+# Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio, WebStorm and Rider
+# Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
+
+# User-specific stuff
+
+# Generated files
+
+# Sensitive or high-churn files
+
+# Gradle
+
+# Gradle and Maven with auto-import
+# When using Gradle or Maven with auto-import, you should exclude module files,
+# since they will be recreated, and may cause churn.  Uncomment if using
+# auto-import.
+# .idea/artifacts
+# .idea/compiler.xml
+# .idea/jarRepositories.xml
+# .idea/modules.xml
+# .idea/*.iml
+# .idea/modules
+# *.iml
+# *.ipr
+
+# CMake
+
+# Mongo Explorer plugin
+
+# File-based project format
+
+# IntelliJ
+
+# mpeltonen/sbt-idea plugin
+
+# JIRA plugin
+
+# Cursive Clojure plugin
+
+# Crashlytics plugin (for Android Studio and IntelliJ)
+
+# Editor-based Rest Client
+
+# Android studio 3.1+ serialized cache file
+
 ### VisualStudio ###
 
 # User-specific files
@@ -655,4 +700,4 @@ buildNumber.properties
 
 # Ionide (cross platform F# VS Code tools) working folder
 
-# End of https://www.toptal.com/developers/gitignore/api/java,intellij,visualstudio,csharp,maven
+# End of https://www.toptal.com/developers/gitignore/api/intellij,java,maven,csharp,visualstudio,rider

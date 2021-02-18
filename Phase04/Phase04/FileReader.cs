@@ -4,7 +4,7 @@ namespace Phase04
 {
     public class FileReader : IFileReader
     {
-        public string getTextOfFile(string relatedPath)
+        public string GetTextOfFile(string relatedPath)
         {
             string path = Path.GetFullPath(relatedPath);
             var read = File.ReadAllText(path);
