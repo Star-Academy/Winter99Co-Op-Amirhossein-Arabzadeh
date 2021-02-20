@@ -6,8 +6,7 @@ namespace Phase04
     {
         public string GetTextOfFile(string relatedPath)
         {
-            string path = Path.GetFullPath(relatedPath);
-            var read = File.ReadAllText(path);
+            var read = File.ReadAllText(relatedPath);
             return read;
         }
     }

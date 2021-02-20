@@ -18,4 +18,10 @@
     <ProjectReference Include="..\Phase04\Phase04.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="ali.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

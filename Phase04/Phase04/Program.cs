@@ -11,8 +11,8 @@ namespace Phase04
         {
             var fileReader = new FileReader();
             var deserialize = new Deserialize(fileReader);
-            var students = deserialize.ReadStudents("../../../../Resources/Students.txt");
-            var scores = deserialize.ReadScores("../../../../Resources/Scores.txt");
+            var students = deserialize.ReadStudents("Students.txt");
+            var scores = deserialize.ReadScores("Scores.txt");
 
             var joinList = JoinScoresWithStudents(students, scores);
             var orderByResult = OrderByAverage(joinList);

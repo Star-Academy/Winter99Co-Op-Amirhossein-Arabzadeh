@@ -9,7 +9,7 @@ namespace XUnitTestProjectPhase04
         public void GetTextOfFile()
         {
             IFileReader fileReader = new FileReader();
-            Assert.Equal("[{Ali\r\nReza, Javad,8531646@#}]", fileReader.GetTextOfFile("../../../../Resources/ali.txt"));
+            Assert.Equal("[{Ali\r\nReza, Javad,8531646@#}]", fileReader.GetTextOfFile("ali.txt"));
         }
     }
 }
