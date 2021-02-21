@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using InvertedIndexLibrary;
 using NSubstitute;
@@ -35,12 +36,14 @@ namespace InvertedIndexTest
             };
 
 
-            var fileNamesExtractor = Substitute.For<IFileNamesExtractor>();
-            fileNamesExtractor.GetFilesRelatedPaths(Arg.Any<string>()).Returns(new string[2]);
-            var tokenizer = Substitute.For<ITokenizer>();
-            tokenizer.TokenizeFiles(Arg.Any<string[]>()).Returns(new List<IWordOccurence>());
-            var tokenizeController = Substitute.For<ITokenizeController>();
-            tokenizeController.TokenizeFilesTerms(Arg.Any<string>()).Returns(new List<IWordOccurence>
+            var fileNamesExtractor = new Mock<IFileNamesExtractor>();
+            fileNamesExtractor.Setup(
+                x => x.GetFilesRelatedPaths(It.IsAny<string>())).Returns(
+                It.IsAny<string[]>());
+            var tokenizer = new Mock<ITokenizer>();
+            tokenizer.Setup(x => x.TokenizeFiles(It.IsAny<IEnumerable<string>>())).Returns(It.IsAny<List<IWordOccurence>>());
+            var tokenizeController = new Mock<ITokenizeController>();
+            tokenizeController.Setup(x => x.TokenizeFilesTerms(It.IsAny<string>())).Returns(new List<IWordOccurence>
             {
                 new WordOccurence("ali", "1"),
                 new WordOccurence("ali", "2"),
@@ -51,8 +54,9 @@ namespace InvertedIndexTest
                 new WordOccurence("javad", "35"),
                 new WordOccurence("hossein", "35")
             });
-            IHashTableCreator hashTableCreator = new HashTableCreator(tokenizeController, fileNamesExtractor, tokenizer);
-            Assert.Equal(expectedTable, hashTableCreator.createHashTableOfWordsAsKeyAndContainingDocsAsValue(Arg.Any<string>()));
+            IHashTableCreator hashTableCreator = new HashTableCreator(tokenizeController.Object);
+            var actualTable = hashTableCreator.createHashTableOfWordsAsKeyAndContainingDocsAsValue(Arg.Any<string>());
+            Assert.Equal(expectedTable, actualTable);
         }
     }
 }

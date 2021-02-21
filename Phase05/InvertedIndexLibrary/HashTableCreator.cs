@@ -5,21 +5,27 @@ namespace InvertedIndexLibrary
     public class HashTableCreator : IHashTableCreator
     {
         private ITokenizeController _tokenizeController;
-        private IFileNamesExtractor _fileNamesExtractor;
-        private ITokenizer _tokenizer;
-
-        public HashTableCreator(ITokenizeController tokenizeController, IFileNamesExtractor fileNamesExtractor, ITokenizer tokenizer)
+        
+        public HashTableCreator(ITokenizeController tokenizeController)
         {
             _tokenizeController = tokenizeController;
-            _fileNamesExtractor = fileNamesExtractor;
-            _tokenizer = tokenizer;
+           
         }
 
-        public IDictionary<string, List<string>> createHashTableOfWordsAsKeyAndContainingDocsAsValue( string relatedPath)
+        public IDictionary<string, List<string>> createHashTableOfWordsAsKeyAndContainingDocsAsValue(string relatedPath)
         {
             List<IWordOccurence> tokens = _tokenizeController.TokenizeFilesTerms(relatedPath);
             IDictionary<string, List<string>> tableOfWordsAsKeyAndContainingDocsAsValue =
                 new Dictionary<string, List<string>>();
+            
+            IterateTokensToMergeTheIdenticalTokens(tokens, tableOfWordsAsKeyAndContainingDocsAsValue);
+
+            return tableOfWordsAsKeyAndContainingDocsAsValue;
+        }
+
+        private static void IterateTokensToMergeTheIdenticalTokens(List<IWordOccurence> tokens,
+            IDictionary<string, List<string>> tableOfWordsAsKeyAndContainingDocsAsValue)
+        {
             foreach (var wordOccurence in tokens)
             {
                 if (tableOfWordsAsKeyAndContainingDocsAsValue.ContainsKey(wordOccurence.Term))
@@ -30,10 +36,7 @@ namespace InvertedIndexLibrary
                 {
                     tableOfWordsAsKeyAndContainingDocsAsValue[wordOccurence.Term] = new List<string> {wordOccurence.Doc};
                 }
-
             }
-
-            return tableOfWordsAsKeyAndContainingDocsAsValue;
         }
     }
 }
