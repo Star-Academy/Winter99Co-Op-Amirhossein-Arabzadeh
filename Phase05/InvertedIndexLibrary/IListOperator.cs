@@ -5,8 +5,8 @@ namespace InvertedIndexLibrary
 {
     public interface IListOperator
     {
-        List<String> intersectUnsignedWordsContainingDocs(List<String> result, List<String> unSignedWords);
-        List<String> removeDocsWithoutPlusWords(List<String> plusSignedWords, List<String> result);
-        List<String> removeDocsContainingMinusSignedWords(List<String> minusSignedWords, List<String> result);
+        List<String> IntersectUnsignedWordsContainingDocs(List<String> result, List<String> unSignedWords);
+        List<String> RemoveDocsWithoutPlusWords(List<String> plusSignedWords, List<String> result);
+        List<String> RemoveDocsContainingMinusSignedWords(List<String> minusSignedWords, List<String> result);
     }
 }

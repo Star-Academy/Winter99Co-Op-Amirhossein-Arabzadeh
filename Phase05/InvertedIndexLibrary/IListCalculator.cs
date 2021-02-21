@@ -5,8 +5,8 @@ namespace InvertedIndexLibrary
 {
     public interface IListCalculator
     {
-        ISet<String> createSetOfDifferentModeledInputs(List<String> partition, Dictionary<String, List<String>> table);
-        List<String> minusResultSet(ISet<String> anotherSet, List<String> result);
-        List<String> andResultSet(ISet<String> docs, List<String> result);
+        ISet<String> CreateSetOfDifferentPartitions(List<String> partition, Dictionary<String, List<String>> table);
+        List<String> MinusResultSet(ISet<String> anotherSet, List<String> result);
+        List<String> AndResultSet(ISet<String> docs, List<String> result);
     }
 }
