@@ -20,11 +20,6 @@ namespace InvertedIndexTest
             return _instance;
         }
         
-
-        public IEnumerable<object[]> InvalidListAndDictionaryArguments { get; set; } 
-
-        public static IEnumerable<object[]> InvalidSetAndListArguments { get; set; } 
-
         private SampleDataProvider()
         {
             CreateSampleTable();
