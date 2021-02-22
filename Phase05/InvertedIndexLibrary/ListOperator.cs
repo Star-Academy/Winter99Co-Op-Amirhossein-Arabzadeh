@@ -68,7 +68,7 @@ namespace InvertedIndexLibrary
                    table.Count == 0;
         }
 
-        public List<string> GetRemovedDocsWithoutPlusWords(List<string> plusSignedWords, List<string> result, Dictionary<string, List<string>> table)
+        public List<string> GetDocsWithoutPlusWords(List<string> plusSignedWords, List<string> result, Dictionary<string, List<string>> table)
         {
             ValidateListsAndDictionary(plusSignedWords, result, table);
             ISet<string> docsContainingPlusSignedWords =
@@ -81,7 +81,7 @@ namespace InvertedIndexLibrary
             return tempResult;
         }
 
-        public List<string> GetRemovedDocsContainingMinusSignedWords(List<string> minusSignedWords, List<string> result, Dictionary<string, List<string>> table)
+        public List<string> GetRemovedDocsExcludingMinusSignedWords(List<string> minusSignedWords, List<string> result, Dictionary<string, List<string>> table)
         {
             ValidateListsAndDictionary(minusSignedWords, result, table);
             List<string> tempResult = new List<string>(result);

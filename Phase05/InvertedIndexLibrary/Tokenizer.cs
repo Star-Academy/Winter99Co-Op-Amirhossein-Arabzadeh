@@ -54,7 +54,7 @@ namespace InvertedIndexLibrary
             var terms = Regex.Split(line, @"\s");
             foreach (var term in terms)
             {
-                var token = new WordOccurence(term.ToLower(), Path.GetFileName(filePath));
+                var token = new WordOccurrence(term.ToLower(), Path.GetFileName(filePath));
                 tokens.Add(token);
             }
 

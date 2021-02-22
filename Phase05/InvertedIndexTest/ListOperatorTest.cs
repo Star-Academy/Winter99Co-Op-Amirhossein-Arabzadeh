@@ -126,7 +126,7 @@ namespace InvertedIndexTest
                 "2",
                 "3",
             };
-            Assert.Equal(expectedReturn, _listOperator.GetRemovedDocsWithoutPlusWords(plusSignedWords,
+            Assert.Equal(expectedReturn, _listOperator.GetDocsWithoutPlusWords(plusSignedWords,
                 inputResultList, _sampleDataProvider.Table));
         }
         public static IEnumerable<object[]> GetRemovedDocsWithoutPlusWordsArguments = new List<object[]>
@@ -145,7 +145,7 @@ namespace InvertedIndexTest
             GetRemovedDocsWithoutPlusWords_ShouldReturnArgumentException_WhenArgumentsAreInvalid(List<string>
                 plusSignedWords, List<string> inputResultList, Dictionary<string, List<string>> table)
         {
-            Action action = () => _listOperator.GetRemovedDocsWithoutPlusWords(plusSignedWords,inputResultList, table);
+            Action action = () => _listOperator.GetDocsWithoutPlusWords(plusSignedWords,inputResultList, table);
             Assert.Throws<ArgumentException>(action);
         }
         [Fact]
@@ -178,7 +178,7 @@ namespace InvertedIndexTest
                 "10",
                 "35",
             };
-            Assert.Equal(expectedReturn, _listOperator.GetRemovedDocsContainingMinusSignedWords(minusSignedWords,
+            Assert.Equal(expectedReturn, _listOperator.GetRemovedDocsExcludingMinusSignedWords(minusSignedWords,
                 inputResultList, _sampleDataProvider.Table));
         }
         public static IEnumerable<object[]> GetRemovedDocsContainingMinusSignedWordsArguments = new List<object[]>
@@ -197,7 +197,7 @@ namespace InvertedIndexTest
             GetRemovedDocsContainingMinusSignedWords_ShouldReturnArgumentException_WhenArgumentsAreInvalid(List<string>
                 minusSignedWords, List<string> inputResultList, Dictionary<string, List<string>> table)
         {
-            Action action = () => _listOperator.GetRemovedDocsContainingMinusSignedWords(minusSignedWords,inputResultList, table);
+            Action action = () => _listOperator.GetRemovedDocsExcludingMinusSignedWords(minusSignedWords,inputResultList, table);
             Assert.Throws<ArgumentException>(action);
         }
         

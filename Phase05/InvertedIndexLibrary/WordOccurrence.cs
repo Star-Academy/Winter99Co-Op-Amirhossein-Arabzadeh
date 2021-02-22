@@ -4,11 +4,11 @@ using System.Collections.Generic;
 
 namespace InvertedIndexLibrary
 {
-    public class WordOccurence : IWordOccurence
+    public class WordOccurrence : IWordOccurence
     {
         public static List<IWordOccurence> Tokens { get; set; }
 
-        public WordOccurence(string term, string doc)
+        public WordOccurrence(string term, string doc)
         {
             Tokens = new List<IWordOccurence>();
             Term = term;
@@ -19,7 +19,7 @@ namespace InvertedIndexLibrary
         public string? Doc { get; set; }
         public override bool Equals(object? obj)
         {
-            if (!(obj is WordOccurence))
+            if (!(obj is WordOccurrence))
             {
                 return false;
             }
@@ -28,7 +28,7 @@ namespace InvertedIndexLibrary
             {
                 return true;
             }
-            return Term != null && Doc != null && Term.Equals(((WordOccurence) obj).Term) && Doc.Equals(((WordOccurence) obj).Doc);
+            return Term != null && Doc != null && Term.Equals(((WordOccurrence) obj).Term) && Doc.Equals(((WordOccurrence) obj).Doc);
         }
     }
 }

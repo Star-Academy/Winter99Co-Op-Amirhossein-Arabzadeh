@@ -45,14 +45,14 @@ namespace InvertedIndexTest
             var tokenizeController = new Mock<ITokenizeController>();
             tokenizeController.Setup(x => x.TokenizeFilesTerms(It.IsAny<string>())).Returns(new List<IWordOccurence>
             {
-                new WordOccurence("ali", "1"),
-                new WordOccurence("ali", "2"),
-                new WordOccurence("ali", "3"),
-                new WordOccurence("reza", "1"),
-                new WordOccurence("javad", "1"),
-                new WordOccurence("javad", "10"),
-                new WordOccurence("javad", "35"),
-                new WordOccurence("hossein", "35")
+                new WordOccurrence("ali", "1"),
+                new WordOccurrence("ali", "2"),
+                new WordOccurrence("ali", "3"),
+                new WordOccurrence("reza", "1"),
+                new WordOccurrence("javad", "1"),
+                new WordOccurrence("javad", "10"),
+                new WordOccurrence("javad", "35"),
+                new WordOccurrence("hossein", "35")
             });
             IHashTableCreator hashTableCreator = new HashTableCreator(tokenizeController.Object);
             var actualTable = hashTableCreator.createHashTableOfWordsAsKeyAndContainingDocsAsValue(Arg.Any<string>());

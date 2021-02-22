@@ -27,12 +27,12 @@ namespace InvertedIndexTest
             
             var _tokens = new List<IWordOccurence>
             {
-                new WordOccurence("ali", "58043"),
-                new WordOccurence("hasan", "58043"),
-                new WordOccurence("hossein", "58043"),
-                new WordOccurence("ali", "58044"),
-                new WordOccurence("reza", "58044"),
-                new WordOccurence("javad", "58044")
+                new WordOccurrence("ali", "58043"),
+                new WordOccurrence("hasan", "58043"),
+                new WordOccurrence("hossein", "58043"),
+                new WordOccurrence("ali", "58044"),
+                new WordOccurrence("reza", "58044"),
+                new WordOccurrence("javad", "58044")
             };
             
             Assert.Equal(_tokens, _tokenizer.TokenizeFiles(filesRelativePaths));
