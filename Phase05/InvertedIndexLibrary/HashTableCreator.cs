@@ -15,17 +15,16 @@ namespace InvertedIndexLibrary
         public Dictionary<string, List<string>> createHashTableOfWordsAsKeyAndContainingDocsAsValue(string relatedPath)
         {
             List<IWordOccurence> tokens = _tokenizeController.TokenizeFilesTerms(relatedPath);
-            Dictionary<string, List<string>> tableOfWordsAsKeyAndContainingDocsAsValue =
-                new Dictionary<string, List<string>>();
-            
-            IterateTokensToMergeTheIdenticalTokens(tokens, tableOfWordsAsKeyAndContainingDocsAsValue);
+            Dictionary<string, List<string>> tableOfWordsAsKeyAndContainingDocsAsValue = 
+                IterateTokensToMergeTheIdenticalTokens(tokens);
 
             return tableOfWordsAsKeyAndContainingDocsAsValue;
         }
 
-        private static void IterateTokensToMergeTheIdenticalTokens(List<IWordOccurence> tokens,
-            Dictionary<string, List<string>> tableOfWordsAsKeyAndContainingDocsAsValue)
+        private Dictionary<string, List<string>> IterateTokensToMergeTheIdenticalTokens(List<IWordOccurence> tokens)
         {
+            Dictionary<string, List<string>> tableOfWordsAsKeyAndContainingDocsAsValue =
+                new Dictionary<string, List<string>>();
             foreach (var wordOccurence in tokens)
             {
                 if (tableOfWordsAsKeyAndContainingDocsAsValue.ContainsKey(wordOccurence.Term))
@@ -41,6 +40,8 @@ namespace InvertedIndexLibrary
                     tableOfWordsAsKeyAndContainingDocsAsValue[wordOccurence.Term] = new List<string> {wordOccurence.Doc};
                 }
             }
+
+            return tableOfWordsAsKeyAndContainingDocsAsValue;
         }
     }
 }

@@ -34,7 +34,7 @@ namespace InvertedIndexTest
         }
         public static IEnumerable<object[]> InitializeResultSetByFirstUnsignedInputWordDocsArguments = new List<object[]>
         {
-            new object[] {default(string), new Dictionary<string, List<string>>()},
+            new object[] {It.IsAny<string>(), new Dictionary<string, List<string>>()},
             new object[] {"", _sampleDataProvider.Table},
             new object[] {" ", _sampleDataProvider.Table},
             new object[] {"   ", _sampleDataProvider.Table},
@@ -76,12 +76,12 @@ namespace InvertedIndexTest
         }
         public static IEnumerable<object[]> GetIntersectedUnsignedWordsContainingDocsArguments = new List<object[]>
         {
-            new object[] {default(List<string>),default(List<string>), new Dictionary<string, List<string>>()},
-            new object[] {null,default(List<string>), default(Dictionary<string, List<string>>)},
-            new object[] {new List<string>(),default(List<string>), _sampleDataProvider.Table},
-            new object[] {default(List<string>),default(List<string>), null},
-            new object[] {default(List<string>),null, default(Dictionary<string, List<string>>)},
-            new object[] {default(List<string>),new List<string>(), default(Dictionary<string, List<string>>)},
+            new object[] {It.IsAny<List<string>>(),It.IsAny<List<string>>(), new Dictionary<string, List<string>>()},
+            new object[] {null,It.IsAny<List<string>>(), It.IsAny<Dictionary<string, List<string>>>()},
+            new object[] {new List<string>(),It.IsAny<List<string>>(), _sampleDataProvider.Table},
+            new object[] {It.IsAny<List<string>>(),It.IsAny<List<string>>(), null},
+            new object[] {It.IsAny<List<string>>(),null, It.IsAny<Dictionary<string, List<string>>>()},
+            new object[] {It.IsAny<List<string>>(),new List<string>(), It.IsAny<Dictionary<string, List<string>>>()},
         };
 
         [Theory]
@@ -131,12 +131,12 @@ namespace InvertedIndexTest
         }
         public static IEnumerable<object[]> GetRemovedDocsWithoutPlusWordsArguments = new List<object[]>
         {
-            new object[] {default(List<string>),default(List<string>), new Dictionary<string, List<string>>()},
-            new object[] {null,default(List<string>), default(Dictionary<string, List<string>>)},
-            new object[] {new List<string>(),default(List<string>), _sampleDataProvider.Table},
-            new object[] {default(List<string>),default(List<string>), null},
-            new object[] {default(List<string>),null, default(Dictionary<string, List<string>>)},
-            new object[] {default(List<string>),new List<string>(), default(Dictionary<string, List<string>>)},
+            new object[] {It.IsAny<List<string>>(),It.IsAny<List<string>>(), new Dictionary<string, List<string>>()},
+            new object[] {null,It.IsAny<List<string>>(), It.IsAny<Dictionary<string, List<string>>>()},
+            new object[] {new List<string>(),It.IsAny<List<string>>(), _sampleDataProvider.Table},
+            new object[] {It.IsAny<List<string>>(),It.IsAny<List<string>>(), null},
+            new object[] {It.IsAny<List<string>>(),null, It.IsAny<Dictionary<string, List<string>>>()},
+            new object[] {It.IsAny<List<string>>(),new List<string>(), It.IsAny<Dictionary<string, List<string>>>()},
         };
         
         [Theory]
@@ -183,12 +183,12 @@ namespace InvertedIndexTest
         }
         public static IEnumerable<object[]> GetRemovedDocsContainingMinusSignedWordsArguments = new List<object[]>
         {
-            new object[] {default(List<string>),default(List<string>), new Dictionary<string, List<string>>()},
-            new object[] {null,default(List<string>), default(Dictionary<string, List<string>>)},
-            new object[] {new List<string>(),default(List<string>), _sampleDataProvider.Table},
-            new object[] {default(List<string>),default(List<string>), null},
-            new object[] {default(List<string>),null, default(Dictionary<string, List<string>>)},
-            new object[] {default(List<string>),new List<string>(), default(Dictionary<string, List<string>>)},
+            new object[] {It.IsAny<List<string>>(),It.IsAny<List<string>>(), new Dictionary<string, List<string>>()},
+            new object[] {null,It.IsAny<List<string>>(), It.IsAny<Dictionary<string, List<string>>>()},
+            new object[] {new List<string>(),It.IsAny<List<string>>(), _sampleDataProvider.Table},
+            new object[] {It.IsAny<List<string>>(),It.IsAny<List<string>>(), null},
+            new object[] {It.IsAny<List<string>>(),null, It.IsAny<Dictionary<string, List<string>>>()},
+            new object[] {It.IsAny<List<string>>(),new List<string>(), It.IsAny<Dictionary<string, List<string>>>()},
         };
         
         [Theory]

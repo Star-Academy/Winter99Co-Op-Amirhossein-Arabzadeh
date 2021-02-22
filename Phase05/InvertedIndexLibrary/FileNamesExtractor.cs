@@ -19,12 +19,17 @@ namespace InvertedIndexLibrary
             }
         }
 
-        private static void CheckIfPathIsWhiteSpaceOrNull(string folderRelativePath)
+        private void CheckIfPathIsWhiteSpaceOrNull(string folderRelativePath)
         {
-            if (folderRelativePath is null || folderRelativePath.Trim().Equals(""))
+            if (IsWhiteSpaceOrNull(folderRelativePath))
             {
                 throw new ArgumentNullException("directory path is entered white space");
             }
+        }
+
+        private bool IsWhiteSpaceOrNull(string folderRelativePath)
+        {
+            return folderRelativePath is null || folderRelativePath.Trim().Equals("");
         }
     }
 }
