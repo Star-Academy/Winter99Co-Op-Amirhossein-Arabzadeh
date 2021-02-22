@@ -12,10 +12,10 @@ namespace InvertedIndexLibrary
            
         }
 
-        public IDictionary<string, List<string>> createHashTableOfWordsAsKeyAndContainingDocsAsValue(string relatedPath)
+        public Dictionary<string, List<string>> createHashTableOfWordsAsKeyAndContainingDocsAsValue(string relatedPath)
         {
             List<IWordOccurence> tokens = _tokenizeController.TokenizeFilesTerms(relatedPath);
-            IDictionary<string, List<string>> tableOfWordsAsKeyAndContainingDocsAsValue =
+            Dictionary<string, List<string>> tableOfWordsAsKeyAndContainingDocsAsValue =
                 new Dictionary<string, List<string>>();
             
             IterateTokensToMergeTheIdenticalTokens(tokens, tableOfWordsAsKeyAndContainingDocsAsValue);
@@ -24,13 +24,17 @@ namespace InvertedIndexLibrary
         }
 
         private static void IterateTokensToMergeTheIdenticalTokens(List<IWordOccurence> tokens,
-            IDictionary<string, List<string>> tableOfWordsAsKeyAndContainingDocsAsValue)
+            Dictionary<string, List<string>> tableOfWordsAsKeyAndContainingDocsAsValue)
         {
             foreach (var wordOccurence in tokens)
             {
                 if (tableOfWordsAsKeyAndContainingDocsAsValue.ContainsKey(wordOccurence.Term))
                 {
-                    tableOfWordsAsKeyAndContainingDocsAsValue[wordOccurence.Term].Add(wordOccurence.Doc);
+                    if (!tableOfWordsAsKeyAndContainingDocsAsValue[wordOccurence.Term].Contains(wordOccurence.Doc))
+                    {
+                        tableOfWordsAsKeyAndContainingDocsAsValue[wordOccurence.Term].Add(wordOccurence.Doc);    
+                    }
+                    
                 }
                 else
                 {

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace InvertedIndexLibrary
 {
@@ -10,7 +11,10 @@ namespace InvertedIndexLibrary
             string input = inputGetter.GetInput();
             ISearchController searchController = new SearchController();
             List<string> docsSearchingResultSet = searchController.SearchDocs(input);
-
+            foreach (var doc in docsSearchingResultSet)
+            {
+                Console.WriteLine(doc);
+            }
         }
     }
 }

@@ -46,9 +46,12 @@ namespace InvertedIndexTest
             tokenizeController.Setup(x => x.TokenizeFilesTerms(It.IsAny<string>())).Returns(new List<IWordOccurence>
             {
                 new WordOccurrence("ali", "1"),
+                new WordOccurrence("ali", "1"),
                 new WordOccurrence("ali", "2"),
                 new WordOccurrence("ali", "3"),
                 new WordOccurrence("reza", "1"),
+                new WordOccurrence("javad", "1"),
+                new WordOccurrence("javad", "1"),
                 new WordOccurrence("javad", "1"),
                 new WordOccurrence("javad", "10"),
                 new WordOccurrence("javad", "35"),

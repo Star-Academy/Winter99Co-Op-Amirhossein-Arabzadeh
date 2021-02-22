@@ -7,19 +7,19 @@ namespace InvertedIndexLibrary
 {
     public class Partitioner : IPartitioner
     {
-        public void PartitionInputs(string searchingTerm, List<string> plusSignedInputWords, List<string> minusSignedInputWords,
-            List<string> unSignedInputWords)
+        public List<string> GetWantedSignedWords(string searchingTerm, string sign)
         {
             List<string> searchingTerms = (Regex.Split(searchingTerm, "\\s")).ToList();
-            plusSignedInputWords = new List<string>(from term in searchingTerms
-                where term.StartsWith("+")
+            return new List<string>(from term in searchingTerms
+                where term.StartsWith(sign)
                 select term.Substring(1).ToLower());
-            minusSignedInputWords = new List<string>(from term in searchingTerms
-                where term.StartsWith("-")
-                select term.Substring(1).ToLower());
-            unSignedInputWords = new List<string>(from term in searchingTerms
-                where !plusSignedInputWords.Contains("+" + term) && !minusSignedInputWords.Contains("-" + term)
-                select term);
+        }
+        public List<string> GetUnSignedWords(string searchingTerm)
+        {
+            List<string> searchingTerms = (Regex.Split(searchingTerm, "\\s")).ToList();
+            return new List<string>(from term in searchingTerms
+                where !term.StartsWith("+") && !term.StartsWith("-")
+                select term.ToLower());
         }
     }
 }

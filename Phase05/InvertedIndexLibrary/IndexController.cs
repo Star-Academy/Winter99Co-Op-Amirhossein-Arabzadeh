@@ -14,13 +14,12 @@ namespace InvertedIndexLibrary
 
         public void ProcessDocs(string folderRelatedPath)
         {
-            IDictionary<string, List<string>> tableOfWordsAsKeyAndContainingDocsAsValue =
-                _hashTableCreator.createHashTableOfWordsAsKeyAndContainingDocsAsValue(folderRelatedPath);
+            Table = _hashTableCreator.createHashTableOfWordsAsKeyAndContainingDocsAsValue(folderRelatedPath);
         }
 
         public Dictionary<string, List<string>> GetInvertedIndexTable()
         {
-            return Table;
+            return new Dictionary<string, List<string>>(Table);
         }
     }
 }

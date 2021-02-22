@@ -5,6 +5,7 @@ namespace InvertedIndexLibrary
 {
     public interface IPartitioner
     {
-        void PartitionInputs(string searchingTerm, List<string> plusSignedInputWords, List<string> minusSignedInputWords, List<string> unSignedInputWords);
+        public List<string> GetWantedSignedWords(string searchingTerm, string sign);
+        public List<string> GetUnSignedWords(string searchingTerm);
     }
 }
