@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace InvertedIndexLibrary
 {
@@ -6,7 +8,16 @@ namespace InvertedIndexLibrary
     {
         public ISet<string> CreateSetOfDifferentPartitions(List<string> partition, Dictionary<string, List<string>> table)
         {
+            ValidatePartitionAndTable(partition, table);
             var setOfContainingDocsOfPartitionTerms = new HashSet<string>();
+            IteratePartitionToTakeContainingDocsFromTable(partition, table, setOfContainingDocsOfPartitionTerms);
+
+            return setOfContainingDocsOfPartitionTerms;
+        }
+
+        private void IteratePartitionToTakeContainingDocsFromTable(List<string> partition, Dictionary<string, List<string>> table,
+            HashSet<string> setOfContainingDocsOfPartitionTerms)
+        {
             foreach (var term in partition)
             {
                 if (!table.ContainsKey(term))
@@ -16,18 +27,50 @@ namespace InvertedIndexLibrary
 
                 setOfContainingDocsOfPartitionTerms.UnionWith(table[term]);
             }
-
-            return setOfContainingDocsOfPartitionTerms;
         }
 
-        public List<string> MinusResultSet(ISet<string> anotherSet, List<string> result)
+        private void ValidatePartitionAndTable(List<string> partition, Dictionary<string, List<string>> table)
         {
-            throw new System.NotImplementedException();
+            if (IsListOrTableNullOrEmpty(partition, table))
+            {
+                throw new ArgumentException("One or more of the arguments are empty or null");
+            }
         }
 
-        public List<string> AndResultSet(ISet<string> docs, List<string> result)
+        private bool IsListOrTableNullOrEmpty(List<string> partition, Dictionary<string, List<string>> table)
         {
-            throw new System.NotImplementedException();
+            return partition == null || table == null || partition.Count == 0 || table.Count == 0;
+        }
+
+        public List<string> MinusElementsOfSetFromList(ISet<string> set, List<string> list)
+        {
+            ValidateSetAndList(set, list);
+            List<string> returnList = (from term in list
+                where !set.Contains(term)
+                select term).ToList();
+            return returnList;
+        }
+
+        private void ValidateSetAndList(ISet<string> set, List<string> list)
+        {
+            if (IsSetOrListNullOrEmpty(set, list))
+            {
+                throw new ArgumentException("Set or List is either null or empty");
+            }
+        }
+
+        private bool IsSetOrListNullOrEmpty(ISet<string> set, List<string> list)
+        {
+            return set is null || list is null || set.Count == 0 || list.Count == 0;
+        }
+
+        public List<string> AndListWithSet(ISet<string> set, List<string> list)
+        {
+            ValidateSetAndList(set, list);
+            List<string> returnList = (from term in list
+                where set.Contains(term)
+                select term).ToList();
+            return returnList;
         }
     }
 }
