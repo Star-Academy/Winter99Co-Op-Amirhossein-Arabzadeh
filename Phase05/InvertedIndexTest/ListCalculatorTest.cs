@@ -9,73 +9,23 @@ namespace InvertedIndexTest
 {
     public class ListCalculatorTest
     {
-        private static Dictionary<string, List<string>> _table;
-        private static List<string> _partition;
-        private static ISet<string> _expectedSet;
         private static IListCalculator _listCalculator;
+        
+        private static SampleDataProvider _sampleDataProvider = SampleDataProvider.GetInstance();
 
         public ListCalculatorTest()
         {
             _listCalculator = new ListCalculator();
-            CreateSampleTable();
-            CreateSamplePartition();
-            CreateSampleSet();
-        }
-
-        private void CreateSampleSet()
-        {
-            _expectedSet = new HashSet<string>
-            {
-                "1", "2", "3", "35"
-            };
-        }
-
-        private static void CreateSamplePartition()
-        {
-            _partition = new List<string>
-            {
-                "ali", "hasan", "hossein"
-            };
-        }
-
-        private void CreateSampleTable()
-        {
-            _table = new Dictionary<string, List<string>>();
-            _table["ali"] = new List<string>
-            {
-                "1", "2", "3"
-            };
-            _table["reza"] = new List<string>
-            {
-                "1"
-            };
-            _table["javad"] = new List<string>
-            {
-                "1", "10", "35"
-            };
-            _table["hossein"] = new List<string>
-            {
-                "35"
-            };
         }
 
         [Fact]
         public void CreateSetOfDifferentPartitions_ShouldReturnSetOfDocsContainingPartitionList_WhenParametersAreValid()
         {
-            Assert.Equal(_expectedSet, _listCalculator.CreateSetOfDifferentPartitions(_partition, _table));
+            Assert.Equal(_sampleDataProvider.ExpectedSet, _listCalculator.CreateSetOfDifferentPartitions(_sampleDataProvider.Partition, _sampleDataProvider.Table));
         }
 
-        public static IEnumerable<object[]> InvalidCreateSetOfDifferentPartitionsArguments = new List<object[]>
-        {
-            new object[] {null, null},
-            new object[] {new List<string>(), null},
-            new object[] {new List<string>(), _table},
-            new object[] {_partition, null},
-            new object[] {_partition, new Dictionary<string, List<string>>()},
-        };
-
         [Theory]
-        [MemberData(nameof(InvalidCreateSetOfDifferentPartitionsArguments))]
+        [MemberData(nameof(InvalidListAndDictionaryArguments))]
         public void
             CreateSetOfDifferentPartitions_ShouldThrowArgumentException_WhenParametersAreInvalid(
                 List<string> partition, Dictionary<string, List<string>> table)
@@ -104,15 +54,7 @@ namespace InvertedIndexTest
             };
             Assert.Equal(expectedList, _listCalculator.MinusElementsOfSetFromList(sampleInputSet, sampleInputList));
         }
-        public static IEnumerable<object[]> InvalidSetAndListArguments = new List<object[]>
-        {
-            new object[] {null, null},
-            new object[] {new HashSet<string>(), null},
-            new object[] {new HashSet<string>(), _partition},
-            new object[] {_expectedSet, null},
-            new object[] {_expectedSet, new List<string>()},
-        };
-        
+
         [Theory]
         [MemberData(nameof(InvalidSetAndListArguments))]
         public void
@@ -151,5 +93,24 @@ namespace InvertedIndexTest
             Assert.Throws<ArgumentException>(action);
         }
 
+
+        public static IEnumerable<Object[]> InvalidSetAndListArguments = new List<object[]>
+        {
+            new object[] {null, null},
+            new object[] {new HashSet<string>(), null},
+            new object[] {new HashSet<string>(), _sampleDataProvider.Partition},
+            new object[] {_sampleDataProvider.ExpectedSet, null},
+            new object[] {_sampleDataProvider.ExpectedSet, new List<string>()},
+        };
+
+
+        public static IEnumerable<Object[]> InvalidListAndDictionaryArguments = new List<object[]>
+        {
+            new object[] {null, null},
+            new object[] {new List<string>(), null},
+            new object[] {new List<string>(), _sampleDataProvider.Table},
+            new object[] {_sampleDataProvider.Partition, null},
+            new object[] {_sampleDataProvider.Partition, new Dictionary<string, List<string>>()},
+        };
     }
 }
