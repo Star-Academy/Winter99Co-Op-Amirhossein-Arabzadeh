@@ -34,38 +34,77 @@ namespace InvertedIndexLibrary
 
         public List<string> SearchDocs(string input)
         {
-            _unsignedWords = _partitioner.GetUnSignedWords(input);
-            _minussignedWords = _partitioner.GetWantedSignedWords(input, "-");
-            _plusignedWords = _partitioner.GetWantedSignedWords(input, "+");
+            PartitionInputWords(input);
             List<string> docsSearchingResultSet = new List<string>();
             var tableOfWordsAsKeyAndContainingDocsAsValue = _indexController.GetInvertedIndexTable();
-            if (_unsignedWords.Count > 0)
-            {
-                docsSearchingResultSet =
-                    _listOperator.InitializeResultSetByFirstUnsignedInputWordDocs(_unsignedWords.ElementAt(0),
-                        tableOfWordsAsKeyAndContainingDocsAsValue);
-                if (docsSearchingResultSet.Count > 0)
-                {
-                    docsSearchingResultSet = _listOperator.GetIntersectedUnsignedWordsContainingDocs(_unsignedWords,
-                        docsSearchingResultSet, tableOfWordsAsKeyAndContainingDocsAsValue);    
-                }
-                
-            }
+            docsSearchingResultSet = GetIntersectedUnsignedWordsDocsSet(docsSearchingResultSet, tableOfWordsAsKeyAndContainingDocsAsValue);
 
-            if (_plusignedWords.Count > 0 && docsSearchingResultSet.Count > 0)
-            {
-                docsSearchingResultSet = _listOperator.GetDocsWithoutPlusWords(_plusignedWords,
-                    docsSearchingResultSet, tableOfWordsAsKeyAndContainingDocsAsValue);    
-            }
+            docsSearchingResultSet = GetIntersectedResultSetWithAllPlusSignedWordsDocs(docsSearchingResultSet, tableOfWordsAsKeyAndContainingDocsAsValue);
 
-            if (_minussignedWords.Count > 0 && docsSearchingResultSet.Count > 0)
+            docsSearchingResultSet = GetResultSetWithoutMinusSignedWords(docsSearchingResultSet, tableOfWordsAsKeyAndContainingDocsAsValue);
+            
+            return docsSearchingResultSet;
+        }
+
+        private List<string> GetResultSetWithoutMinusSignedWords(List<string> docsSearchingResultSet,
+            Dictionary<string, List<string>> tableOfWordsAsKeyAndContainingDocsAsValue)
+        {
+            if (IsResultSetAndMinusSignedWordsNotEmpty(docsSearchingResultSet))
             {
                 docsSearchingResultSet = _listOperator.GetRemovedDocsExcludingMinusSignedWords(_minussignedWords,
                     docsSearchingResultSet, tableOfWordsAsKeyAndContainingDocsAsValue);
             }
-            
+
+            return docsSearchingResultSet;
+        }
+
+        private bool IsResultSetAndMinusSignedWordsNotEmpty(List<string> docsSearchingResultSet)
+        {
+            return _minussignedWords.Count > 0 && docsSearchingResultSet.Count > 0;
+        }
+
+        private List<string> GetIntersectedResultSetWithAllPlusSignedWordsDocs(List<string> docsSearchingResultSet,
+            Dictionary<string, List<string>> tableOfWordsAsKeyAndContainingDocsAsValue)
+        {
+            if (IsResultSetAndPlusSignedWordsNotEmpty(docsSearchingResultSet))
+            {
+                docsSearchingResultSet = _listOperator.GetDocsWithoutPlusWords(_plusignedWords,
+                    docsSearchingResultSet, tableOfWordsAsKeyAndContainingDocsAsValue);
+            }
+
+            return docsSearchingResultSet;
+        }
+
+        private bool IsResultSetAndPlusSignedWordsNotEmpty(List<string> docsSearchingResultSet)
+        {
+            return _plusignedWords.Count > 0 && docsSearchingResultSet.Count > 0;
+        }
+
+        private List<string> GetIntersectedUnsignedWordsDocsSet(List<string> docsSearchingResultSet,
+            Dictionary<string, List<string>> tableOfWordsAsKeyAndContainingDocsAsValue)
+        {
+            if (_unsignedWords.Count <= 0)
+            {
+                return docsSearchingResultSet;
+            }
+
+            docsSearchingResultSet =
+                _listOperator.InitializeResultSetByFirstUnsignedInputWordDocs(_unsignedWords.ElementAt(0),
+                    tableOfWordsAsKeyAndContainingDocsAsValue);
+            if (docsSearchingResultSet.Count > 0)
+            {
+                docsSearchingResultSet = _listOperator.GetIntersectedUnsignedWordsContainingDocs(_unsignedWords,
+                    docsSearchingResultSet, tableOfWordsAsKeyAndContainingDocsAsValue);
+            }
             
             return docsSearchingResultSet;
+        }
+
+        private void PartitionInputWords(string input)
+        {
+            _unsignedWords = _partitioner.GetUnSignedWords(input);
+            _minussignedWords = _partitioner.GetWantedSignedWords(input, "-");
+            _plusignedWords = _partitioner.GetWantedSignedWords(input, "+");
         }
     }
 }
