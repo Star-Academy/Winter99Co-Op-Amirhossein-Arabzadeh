@@ -2,8 +2,6 @@ name: .NET
 
 on:
   push:
-    branches: [ main ]
-  push:
     branches: [ Phase05 ]
   pull_request:
     branches: [ main ]
