@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.Linq;
 
 namespace InvertedIndexLibrary
 {
@@ -11,7 +12,8 @@ namespace InvertedIndexLibrary
             CheckIfPathIsWhiteSpaceOrNull(folderRelativePath);
             try
             {
-                return Directory.GetFiles(folderRelativePath);
+                var filesPaths = Directory.GetFiles(folderRelativePath);
+                return filesPaths;
             }
             catch (Exception)
             {

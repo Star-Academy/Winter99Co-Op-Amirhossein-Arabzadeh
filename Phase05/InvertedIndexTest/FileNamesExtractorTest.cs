@@ -19,8 +19,8 @@ namespace InvertedIndexTest
         {
             const string relativeDirectoryPath = "../../../../Resources/SmallEnglishData";
             string[] fileNames = {"58043", "58044"};
-            var filesRelativePaths = fileNames.Select(s => relativeDirectoryPath+ "\\" + s );
-            Assert.Equal(filesRelativePaths, _folderFileNamesExtractor.GetFilesRelatedPaths(relativeDirectoryPath));
+            Assert.Equal(fileNames, from fileName in _folderFileNamesExtractor.GetFilesRelatedPaths(relativeDirectoryPath)
+                select fileName.Substring(39));
         }
 
         [Fact]
