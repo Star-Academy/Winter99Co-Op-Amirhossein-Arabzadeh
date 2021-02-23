@@ -6,16 +6,16 @@ namespace InvertedIndexLibrary
 {
     public class ListCalculator : IListCalculator
     {
-        public ISet<string> CreateSetOfDifferentPartitions(List<string> partition, Dictionary<string, List<string>> table)
+        public ISet<string> GetDocsOfWordsList(List<string> words, Dictionary<string, List<string>> table)
         {
-            ValidatePartitionAndTable(partition, table);
-            var setOfContainingDocsOfPartitionTerms = new HashSet<string>();
-            IteratePartitionToTakeContainingDocsFromTable(partition, table, setOfContainingDocsOfPartitionTerms);
+            ValidateListAndDictionary(words, table);
+            var setOfContainingDocsOfWords = new HashSet<string>();
+            IterateWordsListToTakeContainingDocsFromTable(words, table, setOfContainingDocsOfWords);
 
-            return setOfContainingDocsOfPartitionTerms;
+            return setOfContainingDocsOfWords;
         }
 
-        private void IteratePartitionToTakeContainingDocsFromTable(List<string> partition, Dictionary<string, List<string>> table,
+        private void IterateWordsListToTakeContainingDocsFromTable(List<string> partition, Dictionary<string, List<string>> table,
             HashSet<string> setOfContainingDocsOfPartitionTerms)
         {
             foreach (var term in partition)
@@ -29,7 +29,7 @@ namespace InvertedIndexLibrary
             }
         }
 
-        private void ValidatePartitionAndTable(List<string> partition, Dictionary<string, List<string>> table)
+        private void ValidateListAndDictionary(List<string> partition, Dictionary<string, List<string>> table)
         {
             if (IsListOrTableNullOrEmpty(partition, table))
             {

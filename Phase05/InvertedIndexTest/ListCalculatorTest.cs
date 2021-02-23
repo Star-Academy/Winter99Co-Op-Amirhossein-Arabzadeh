@@ -21,7 +21,7 @@ namespace InvertedIndexTest
         [Fact]
         public void CreateSetOfDifferentPartitions_ShouldReturnSetOfDocsContainingPartitionList_WhenParametersAreValid()
         {
-            Assert.Equal(_sampleDataProvider.ExpectedSet, _listCalculator.CreateSetOfDifferentPartitions(_sampleDataProvider.Partition, _sampleDataProvider.Table));
+            Assert.Equal(_sampleDataProvider.ExpectedSet, _listCalculator.GetDocsOfWordsList(_sampleDataProvider.Partition, _sampleDataProvider.Table));
         }
 
         [Theory]
@@ -30,7 +30,7 @@ namespace InvertedIndexTest
             CreateSetOfDifferentPartitions_ShouldThrowArgumentException_WhenParametersAreInvalid(
                 List<string> partition, Dictionary<string, List<string>> table)
         {
-            Action action =  () => _listCalculator.CreateSetOfDifferentPartitions(partition, table);
+            Action action =  () => _listCalculator.GetDocsOfWordsList(partition, table);
             Assert.Throws<ArgumentException>(action);
         }
 

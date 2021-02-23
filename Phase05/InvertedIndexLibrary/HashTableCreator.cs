@@ -29,9 +29,10 @@ namespace InvertedIndexLibrary
             {
                 if (tableOfWordsAsKeyAndContainingDocsAsValue.ContainsKey(wordOccurence.Term))
                 {
-                    if (!tableOfWordsAsKeyAndContainingDocsAsValue[wordOccurence.Term].Contains(wordOccurence.Doc))
+                    var termDocsList = tableOfWordsAsKeyAndContainingDocsAsValue[wordOccurence.Term];
+                    if (!termDocsList.Contains(wordOccurence.Doc))
                     {
-                        tableOfWordsAsKeyAndContainingDocsAsValue[wordOccurence.Term].Add(wordOccurence.Doc);    
+                        termDocsList.Add(wordOccurence.Doc);    
                     }
                     
                 }

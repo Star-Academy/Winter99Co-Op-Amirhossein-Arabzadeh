@@ -105,7 +105,7 @@ namespace InvertedIndexTest
                 "2",
                 "3",
             };
-            _listCalculator.Setup(x => x.CreateSetOfDifferentPartitions(
+            _listCalculator.Setup(x => x.GetDocsOfWordsList(
                 It.IsAny<List<string>>(), It.IsAny<Dictionary<string, List<string>>>())).Returns(plusSignedWordsDocs);
             List<string> plusSignedWords = new List<string>
             {
@@ -158,7 +158,7 @@ namespace InvertedIndexTest
                 "2",
                 "3",
             };
-            _listCalculator.Setup(x => x.CreateSetOfDifferentPartitions(
+            _listCalculator.Setup(x => x.GetDocsOfWordsList(
                 It.IsAny<List<string>>(), It.IsAny<Dictionary<string, List<string>>>())).Returns(plusSignedWordsDocs);
             List<string> minusSignedWords = new List<string>
             {

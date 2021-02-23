@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 
 namespace InvertedIndexLibrary
 {
     public class FileNamesExtractor : IFileNamesExtractor
     {
-        public string[] GetFilesRelatedPaths(string folderRelativePath)
+        public string[] GetFilesRelatedPaths([NotNull] string folderRelativePath)
         {
             CheckIfPathIsWhiteSpaceOrNull(folderRelativePath);
             try

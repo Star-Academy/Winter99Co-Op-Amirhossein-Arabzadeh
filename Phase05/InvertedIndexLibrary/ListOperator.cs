@@ -15,10 +15,7 @@ namespace InvertedIndexLibrary
 
         public List<string> InitializeResultSetByFirstUnsignedInputWordDocs(string unsignedWord, Dictionary<string, List<string>> table)
         {
-            if (unsignedWord is null || table is null || unsignedWord.Trim().Equals("") || table.Count == 0)
-            {
-                throw new ArgumentException("unsignedWord or table are either null or empty");
-            }
+            ValidateStringAndDictionary(unsignedWord, table);
             List<string> setOfDocsContainingUnsignedWord = new List<string>();
             if (table.ContainsKey(unsignedWord))
             {
@@ -28,18 +25,29 @@ namespace InvertedIndexLibrary
             return setOfDocsContainingUnsignedWord;
         }
 
+        private void ValidateStringAndDictionary(string unsignedWord, Dictionary<string, List<string>> table)
+        {
+            if (IsStringOrDictionaryNullOrEmpty(unsignedWord, table))
+            {
+                throw new ArgumentException("unsignedWord or table are either null or empty");
+            }
+        }
+
+        private bool IsStringOrDictionaryNullOrEmpty(string unsignedWord, Dictionary<string, List<string>> table)
+        {
+            return unsignedWord is null || table is null || unsignedWord.Trim().Equals("") || table.Count == 0;
+        }
+
         public List<string> GetIntersectedUnsignedWordsContainingDocs(List<string> unSignedWords, List<string> result, Dictionary<string, List<string>> table)
         {
             ValidateListsAndDictionary(unSignedWords, result, table);
-            List<string> tempResult = new List<string>(result);
-            tempResult = IterateUnsignedWordsToIntersectDocsList(unSignedWords, table, tempResult);
-
+            List<string> tempResult = IterateUnsignedWordsToIntersectDocsList(unSignedWords, table, result);
             return tempResult;
-
         }
 
-        private List<string> IterateUnsignedWordsToIntersectDocsList(List<string> unSignedWords, Dictionary<string, List<string>> table, List<string> tempResult)
+        private List<string> IterateUnsignedWordsToIntersectDocsList(List<string> unSignedWords, Dictionary<string, List<string>> table, List<string> result)
         {
+            List<string> tempResult = new List<string>(result);
             foreach (string unSignedWord in unSignedWords)
             {
                 if (table.ContainsKey(unSignedWord))
@@ -72,7 +80,7 @@ namespace InvertedIndexLibrary
         {
             ValidateListsAndDictionary(plusSignedWords, result, table);
             ISet<string> docsContainingPlusSignedWords =
-                _listCalculator.CreateSetOfDifferentPartitions(plusSignedWords, table);
+                _listCalculator.GetDocsOfWordsList(plusSignedWords, table);
 
             List<string> tempResult = new List<string>(result);
             tempResult = (from doc in result
@@ -86,7 +94,7 @@ namespace InvertedIndexLibrary
             ValidateListsAndDictionary(minusSignedWords, result, table);
             List<string> tempResult = new List<string>(result);
             ISet<string> minusSignedWordsContainingDocs =
-                _listCalculator.CreateSetOfDifferentPartitions(minusSignedWords, table);
+                _listCalculator.GetDocsOfWordsList(minusSignedWords, table);
             tempResult = (from doc in tempResult
                 where !(minusSignedWordsContainingDocs.Contains(doc))
                 select doc).ToList();
