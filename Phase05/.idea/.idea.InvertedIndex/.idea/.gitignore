@@ -1,4 +1,4 @@
-*.xml
+﻿*.xml
 # Created by https://www.toptal.com/developers/gitignore/api/java,maven,intellij,csharp,rider,visualstudio,visualstudiocode
 # Edit at https://www.toptal.com/developers/gitignore?templates=java,maven,intellij,csharp,rider,visualstudio,visualstudiocode
 .idea/
@@ -35,7 +35,7 @@ bld/
 [Oo]bj/
 [Ll]og/
 [Ll]ogs/
-
+.idea/
 # Visual Studio 2015/2017 cache/options directory
 .vs/
 # Uncomment if you have tasks that create the project's static files in wwwroot

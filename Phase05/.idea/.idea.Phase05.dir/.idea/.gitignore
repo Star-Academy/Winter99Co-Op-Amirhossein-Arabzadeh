@@ -1,4 +1,4 @@
-*.xml
+﻿*.xml
 # Created by https://www.toptal.com/developers/gitignore/api/java,maven,intellij,csharp,rider,visualstudio,visualstudiocode
 # Edit at https://www.toptal.com/developers/gitignore?templates=java,maven,intellij,csharp,rider,visualstudio,visualstudiocode
 .idea/
