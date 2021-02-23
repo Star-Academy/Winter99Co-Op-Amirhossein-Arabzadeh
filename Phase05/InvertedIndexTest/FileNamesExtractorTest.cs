@@ -9,14 +9,18 @@ namespace InvertedIndexTest
 {
     public class FileNamesExtractorTest
     {
+        private IFileNamesExtractor folderFileNamesExtractor;
+        public FileNamesExtractorTest()
+        { 
+            folderFileNamesExtractor = new FileNamesExtractor();
+        }
+
         [Fact]
         public void GetFilesNames_ShouldGetFilePathsInDirectory_WhenInputIsValid()
         {
             const string relativeDirectoryPath = "../../../../Resources/SmallEnglishData";
-            
             string[] fileNames = {"58043", "58044"};
             var filesRelativePaths = fileNames.Select(s => relativeDirectoryPath+ "\\" + s );
-            IFileNamesExtractor folderFileNamesExtractor = new FileNamesExtractor();
             Assert.Equal(filesRelativePaths, folderFileNamesExtractor.GetFilesRelatedPaths(relativeDirectoryPath));
         }
 
@@ -25,12 +29,8 @@ namespace InvertedIndexTest
         {
             const string relativeDirectoryPath = "../../../../Resource/SmallEnglishData";
             
-            IFileNamesExtractor folderFileNamesExtractor = new FileNamesExtractor();
-            
-            // Act
             Action action = () => folderFileNamesExtractor.GetFilesRelatedPaths(relativeDirectoryPath);
-
-            // Assert
+            
             Assert.Throws<DirectoryNotFoundException>(action);
         }
         [Theory]
@@ -38,16 +38,9 @@ namespace InvertedIndexTest
         [InlineData("   ")]
         [InlineData("   \n")]
         [InlineData(null)]
-        public void GetFilesNames_ShouldThrowArgumentNullException_WhenInputIsWhiteSpace(string path)
-        { 
-            string relativeDirectoryPath = path;
-            
-            IFileNamesExtractor folderFileNamesExtractor = new FileNamesExtractor();
-            
-            // Act
-            Action action = () => folderFileNamesExtractor.GetFilesRelatedPaths(relativeDirectoryPath);
-
-            // Assert
+        public void GetFilesNames_ShouldThrowArgumentNullException_WhenInputIsWhiteSpaceOrNull(string relativePath)
+        {
+            Action action = () => folderFileNamesExtractor.GetFilesRelatedPaths(relativePath);
             Assert.Throws<ArgumentNullException>(action);
         }
         

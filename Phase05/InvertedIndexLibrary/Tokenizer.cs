@@ -22,7 +22,7 @@ namespace InvertedIndexLibrary
         private List<IWordOccurence> TokenizeFile(string filePath)
         {
             string[] lines = null;
-            lines = ValidateExistanceOfFile(filePath);
+            lines = ValidateExistenceOfFile(filePath);
             
             var tokens = new List<IWordOccurence>();
             foreach (var line in lines)
@@ -33,7 +33,7 @@ namespace InvertedIndexLibrary
             return tokens;
         }
 
-        private static string[] ValidateExistanceOfFile(string filePath)
+        private static string[] ValidateExistenceOfFile(string filePath)
         {
             string[] lines;
             try
