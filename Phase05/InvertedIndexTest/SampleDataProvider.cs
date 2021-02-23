@@ -12,12 +12,7 @@ namespace InvertedIndexTest
 
         public static SampleDataProvider GetInstance()
         {
-            if (_instance is null)
-            {
-                _instance = new SampleDataProvider();
-            }
-
-            return _instance;
+            return _instance ??= new SampleDataProvider();
         }
         
         private SampleDataProvider()
@@ -46,22 +41,12 @@ namespace InvertedIndexTest
 
         private void CreateSampleTable()
         {
-            Table = new Dictionary<string, List<string>>();
-            Table["ali"] = new List<string>
+            Table = new Dictionary<string, List<string>>
             {
-                "1", "2", "3"
-            };
-            Table["reza"] = new List<string>
-            {
-                "1"
-            };
-            Table["javad"] = new List<string>
-            {
-                "1", "10", "35"
-            };
-            Table["hossein"] = new List<string>
-            {
-                "35"
+                ["ali"] = new List<string> {"1", "2", "3"},
+                ["reza"] = new List<string> {"1"},
+                ["javad"] = new List<string> {"1", "10", "35"},
+                ["hossein"] = new List<string> {"35"}
             };
         }
     }

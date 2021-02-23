@@ -9,11 +9,11 @@ namespace InvertedIndexTest
 {
     public class TokenizerTest
     {
-        private string[] _fileNames = null;
-        private ITokenizer _tokenizer;
+        private readonly string[] _fileNames;
+        private readonly ITokenizer _tokenizer;
         public TokenizerTest()
         { 
-            _fileNames = new string[] {"58043", "58044"}; 
+            _fileNames = new[] {"58043", "58044"}; 
             _tokenizer = new Tokenizer();
         }
 
@@ -25,7 +25,7 @@ namespace InvertedIndexTest
             
             var filesRelativePaths = _fileNames.Select(s => relativePath+ "\\" + s );
             
-            var _tokens = new List<IWordOccurence>
+            var tokens = new List<IWordOccurence>
             {
                 new WordOccurrence("ali", "58043"),
                 new WordOccurrence("hasan", "58043"),
@@ -35,7 +35,7 @@ namespace InvertedIndexTest
                 new WordOccurrence("javad", "58044")
             };
             
-            Assert.Equal(_tokens, _tokenizer.TokenizeFiles(filesRelativePaths));
+            Assert.Equal(tokens, _tokenizer.TokenizeFiles(filesRelativePaths));
 
         }
         [Theory]

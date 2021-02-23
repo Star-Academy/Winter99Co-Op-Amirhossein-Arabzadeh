@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using InvertedIndexLibrary;
@@ -11,7 +10,7 @@ namespace InvertedIndexTest
     {
         private static IListCalculator _listCalculator;
         
-        private static SampleDataProvider _sampleDataProvider = SampleDataProvider.GetInstance();
+        private static readonly SampleDataProvider SampleDataProvider = SampleDataProvider.GetInstance();
 
         public ListCalculatorTest()
         {
@@ -21,7 +20,7 @@ namespace InvertedIndexTest
         [Fact]
         public void CreateSetOfDifferentPartitions_ShouldReturnSetOfDocsContainingPartitionList_WhenParametersAreValid()
         {
-            Assert.Equal(_sampleDataProvider.ExpectedSet, _listCalculator.GetDocsOfWordsList(_sampleDataProvider.Partition, _sampleDataProvider.Table));
+            Assert.Equal(SampleDataProvider.ExpectedSet, _listCalculator.GetDocsOfWordsList(SampleDataProvider.Partition, SampleDataProvider.Table));
         }
 
         [Theory]
@@ -45,7 +44,7 @@ namespace InvertedIndexTest
             sampleInputSet.Remove("3");
             sampleInputSet.Remove("8");
             sampleInputSet.Remove("58");
-            List<string> expectedList = new List<string>
+            var expectedList = new List<string>
             {
                 "1",
                 "3",
@@ -98,9 +97,9 @@ namespace InvertedIndexTest
         {
             new object[] {null, null},
             new object[] {new HashSet<string>(), null},
-            new object[] {new HashSet<string>(), _sampleDataProvider.Partition},
-            new object[] {_sampleDataProvider.ExpectedSet, null},
-            new object[] {_sampleDataProvider.ExpectedSet, new List<string>()},
+            new object[] {new HashSet<string>(), SampleDataProvider.Partition},
+            new object[] {SampleDataProvider.ExpectedSet, null},
+            new object[] {SampleDataProvider.ExpectedSet, new List<string>()},
         };
 
 
@@ -108,9 +107,9 @@ namespace InvertedIndexTest
         {
             new object[] {null, null},
             new object[] {new List<string>(), null},
-            new object[] {new List<string>(), _sampleDataProvider.Table},
-            new object[] {_sampleDataProvider.Partition, null},
-            new object[] {_sampleDataProvider.Partition, new Dictionary<string, List<string>>()},
+            new object[] {new List<string>(), SampleDataProvider.Table},
+            new object[] {SampleDataProvider.Partition, null},
+            new object[] {SampleDataProvider.Partition, new Dictionary<string, List<string>>()},
         };
     }
 }

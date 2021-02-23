@@ -4,8 +4,8 @@ namespace InvertedIndexLibrary
 {
     public class TokenizeController : ITokenizeController
     {
-        private IFileNamesExtractor _fileNamesExtractor;
-        private ITokenizer _tokenizer;
+        private readonly IFileNamesExtractor _fileNamesExtractor;
+        private readonly ITokenizer _tokenizer;
 
         public TokenizeController(IFileNamesExtractor fileNamesExtractor, ITokenizer tokenizer)
         {

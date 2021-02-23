@@ -6,7 +6,7 @@ namespace InvertedIndexLibrary
     {
         public static List<IWordOccurence> Tokens { get; set; }
 
-        public string Term { get; set; }
-        public string Doc { get; set; }
+        public string Term { get; }
+        public string Doc { get; }
     }
 }

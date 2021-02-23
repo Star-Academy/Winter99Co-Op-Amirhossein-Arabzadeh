@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using InvertedIndexLibrary;
 using Xunit;
@@ -9,10 +8,10 @@ namespace InvertedIndexTest
 {
     public class FileNamesExtractorTest
     {
-        private IFileNamesExtractor folderFileNamesExtractor;
+        private readonly IFileNamesExtractor _folderFileNamesExtractor;
         public FileNamesExtractorTest()
         { 
-            folderFileNamesExtractor = new FileNamesExtractor();
+            _folderFileNamesExtractor = new FileNamesExtractor();
         }
 
         [Fact]
@@ -21,7 +20,7 @@ namespace InvertedIndexTest
             const string relativeDirectoryPath = "../../../../Resources/SmallEnglishData";
             string[] fileNames = {"58043", "58044"};
             var filesRelativePaths = fileNames.Select(s => relativeDirectoryPath+ "\\" + s );
-            Assert.Equal(filesRelativePaths, folderFileNamesExtractor.GetFilesRelatedPaths(relativeDirectoryPath));
+            Assert.Equal(filesRelativePaths, _folderFileNamesExtractor.GetFilesRelatedPaths(relativeDirectoryPath));
         }
 
         [Fact]
@@ -29,7 +28,7 @@ namespace InvertedIndexTest
         {
             const string relativeDirectoryPath = "../../../../Resource/SmallEnglishData";
             
-            Action action = () => folderFileNamesExtractor.GetFilesRelatedPaths(relativeDirectoryPath);
+            Action action = () => _folderFileNamesExtractor.GetFilesRelatedPaths(relativeDirectoryPath);
             
             Assert.Throws<DirectoryNotFoundException>(action);
         }
@@ -40,7 +39,7 @@ namespace InvertedIndexTest
         [InlineData(null)]
         public void GetFilesNames_ShouldThrowArgumentNullException_WhenInputIsWhiteSpaceOrNull(string relativePath)
         {
-            Action action = () => folderFileNamesExtractor.GetFilesRelatedPaths(relativePath);
+            Action action = () => _folderFileNamesExtractor.GetFilesRelatedPaths(relativePath);
             Assert.Throws<ArgumentNullException>(action);
         }
         

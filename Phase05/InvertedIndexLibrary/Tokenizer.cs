@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace InvertedIndexLibrary
@@ -21,8 +20,7 @@ namespace InvertedIndexLibrary
 
         private List<IWordOccurence> TokenizeFile(string filePath)
         {
-            string[] lines = null;
-            lines = ValidateExistenceOfFile(filePath);
+            var lines = ValidateExistenceOfFile(filePath);
             
             var tokens = new List<IWordOccurence>();
             foreach (var line in lines)
@@ -40,7 +38,7 @@ namespace InvertedIndexLibrary
             {
                 lines = File.ReadAllLines(filePath);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 throw new FileNotFoundException("filePath is invalid");
             }

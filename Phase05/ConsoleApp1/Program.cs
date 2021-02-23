@@ -1,5 +1,4 @@
-﻿using System;
-using InvertedIndexLibrary;
+﻿using InvertedIndexLibrary;
 
 namespace ConsoleApp1
 {
@@ -14,7 +13,7 @@ namespace ConsoleApp1
             IIndexController indexController = new IndexController(hashTableCreator);
             indexController.ProcessDocs("../../../../Resources/BigEnglishData");
             IView view = new View();
-            view.run();
+            view.Run();
         }
     }
 }

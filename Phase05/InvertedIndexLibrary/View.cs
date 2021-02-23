@@ -5,12 +5,12 @@ namespace InvertedIndexLibrary
 {
     public class View : IView
     {
-        public void run()
+        public void Run()
         {
             IInputGetter inputGetter = new InputGetter();
             string input = inputGetter.GetInput();
             ISearchController searchController = new SearchController();
-            List<string> docsSearchingResultSet = searchController.SearchDocs(input);
+            IEnumerable<string> docsSearchingResultSet = searchController.SearchDocs(input);
             foreach (var doc in docsSearchingResultSet)
             {
                 Console.WriteLine(doc);

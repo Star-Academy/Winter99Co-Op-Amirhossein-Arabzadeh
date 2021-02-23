@@ -2,7 +2,7 @@
 {
     public interface IFileNamesExtractor
     {
-        public abstract string[] GetFilesRelatedPaths(string folderRelativePath);
+        public string[] GetFilesRelatedPaths(string folderRelativePath);
 
     }
 }

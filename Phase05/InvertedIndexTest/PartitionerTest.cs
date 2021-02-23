@@ -8,7 +8,7 @@ namespace InvertedIndexTest
 {
     public class PartitionerTest
     {
-        private IPartitioner _partitioner;
+        private readonly IPartitioner _partitioner;
         public PartitionerTest()
         { 
             _partitioner = new Partitioner();
@@ -18,8 +18,8 @@ namespace InvertedIndexTest
         public void GetWantedSignedWords_ShouldReturnSignedWords_WhenParametersAreValid()
         {
             
-            string sampleSearchingTerm = "ali reza +mohammad +ghasem -fatemeh -zahra";
-            List<string> expectedReturningList = new List<string>
+            const string sampleSearchingTerm = "ali reza +mohammad +ghasem -fatemeh -zahra";
+            var expectedReturningList = new List<string>
             {
                 "mohammad",
                 "ghasem",
@@ -49,8 +49,8 @@ namespace InvertedIndexTest
         [Fact]
         public void GetUnSignedWords_ShouldReturnUnsignedWords_WhenParametersAreValid()
         {
-            string sampleSearchingTerm = "ali reza +mohammad +ghasem -fatemeh -zahra";
-            List<string> expectedReturningList = new List<string>
+            const string sampleSearchingTerm = "ali reza +mohammad +ghasem -fatemeh -zahra";
+            var expectedReturningList = new List<string>
             {
                 "ali",
                 "reza",

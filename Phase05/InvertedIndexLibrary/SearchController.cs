@@ -5,34 +5,29 @@ namespace InvertedIndexLibrary
 {
     public class SearchController : ISearchController
     {
-        private IPartitioner _partitioner;
-        private IListCalculator _listCalculator;
-        private IListOperator _listOperator;
-        private IFileNamesExtractor _fileNamesExtractor;
-        private ITokenizer _tokenizer;
-        private ITokenizeController _tokenizeController;
-        private IHashTableCreator _hashTableCreator;
-        private IIndexController _indexController;
+        private readonly IPartitioner _partitioner;
+        private readonly IListOperator _listOperator;
+        private readonly IIndexController _indexController;
         private List<string> _unsignedWords;
-        private List<string> _plusignedWords;
-        private List<string> _minussignedWords;
+        private List<string> _plusSignedWords;
+        private List<string> _minusSignedWords;
 
         public SearchController()
         {
             _partitioner = new Partitioner();
-            _listCalculator = new ListCalculator();
-            _listOperator = new ListOperator(_listCalculator);
-            _fileNamesExtractor = new FileNamesExtractor();
-            _tokenizeController = new TokenizeController(_fileNamesExtractor, _tokenizer);
-            _tokenizeController = new TokenizeController(_fileNamesExtractor, _tokenizer);
-            _hashTableCreator = new HashTableCreator(_tokenizeController);
-            _indexController = new IndexController(_hashTableCreator);
+            IListCalculator listCalculator = new ListCalculator();
+            _listOperator = new ListOperator(listCalculator);
+            IFileNamesExtractor fileNamesExtractor = new FileNamesExtractor();
+            ITokenizer tokenizer = new Tokenizer();
+            ITokenizeController tokenizeController = new TokenizeController(fileNamesExtractor, tokenizer);
+            IHashTableCreator hashTableCreator = new HashTableCreator(tokenizeController);
+            _indexController = new IndexController(hashTableCreator);
             _unsignedWords = new List<string>();
-            _minussignedWords = new List<string>();
-            _plusignedWords = new List<string>();
+            _minusSignedWords = new List<string>();
+            _plusSignedWords = new List<string>();
         }
 
-        public List<string> SearchDocs(string input)
+        public IEnumerable<string> SearchDocs(string input)
         {
             PartitionInputWords(input);
             List<string> docsSearchingResultSet = new List<string>();
@@ -51,7 +46,7 @@ namespace InvertedIndexLibrary
         {
             if (IsResultSetAndMinusSignedWordsNotEmpty(docsSearchingResultSet))
             {
-                docsSearchingResultSet = _listOperator.GetRemovedDocsExcludingMinusSignedWords(_minussignedWords,
+                docsSearchingResultSet = _listOperator.GetRemovedDocsExcludingMinusSignedWords(_minusSignedWords,
                     docsSearchingResultSet, tableOfWordsAsKeyAndContainingDocsAsValue);
             }
 
@@ -60,7 +55,7 @@ namespace InvertedIndexLibrary
 
         private bool IsResultSetAndMinusSignedWordsNotEmpty(List<string> docsSearchingResultSet)
         {
-            return _minussignedWords.Count > 0 && docsSearchingResultSet.Count > 0;
+            return _minusSignedWords.Count > 0 && docsSearchingResultSet.Count > 0;
         }
 
         private List<string> GetIntersectedResultSetWithAllPlusSignedWordsDocs(List<string> docsSearchingResultSet,
@@ -68,7 +63,7 @@ namespace InvertedIndexLibrary
         {
             if (IsResultSetAndPlusSignedWordsNotEmpty(docsSearchingResultSet))
             {
-                docsSearchingResultSet = _listOperator.GetDocsWithoutPlusWords(_plusignedWords,
+                docsSearchingResultSet = _listOperator.GetDocsWithoutPlusWords(_plusSignedWords,
                     docsSearchingResultSet, tableOfWordsAsKeyAndContainingDocsAsValue);
             }
 
@@ -77,7 +72,7 @@ namespace InvertedIndexLibrary
 
         private bool IsResultSetAndPlusSignedWordsNotEmpty(List<string> docsSearchingResultSet)
         {
-            return _plusignedWords.Count > 0 && docsSearchingResultSet.Count > 0;
+            return _plusSignedWords.Count > 0 && docsSearchingResultSet.Count > 0;
         }
 
         private List<string> GetIntersectedUnsignedWordsDocsSet(List<string> docsSearchingResultSet,
@@ -103,8 +98,8 @@ namespace InvertedIndexLibrary
         private void PartitionInputWords(string input)
         {
             _unsignedWords = _partitioner.GetUnSignedWords(input);
-            _minussignedWords = _partitioner.GetWantedSignedWords(input, "-");
-            _plusignedWords = _partitioner.GetWantedSignedWords(input, "+");
+            _minusSignedWords = _partitioner.GetWantedSignedWords(input, "-");
+            _plusSignedWords = _partitioner.GetWantedSignedWords(input, "+");
         }
     }
 }

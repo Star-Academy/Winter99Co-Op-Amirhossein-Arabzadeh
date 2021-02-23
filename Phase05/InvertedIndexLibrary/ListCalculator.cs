@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -15,8 +16,8 @@ namespace InvertedIndexLibrary
             return setOfContainingDocsOfWords;
         }
 
-        private void IterateWordsListToTakeContainingDocsFromTable(List<string> partition, Dictionary<string, List<string>> table,
-            HashSet<string> setOfContainingDocsOfPartitionTerms)
+        private void IterateWordsListToTakeContainingDocsFromTable(IEnumerable<string> partition, Dictionary<string, List<string>> table,
+            ISet<string> setOfContainingDocsOfPartitionTerms)
         {
             foreach (var term in partition)
             {
@@ -29,7 +30,7 @@ namespace InvertedIndexLibrary
             }
         }
 
-        private void ValidateListAndDictionary(List<string> partition, Dictionary<string, List<string>> table)
+        private void ValidateListAndDictionary(ICollection partition, Dictionary<string, List<string>> table)
         {
             if (IsListOrTableNullOrEmpty(partition, table))
             {
@@ -37,7 +38,7 @@ namespace InvertedIndexLibrary
             }
         }
 
-        private bool IsListOrTableNullOrEmpty(List<string> partition, Dictionary<string, List<string>> table)
+        private bool IsListOrTableNullOrEmpty(ICollection partition, ICollection table)
         {
             return partition == null || table == null || partition.Count == 0 || table.Count == 0;
         }
@@ -45,13 +46,13 @@ namespace InvertedIndexLibrary
         public List<string> MinusElementsOfSetFromList(ISet<string> set, List<string> list)
         {
             ValidateSetAndList(set, list);
-            List<string> returnList = (from term in list
+            var returnList = (from term in list
                 where !set.Contains(term)
                 select term).ToList();
             return returnList;
         }
 
-        private void ValidateSetAndList(ISet<string> set, List<string> list)
+        private void ValidateSetAndList(ICollection<string> set, ICollection list)
         {
             if (IsSetOrListNullOrEmpty(set, list))
             {
@@ -59,7 +60,7 @@ namespace InvertedIndexLibrary
             }
         }
 
-        private bool IsSetOrListNullOrEmpty(ISet<string> set, List<string> list)
+        private bool IsSetOrListNullOrEmpty(ICollection<string> set, ICollection list)
         {
             return set is null || list is null || set.Count == 0 || list.Count == 0;
         }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -6,7 +7,7 @@ namespace InvertedIndexLibrary
 {
     public class ListOperator : IListOperator
     {
-        private IListCalculator _listCalculator;
+        private readonly IListCalculator _listCalculator;
 
         public ListOperator(IListCalculator listCalculator)
         {
@@ -25,7 +26,7 @@ namespace InvertedIndexLibrary
             return setOfDocsContainingUnsignedWord;
         }
 
-        private void ValidateStringAndDictionary(string unsignedWord, Dictionary<string, List<string>> table)
+        private void ValidateStringAndDictionary(string unsignedWord, ICollection table)
         {
             if (IsStringOrDictionaryNullOrEmpty(unsignedWord, table))
             {
@@ -33,7 +34,7 @@ namespace InvertedIndexLibrary
             }
         }
 
-        private bool IsStringOrDictionaryNullOrEmpty(string unsignedWord, Dictionary<string, List<string>> table)
+        private bool IsStringOrDictionaryNullOrEmpty(string unsignedWord, ICollection table)
         {
             return unsignedWord is null || table is null || unsignedWord.Trim().Equals("") || table.Count == 0;
         }
@@ -45,7 +46,7 @@ namespace InvertedIndexLibrary
             return tempResult;
         }
 
-        private List<string> IterateUnsignedWordsToIntersectDocsList(List<string> unSignedWords, Dictionary<string, List<string>> table, List<string> result)
+        private List<string> IterateUnsignedWordsToIntersectDocsList(IEnumerable<string> unSignedWords, Dictionary<string, List<string>> table, IEnumerable<string> result)
         {
             List<string> tempResult = new List<string>(result);
             foreach (string unSignedWord in unSignedWords)
@@ -62,7 +63,7 @@ namespace InvertedIndexLibrary
             return tempResult;
         }
 
-        private void ValidateListsAndDictionary(List<string> words, List<string> result, Dictionary<string, List<string>> table)
+        private void ValidateListsAndDictionary(ICollection words, ICollection result, ICollection table)
         {
             if (AreListsOrDictionaryNullOrEmpty(words, result, table))
             {
@@ -70,7 +71,7 @@ namespace InvertedIndexLibrary
             }
         }
 
-        private bool AreListsOrDictionaryNullOrEmpty(List<string> unSignedWords, List<string> result, Dictionary<string, List<string>> table)
+        private bool AreListsOrDictionaryNullOrEmpty(ICollection unSignedWords, ICollection result, ICollection table)
         {
             return unSignedWords is null || result is null || table is null || unSignedWords.Count == 0 || result.Count == 0 ||
                    table.Count == 0;
@@ -79,10 +80,10 @@ namespace InvertedIndexLibrary
         public List<string> GetDocsWithoutPlusWords(List<string> plusSignedWords, List<string> result, Dictionary<string, List<string>> table)
         {
             ValidateListsAndDictionary(plusSignedWords, result, table);
-            ISet<string> docsContainingPlusSignedWords =
+            var docsContainingPlusSignedWords =
                 _listCalculator.GetDocsOfWordsList(plusSignedWords, table);
 
-            List<string> tempResult = new List<string>(result);
+            var tempResult = new List<string>(result);
             tempResult = (from doc in result
                 where docsContainingPlusSignedWords.Contains(doc)
                 select doc).ToList();

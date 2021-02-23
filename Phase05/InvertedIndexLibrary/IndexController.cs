@@ -4,8 +4,8 @@ namespace InvertedIndexLibrary
 {
     public class IndexController : IIndexController
     {
-        private IHashTableCreator _hashTableCreator;
-        public static Dictionary<string, List<string>> Table { get; set; }
+        private readonly IHashTableCreator _hashTableCreator;
+        private static Dictionary<string, List<string>> Table { get; set; }
 
         public IndexController(IHashTableCreator hashTableCreator)
         {
@@ -14,7 +14,7 @@ namespace InvertedIndexLibrary
 
         public void ProcessDocs(string folderRelatedPath)
         {
-            Table = _hashTableCreator.createHashTableOfWordsAsKeyAndContainingDocsAsValue(folderRelatedPath);
+            Table = _hashTableCreator.CreateHashTableOfWordsAsKeyAndContainingDocsAsValue(folderRelatedPath);
         }
 
         public Dictionary<string, List<string>> GetInvertedIndexTable()

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using InvertedIndexLibrary;
 using NSubstitute;
 using Xunit;
@@ -17,22 +15,12 @@ namespace InvertedIndexTest
         public void CreateHashTable_ShouldReturnValidTableOfWordsAsKeyAndDocsAsValue_WhenParameterIsValid()
         {
 
-            Dictionary<string, List<string>> expectedTable = new Dictionary<string, List<string>>();
-            expectedTable["ali"] = new List<string>
+            Dictionary<string, List<string>> expectedTable = new Dictionary<string, List<string>>
             {
-                "1", "2", "3"
-            };
-            expectedTable["reza"] = new List<string>
-            {
-                "1"
-            };
-            expectedTable["javad"] = new List<string>
-            {
-                "1", "10", "35"
-            };
-            expectedTable["hossein"] = new List<string>
-            {
-                "35"
+                ["ali"] = new List<string> {"1", "2", "3"},
+                ["reza"] = new List<string> {"1"},
+                ["javad"] = new List<string> {"1", "10", "35"},
+                ["hossein"] = new List<string> {"35"}
             };
 
 
@@ -58,7 +46,7 @@ namespace InvertedIndexTest
                 new WordOccurrence("hossein", "35")
             });
             IHashTableCreator hashTableCreator = new HashTableCreator(tokenizeController.Object);
-            var actualTable = hashTableCreator.createHashTableOfWordsAsKeyAndContainingDocsAsValue(Arg.Any<string>());
+            var actualTable = hashTableCreator.CreateHashTableOfWordsAsKeyAndContainingDocsAsValue(Arg.Any<string>());
             Assert.Equal(expectedTable, actualTable);
         }
     }

@@ -1,23 +1,21 @@
-﻿#nullable enable
+﻿
 using System;
-using System.Collections.Generic;
 
 namespace InvertedIndexLibrary
 {
     public class WordOccurrence : IWordOccurence
     {
-        public static List<IWordOccurence> Tokens { get; set; }
+        public string Term { get; }
+
+        public string Doc { get;  }
 
         public WordOccurrence(string term, string doc)
         {
-            Tokens = new List<IWordOccurence>();
             Term = term;
             Doc = doc;
         }
 
-        public string? Term { get; set; }
-        public string? Doc { get; set; }
-        public override bool Equals(object? obj)
+        public override bool Equals(object obj)
         {
             if (!(obj is WordOccurrence))
             {
@@ -29,6 +27,16 @@ namespace InvertedIndexLibrary
                 return true;
             }
             return Term != null && Doc != null && Term.Equals(((WordOccurrence) obj).Term) && Doc.Equals(((WordOccurrence) obj).Doc);
+        }
+
+        protected bool Equals(WordOccurrence other)
+        {
+            return Term == other.Term && Doc == other.Doc;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Term, Doc);
         }
     }
 }
