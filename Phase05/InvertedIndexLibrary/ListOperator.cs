@@ -90,7 +90,7 @@ namespace InvertedIndexLibrary
             return tempResult;
         }
 
-        public List<string> GetRemovedDocsExcludingMinusSignedWords(List<string> minusSignedWords, List<string> result, Dictionary<string, List<string>> table)
+        public List<string> GetDocsExcludingMinusSignedWords(List<string> minusSignedWords, List<string> result, Dictionary<string, List<string>> table)
         {
             ValidateListsAndDictionary(minusSignedWords, result, table);
             List<string> tempResult = new List<string>(result);

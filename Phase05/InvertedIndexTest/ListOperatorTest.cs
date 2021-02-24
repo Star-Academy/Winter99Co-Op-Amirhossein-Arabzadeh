@@ -178,7 +178,7 @@ namespace InvertedIndexTest
                 "10",
                 "35",
             };
-            Assert.Equal(expectedReturn, _listOperator.GetRemovedDocsExcludingMinusSignedWords(minusSignedWords,
+            Assert.Equal(expectedReturn, _listOperator.GetDocsExcludingMinusSignedWords(minusSignedWords,
                 inputResultList, SampleDataProvider.Table));
         }
         public static IEnumerable<object[]> GetRemovedDocsContainingMinusSignedWordsArguments = new List<object[]>
@@ -197,7 +197,7 @@ namespace InvertedIndexTest
             GetRemovedDocsContainingMinusSignedWords_ShouldReturnArgumentException_WhenArgumentsAreInvalid(List<string>
                 minusSignedWords, List<string> inputResultList, Dictionary<string, List<string>> table)
         {
-            Action action = () => _listOperator.GetRemovedDocsExcludingMinusSignedWords(minusSignedWords,inputResultList, table);
+            Action action = () => _listOperator.GetDocsExcludingMinusSignedWords(minusSignedWords,inputResultList, table);
             Assert.Throws<ArgumentException>(action);
         }
         

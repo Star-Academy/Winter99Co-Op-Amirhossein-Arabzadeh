@@ -46,7 +46,7 @@ namespace InvertedIndexLibrary
         {
             if (IsResultSetAndMinusSignedWordsNotEmpty(docsSearchingResultSet))
             {
-                docsSearchingResultSet = _listOperator.GetRemovedDocsExcludingMinusSignedWords(_minusSignedWords,
+                docsSearchingResultSet = _listOperator.GetDocsExcludingMinusSignedWords(_minusSignedWords,
                     docsSearchingResultSet, tableOfWordsAsKeyAndContainingDocsAsValue);
             }
 
