@@ -19,27 +19,27 @@ namespace InvertedIndexTest
         }
 
         
-        // [Theory]
-        // [InlineData("../../../../Resources/SmallEnglishData")]
-        // public void TokenizeFiles_ShouldReturnListOfTokensOfWordsInDirectory_WhenDirectoryPathIsValidAndNotEmpty(string relativePath)
-        // { 
-        //     
-        //     
-        //     var filesRelativePaths = _fileNames.Select(s => relativePath+ "\\" + s );
-        //     
-        //     var tokens = new List<IWordOccurence>
-        //     {
-        //         new WordOccurrence("ali", "58043"),
-        //         new WordOccurrence("hasan", "58043"),
-        //         new WordOccurrence("hossein", "58043"),
-        //         new WordOccurrence("ali", "58044"),
-        //         new WordOccurrence("reza", "58044"),
-        //         new WordOccurrence("javad", "58044")
-        //     };
-        //     
-        //     Assert.Equal(tokens, _tokenizer.TokenizeFiles(filesRelativePaths));
-        //
-        // }
+        [Theory]
+        [InlineData("../../../../Resources/SmallEnglishData")]
+        public void TokenizeFiles_ShouldReturnListOfTokensOfWordsInDirectory_WhenDirectoryPathIsValidAndNotEmpty(string relativePath)
+        { 
+            
+            
+            var filesRelativePaths = _fileNames.Select(s => relativePath+ "\\" + s );
+            
+            var tokens = new List<IWordOccurence>
+            {
+                new WordOccurrence("ali", "58043"),
+                new WordOccurrence("hasan", "58043"),
+                new WordOccurrence("hossein", "58043"),
+                new WordOccurrence("ali", "58044"),
+                new WordOccurrence("reza", "58044"),
+                new WordOccurrence("javad", "58044")
+            };
+            
+            Assert.Equal(tokens, _tokenizer.TokenizeFiles(filesRelativePaths));
+        
+        }
         [Theory]
         [InlineData("../../../../Resources/SmallEnglishDatas")]
         public void TokenizeFiles_ShouldThrowDirectoryNotFoundException_WhenDirectoryPathIsInvalidButNotEmpty(string relativePath)
