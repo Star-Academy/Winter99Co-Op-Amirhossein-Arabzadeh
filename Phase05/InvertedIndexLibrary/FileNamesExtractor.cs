@@ -12,8 +12,7 @@ namespace InvertedIndexLibrary
             CheckIfPathIsWhiteSpaceOrNull(folderRelativePath);
             try
             {
-                var filesPaths = Directory.GetFiles(folderRelativePath);
-                return filesPaths;
+                return Directory.GetFiles(folderRelativePath);;
             }
             catch (Exception)
             {

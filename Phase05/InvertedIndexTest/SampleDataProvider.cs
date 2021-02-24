@@ -11,11 +11,11 @@ namespace InvertedIndexTest
         private static SampleDataProvider _instance;
 
         public static SampleDataProvider GetInstance()
-        {
+        {  
             return _instance ??= new SampleDataProvider();
         }
         
-        private SampleDataProvider()
+        private SampleDataProvider()        
         {
             CreateSampleTable();
             CreateSamplePartition();
