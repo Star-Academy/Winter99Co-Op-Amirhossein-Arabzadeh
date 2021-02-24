@@ -1,4 +1,4 @@
-name: .NET
+name: build
 
 on:
   push:
@@ -26,3 +26,10 @@ jobs:
     - name: Test
       run: dotnet test --no-build --verbosity normal
       working-directory: Phase05
+    - name: Publish code coverage reports to codecove.io
+      uses: codecov/codecov-action@v1
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        files: ./**/coverage.cobertura.xml
+        fail_ci_if_error: true
+
