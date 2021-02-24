@@ -24,12 +24,12 @@ jobs:
       run: dotnet build --no-restore
       working-directory: Phase05
     - name: Test
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet test --no-build --verbosity normal --collect:"XPlat Code Coverage"
       working-directory: Phase05
     - name: Publish code coverage reports to codecove.io
       uses: codecov/codecov-action@v1
       with:
-        token: CODECOV_TOKEN='3666927f-ee47-48da-a61e-c7bae7a80f79'
+        token: ${{ secrets.CODECOV_TOKEN }}
         files: ./**/coverage.cobertura.xml
         fail_ci_if_error: true
 
