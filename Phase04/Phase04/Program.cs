@@ -14,7 +14,7 @@ namespace Phase04
             var students = deserialize.ReadStudents("Students.txt");
             var scores = deserialize.ReadScores("Scores.txt");
 
-            var joinList = JoinScoresWithStudents(students, scores);
+            var joinList = GetStudentsContainingScores(students, scores);
             var orderByResult = OrderByAverage(joinList);
             
             var resultPrinter = new OrderedEnumerableResultPrinter();
@@ -31,7 +31,7 @@ namespace Phase04
         }
 
 
-        private static IEnumerable<StudentInfo> JoinScoresWithStudents(List<Student> students, List<Course> scores)
+        private static IEnumerable<StudentInfo> GetStudentsContainingScores(List<Student> students, List<Course> scores)
         {
             var joinList = students.GroupJoin(scores,
                 student => student.StudentNumber,

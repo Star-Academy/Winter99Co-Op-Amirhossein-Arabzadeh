@@ -9,6 +9,7 @@ namespace Phase04
         {
             if (orderByResult == null)
             {
+                throw new ArgumentException();
                 return;
             }
 
