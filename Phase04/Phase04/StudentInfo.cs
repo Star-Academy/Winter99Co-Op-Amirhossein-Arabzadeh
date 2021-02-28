@@ -12,5 +12,10 @@
         public string FirstName { get; }
         public string LastName { get; }
         public double AverageScore { get; }
+
+        public override string ToString()
+        {
+            return $"{this.FirstName} {this.LastName}: {this.AverageScore}";
+        }
     }
 }

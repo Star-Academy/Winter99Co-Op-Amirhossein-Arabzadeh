@@ -1,9 +1,10 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Phase04
 {
     public interface IOrderedEnumerableResultPrinter
     { 
-        void PrintResult(IOrderedEnumerable<StudentInfo> orderByResult);
+        void PrintResult(IEnumerable<StudentInfo> orderByResult);
     }
 }

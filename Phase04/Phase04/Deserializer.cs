@@ -5,24 +5,24 @@ using System.Text;
 
 namespace Phase04
 {
-    public class Deserialize : IDeserialize
+    public class Deserializer : IDeserializer
     {
-        public IFileReader FileReader { get; set; }
+        private readonly IFileReader _fileReader;
 
-        public Deserialize(IFileReader fileReader)
+        public Deserializer(IFileReader fileReader)
         {
-            FileReader = fileReader;
+            _fileReader = fileReader;
         }
 
         public List<Student> ReadStudents(string relatedPath)
         {
-            string read = FileReader.GetTextOfFile(relatedPath);
+            string read = _fileReader.GetTextOfFile(relatedPath);
             List<Student> students = JsonConvert.DeserializeObject<List<Student>>(read);
             return students;
         }
         public List<Course> ReadScores(string relatedPath)
         {
-            string read = FileReader.GetTextOfFile(relatedPath);
+            string read = _fileReader.GetTextOfFile(relatedPath);
             List<Course> scores = JsonConvert.DeserializeObject<List<Course>>(read);
             return scores;
         }

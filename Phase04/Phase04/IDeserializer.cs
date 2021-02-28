@@ -2,9 +2,8 @@
 
 namespace Phase04
 {
-    public interface IDeserialize
+    public interface IDeserializer
     {
-        IFileReader FileReader { get; set;}
         List<Course> ReadScores(string relatedPath);
         List<Student> ReadStudents(string relatedPath);
     }

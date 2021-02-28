@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Phase04
 {
-    public class Student : IStudent
+    public class Student
     {
         public Student(string firstName, string lastName, int studentNumber)
         {

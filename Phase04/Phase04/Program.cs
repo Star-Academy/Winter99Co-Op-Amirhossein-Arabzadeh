@@ -10,7 +10,7 @@ namespace Phase04
         static void Main(string[] args)
         {
             var fileReader = new FileReader();
-            var deserialize = new Deserialize(fileReader);
+            var deserialize = new Deserializer(fileReader);
             var students = deserialize.ReadStudents("Students.txt");
             var scores = deserialize.ReadScores("Scores.txt");
 
