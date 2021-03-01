@@ -17,5 +17,14 @@
         {
             return $"{this.FirstName} {this.LastName}: {this.AverageScore}";
         }
+
+        public override bool Equals(object obj)
+        {
+            return obj != null &&
+                   (obj.GetType() == typeof(StudentInfo)) &&
+                   ((StudentInfo) obj).FirstName.Equals(this.FirstName) &&
+                   ((StudentInfo) obj).LastName.Equals(this.LastName) &&
+                   ((StudentInfo) obj).AverageScore.Equals(this.AverageScore);
+        }
     }
 }

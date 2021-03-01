@@ -16,14 +16,14 @@ namespace Phase04
 
         public List<Student> ReadStudents(string relatedPath)
         {
-            string read = _fileReader.GetTextOfFile(relatedPath);
-            List<Student> students = JsonConvert.DeserializeObject<List<Student>>(read);
+            var read = _fileReader.GetTextOfFile(relatedPath);
+            var students = JsonConvert.DeserializeObject<List<Student>>(read);
             return students;
         }
         public List<Course> ReadScores(string relatedPath)
         {
-            string read = _fileReader.GetTextOfFile(relatedPath);
-            List<Course> scores = JsonConvert.DeserializeObject<List<Course>>(read);
+            var read = _fileReader.GetTextOfFile(relatedPath);
+            var scores = JsonConvert.DeserializeObject<List<Course>>(read);
             return scores;
         }
 

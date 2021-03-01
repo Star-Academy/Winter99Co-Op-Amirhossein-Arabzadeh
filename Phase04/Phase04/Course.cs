@@ -13,9 +13,9 @@ namespace Phase04
             Score = score;
         }
 
-        public int StudentNumber { get; set; }
-        public string Lesson { get; set; }
-        public float Score { get; set; }
+        public int StudentNumber { get; }
+        public string Lesson { get;}
+        public float Score { get;}
 
         public override bool Equals(object obj)
         {
