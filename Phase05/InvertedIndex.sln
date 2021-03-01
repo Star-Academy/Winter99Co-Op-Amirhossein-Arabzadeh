@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp1", "ConsoleApp1\ConsoleApp1.csproj", "{14E84892-F0C8-4C82-807A-7D2DE3092BD5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InvertedIndexLibrary", "InvertedIndexLibrary\InvertedIndexLibrary.csproj", "{9C2B1644-ECCD-464B-A46A-AF4B0926C58D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InvertedIndexTest", "InvertedIndexTest\InvertedIndexTest.csproj", "{0A855EEE-0CC2-430B-8B47-1A57EABC56F7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{14E84892-F0C8-4C82-807A-7D2DE3092BD5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{14E84892-F0C8-4C82-807A-7D2DE3092BD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{14E84892-F0C8-4C82-807A-7D2DE3092BD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{14E84892-F0C8-4C82-807A-7D2DE3092BD5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C2B1644-ECCD-464B-A46A-AF4B0926C58D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C2B1644-ECCD-464B-A46A-AF4B0926C58D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C2B1644-ECCD-464B-A46A-AF4B0926C58D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C2B1644-ECCD-464B-A46A-AF4B0926C58D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0A855EEE-0CC2-430B-8B47-1A57EABC56F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A855EEE-0CC2-430B-8B47-1A57EABC56F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A855EEE-0CC2-430B-8B47-1A57EABC56F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A855EEE-0CC2-430B-8B47-1A57EABC56F7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
