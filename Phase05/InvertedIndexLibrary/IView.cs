@@ -2,6 +2,6 @@
 {
     public interface IView
     {
-        public void Run();
+        public void Run(IIndexController indexController);
     }
 }

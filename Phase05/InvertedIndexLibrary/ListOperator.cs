@@ -17,7 +17,7 @@ namespace InvertedIndexLibrary
         public List<string> InitializeResultSetByFirstUnsignedInputWordDocs(string unsignedWord, Dictionary<string, List<string>> table)
         {
             ValidateStringAndDictionary(unsignedWord, table);
-            List<string> setOfDocsContainingUnsignedWord = new List<string>();
+            var setOfDocsContainingUnsignedWord = new List<string>();
             if (table.ContainsKey(unsignedWord))
             {
                 setOfDocsContainingUnsignedWord.AddRange(table[unsignedWord]);
@@ -28,36 +28,35 @@ namespace InvertedIndexLibrary
 
         private void ValidateStringAndDictionary(string unsignedWord, ICollection table)
         {
-            if (IsStringOrDictionaryNullOrEmpty(unsignedWord, table))
+            if (string.IsNullOrWhiteSpace(unsignedWord))
+            {
+                throw new ArgumentException("unsignedWord or table are either null or empty");
+            }
+
+            if (table is null || table.Count == 0)
             {
                 throw new ArgumentException("unsignedWord or table are either null or empty");
             }
         }
 
-        private bool IsStringOrDictionaryNullOrEmpty(string unsignedWord, ICollection table)
-        {
-            return unsignedWord is null || table is null || unsignedWord.Trim().Equals("") || table.Count == 0;
-        }
-
         public List<string> GetIntersectedUnsignedWordsContainingDocs(List<string> unSignedWords, List<string> result, Dictionary<string, List<string>> table)
         {
             ValidateListsAndDictionary(unSignedWords, result, table);
-            List<string> tempResult = IterateUnsignedWordsToIntersectDocsList(unSignedWords, table, result);
+            var tempResult = IterateUnsignedWordsToIntersectDocsList(unSignedWords, table, result);
             return tempResult;
         }
 
         private List<string> IterateUnsignedWordsToIntersectDocsList(IEnumerable<string> unSignedWords, Dictionary<string, List<string>> table, IEnumerable<string> result)
         {
-            List<string> tempResult = new List<string>(result);
-            foreach (string unSignedWord in unSignedWords)
+            var tempResult = new List<string>(result);
+            
+            foreach (var unSignedWord in unSignedWords)
             {
-                if (table.ContainsKey(unSignedWord))
+                if (!table.TryGetValue(unSignedWord, out var docs))
                 {
-                    List<string> docs = table[unSignedWord];
-                    tempResult = (from doc in tempResult
-                        where docs.Contains(doc)
-                        select doc).ToList();
+                    continue;
                 }
+                tempResult = tempResult.Intersect(docs).ToList();
             }
 
             return tempResult;
@@ -82,23 +81,17 @@ namespace InvertedIndexLibrary
             ValidateListsAndDictionary(plusSignedWords, result, table);
             var docsContainingPlusSignedWords =
                 _listCalculator.GetDocsOfWordsList(plusSignedWords, table);
-
-            var tempResult = new List<string>(result);
-            tempResult = (from doc in result
-                where docsContainingPlusSignedWords.Contains(doc)
-                select doc).ToList();
-            return tempResult;
+            
+            return result.Intersect(docsContainingPlusSignedWords).ToList();
         }
 
         public List<string> GetDocsExcludingMinusSignedWords(List<string> minusSignedWords, List<string> result, Dictionary<string, List<string>> table)
         {
             ValidateListsAndDictionary(minusSignedWords, result, table);
-            List<string> tempResult = new List<string>(result);
-            ISet<string> minusSignedWordsContainingDocs =
+            var tempResult = new List<string>(result);
+            var minusSignedWordsContainingDocs =
                 _listCalculator.GetDocsOfWordsList(minusSignedWords, table);
-            tempResult = (from doc in tempResult
-                where !(minusSignedWordsContainingDocs.Contains(doc))
-                select doc).ToList();
+            tempResult = tempResult.Except(minusSignedWordsContainingDocs).ToList();
             return tempResult;
         }
     }

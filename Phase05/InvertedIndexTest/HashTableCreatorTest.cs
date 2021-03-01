@@ -29,9 +29,9 @@ namespace InvertedIndexTest
                 x => x.GetFilesRelatedPaths(It.IsAny<string>())).Returns(
                 It.IsAny<string[]>());
             var tokenizer = new Mock<ITokenizer>();
-            tokenizer.Setup(x => x.TokenizeFiles(It.IsAny<IEnumerable<string>>())).Returns(It.IsAny<List<IWordOccurence>>());
+            tokenizer.Setup(x => x.TokenizeFiles(It.IsAny<IEnumerable<string>>())).Returns(It.IsAny<List<WordOccurrence>>());
             var tokenizeController = new Mock<ITokenizeController>();
-            tokenizeController.Setup(x => x.TokenizeFilesTerms(It.IsAny<string>())).Returns(new List<IWordOccurence>
+            tokenizeController.Setup(x => x.TokenizeFilesTerms(It.IsAny<string>())).Returns(new List<WordOccurrence>
             {
                 new WordOccurrence("ali", "1"),
                 new WordOccurrence("ali", "1"),

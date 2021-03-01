@@ -10,7 +10,7 @@ namespace InvertedIndexLibrary
         public List<string> GetWantedSignedWords(string searchingTerm, string sign)
         {
             ValidateInputStrings(searchingTerm, sign);
-            List<string> searchingTerms = (Regex.Split(searchingTerm, "\\s")).ToList();
+            var searchingTerms = (Regex.Split(searchingTerm, "\\s")).ToList();
             return new List<string>(from term in searchingTerms
                 where term.StartsWith(sign)
                 select term.Substring(1).ToLower());
@@ -19,7 +19,7 @@ namespace InvertedIndexLibrary
         public List<string> GetUnSignedWords(string searchingTerm)
         {
             ValidateInputString(searchingTerm);
-            List<string> searchingTerms = (Regex.Split(searchingTerm, "\\s")).ToList();
+            var searchingTerms = (Regex.Split(searchingTerm, "\\s")).ToList();
             return new List<string>(from term in searchingTerms
                 where !term.StartsWith("+") && !term.StartsWith("-")
                 select term.ToLower());

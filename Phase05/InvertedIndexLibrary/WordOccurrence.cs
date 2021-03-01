@@ -3,7 +3,7 @@ using System;
 
 namespace InvertedIndexLibrary
 {
-    public class WordOccurrence : IWordOccurence
+    public class WordOccurrence
     {
         public string Term { get; }
 

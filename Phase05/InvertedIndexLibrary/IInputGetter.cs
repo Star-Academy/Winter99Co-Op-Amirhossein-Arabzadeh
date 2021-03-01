@@ -2,6 +2,6 @@
 {
     public interface IInputGetter
     {
-        public string GetInput();
+        string GetInput();
     }
 }

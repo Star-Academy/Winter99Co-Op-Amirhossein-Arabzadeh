@@ -4,7 +4,7 @@ namespace InvertedIndexLibrary
 {
     public interface ITokenizer
     {
-        public List<IWordOccurence> TokenizeFiles(IEnumerable<string> filePaths);
+        public List<WordOccurrence> TokenizeFiles(IEnumerable<string> filePaths);
 
     }
 }

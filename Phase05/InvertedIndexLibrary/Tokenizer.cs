@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace InvertedIndexLibrary
 {
     public class Tokenizer : ITokenizer
     {
-        public List<IWordOccurence> TokenizeFiles(IEnumerable<string> filePaths)
+        public List<WordOccurrence> TokenizeFiles(IEnumerable<string> filePaths)
         {
-            var tokens = new List<IWordOccurence>(); 
+            var tokens = new List<WordOccurrence>(); 
             foreach (var filePath in filePaths)
             {
                 tokens.AddRange(TokenizeFile(filePath));
@@ -18,11 +19,11 @@ namespace InvertedIndexLibrary
             return tokens;
         }
 
-        private List<IWordOccurence> TokenizeFile(string filePath)
+        private IEnumerable<WordOccurrence> TokenizeFile(string filePath)
         {
             var lines = ValidateExistenceOfFile(filePath);
             
-            var tokens = new List<IWordOccurence>();
+            var tokens = new List<WordOccurrence>();
             foreach (var line in lines)
             {
                 tokens.AddRange(TokenizeLine(line, Path.GetFileName(filePath)));
@@ -46,17 +47,11 @@ namespace InvertedIndexLibrary
             return lines;
         }
 
-        private List<IWordOccurence> TokenizeLine(string line, string filePath)
+        private IEnumerable<WordOccurrence> TokenizeLine(string line, string filePath)
         {
-            var tokens = new List<IWordOccurence>();
             var terms = Regex.Split(line, @"\s");
-            foreach (var term in terms)
-            {
-                var token = new WordOccurrence(term.ToLower(), Path.GetFileName(filePath));
-                tokens.Add(token);
-            }
 
-            return tokens;
+            return terms.Select(term => new WordOccurrence(term.ToLower(), Path.GetFileName(filePath))).ToList();
         }
     }
 }

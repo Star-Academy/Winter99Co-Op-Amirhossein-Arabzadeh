@@ -5,7 +5,7 @@ namespace InvertedIndexLibrary
     public class IndexController : IIndexController
     {
         private readonly IHashTableCreator _hashTableCreator;
-        private static Dictionary<string, List<string>> Table { get; set; }
+        private Dictionary<string, List<string>> Table { get; set; }
 
         public IndexController(IHashTableCreator hashTableCreator)
         {

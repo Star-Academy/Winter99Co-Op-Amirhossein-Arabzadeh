@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
-using System.Linq;
 
 namespace InvertedIndexLibrary
 {
@@ -12,9 +11,9 @@ namespace InvertedIndexLibrary
             CheckIfPathIsWhiteSpaceOrNull(folderRelativePath);
             try
             {
-                return Directory.GetFiles(folderRelativePath);;
+                return Directory.GetFiles(folderRelativePath);
             }
-            catch (Exception)
+            catch (DirectoryNotFoundException)
             {
                 throw new DirectoryNotFoundException("directory relative path is wrong");
             }
@@ -22,15 +21,10 @@ namespace InvertedIndexLibrary
 
         private void CheckIfPathIsWhiteSpaceOrNull(string folderRelativePath)
         {
-            if (IsWhiteSpaceOrNull(folderRelativePath))
+            if (string.IsNullOrWhiteSpace(folderRelativePath))
             {
                 throw new ArgumentNullException("directory path is entered white space");
             }
-        }
-
-        private bool IsWhiteSpaceOrNull(string folderRelativePath)
-        {
-            return folderRelativePath is null || folderRelativePath.Trim().Equals("");
         }
     }
 }

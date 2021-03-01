@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.Serialization;
 using InvertedIndexLibrary;
 using Xunit;
 
@@ -27,7 +26,7 @@ namespace InvertedIndexTest
             
             var filesRelativePaths = _fileNames.Select(s => relativePath+ "\\" + s );
             
-            var tokens = new List<IWordOccurence>
+            var tokens = new List<WordOccurrence>
             {
                 new WordOccurrence("ali", "58043"),
                 new WordOccurrence("hasan", "58043"),

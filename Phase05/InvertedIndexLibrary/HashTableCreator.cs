@@ -21,24 +21,24 @@ namespace InvertedIndexLibrary
             return tableOfWordsAsKeyAndContainingDocsAsValue;
         }
 
-        private Dictionary<string, List<string>> IterateTokensToMergeTheIdenticalTokens(IEnumerable<IWordOccurence> tokens)
+        private Dictionary<string, List<string>> IterateTokensToMergeTheIdenticalTokens(IEnumerable<WordOccurrence> tokens)
         {
             var tableOfWordsAsKeyAndContainingDocsAsValue =
                 new Dictionary<string, List<string>>();
-            foreach (var wordOccurence in tokens)
+            foreach (var wordOccurrence in tokens)
             {
-                if (tableOfWordsAsKeyAndContainingDocsAsValue.ContainsKey(wordOccurence.Term))
+                if (tableOfWordsAsKeyAndContainingDocsAsValue.ContainsKey(wordOccurrence.Term))
                 {
-                    var termDocsList = tableOfWordsAsKeyAndContainingDocsAsValue[wordOccurence.Term];
-                    if (!termDocsList.Contains(wordOccurence.Doc))
+                    var termDocsList = tableOfWordsAsKeyAndContainingDocsAsValue[wordOccurrence.Term];
+                    if (!termDocsList.Contains(wordOccurrence.Doc))
                     {
-                        termDocsList.Add(wordOccurence.Doc);    
+                        termDocsList.Add(wordOccurrence.Doc);    
                     }
                     
                 }
                 else
                 {
-                    tableOfWordsAsKeyAndContainingDocsAsValue[wordOccurence.Term] = new List<string> {wordOccurence.Doc};
+                    tableOfWordsAsKeyAndContainingDocsAsValue[wordOccurrence.Term] = new List<string> {wordOccurrence.Doc};
                 }
             }
 

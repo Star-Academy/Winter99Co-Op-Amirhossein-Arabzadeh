@@ -13,7 +13,7 @@ namespace ConsoleApp1
             IIndexController indexController = new IndexController(hashTableCreator);
             indexController.ProcessDocs("../../../../Resources/BigEnglishData");
             IView view = new View();
-            view.Run();
+            view.Run(indexController);
         }
     }
 }

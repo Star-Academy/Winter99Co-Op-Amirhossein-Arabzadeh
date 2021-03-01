@@ -4,6 +4,6 @@ namespace InvertedIndexLibrary
 {
     public interface ITokenizeController
     {
-        List<IWordOccurence> TokenizeFilesTerms(string relatedPath);
+        List<WordOccurrence> TokenizeFilesTerms(string relatedPath);
     }
 }

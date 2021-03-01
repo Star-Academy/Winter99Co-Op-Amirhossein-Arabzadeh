@@ -13,9 +13,9 @@ namespace InvertedIndexLibrary
             _tokenizer = tokenizer;
         }
 
-        public List<IWordOccurence> TokenizeFilesTerms(string relatedPath)
+        public List<WordOccurrence> TokenizeFilesTerms(string relatedPath)
         {
-            string[] filesRelatedPaths =
+            var filesRelatedPaths =
                 _fileNamesExtractor.GetFilesRelatedPaths(relatedPath);
             var tokens = _tokenizer.TokenizeFiles(filesRelatedPaths);
             return tokens;

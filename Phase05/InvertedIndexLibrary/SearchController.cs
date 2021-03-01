@@ -12,16 +12,12 @@ namespace InvertedIndexLibrary
         private List<string> _plusSignedWords;
         private List<string> _minusSignedWords;
 
-        public SearchController()
+        public SearchController(IIndexController indexController)
         {
             _partitioner = new Partitioner();
             IListCalculator listCalculator = new ListCalculator();
             _listOperator = new ListOperator(listCalculator);
-            IFileNamesExtractor fileNamesExtractor = new FileNamesExtractor();
-            ITokenizer tokenizer = new Tokenizer();
-            ITokenizeController tokenizeController = new TokenizeController(fileNamesExtractor, tokenizer);
-            IHashTableCreator hashTableCreator = new HashTableCreator(tokenizeController);
-            _indexController = new IndexController(hashTableCreator);
+            _indexController = indexController;
             _unsignedWords = new List<string>();
             _minusSignedWords = new List<string>();
             _plusSignedWords = new List<string>();

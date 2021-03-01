@@ -4,8 +4,8 @@ namespace InvertedIndexLibrary
 {
     public interface IIndexController
     {
-        public static Dictionary<string, List<string>> Table { get; set; }
-        public void ProcessDocs(string folderRelatedPath);
-        public Dictionary<string, List<string>> GetInvertedIndexTable();
+        static Dictionary<string, List<string>> Table { get; set; }
+        void ProcessDocs(string folderRelatedPath);
+        Dictionary<string, List<string>> GetInvertedIndexTable();
     }
 }

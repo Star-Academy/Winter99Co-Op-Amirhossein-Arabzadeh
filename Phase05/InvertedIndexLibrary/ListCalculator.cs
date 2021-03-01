@@ -32,15 +32,19 @@ namespace InvertedIndexLibrary
 
         private void ValidateListAndDictionary(ICollection partition, Dictionary<string, List<string>> table)
         {
-            if (IsListOrTableNullOrEmpty(partition, table))
+            if (IsNullOrEmpty(partition))
             {
-                throw new ArgumentException("One or more of the arguments are empty or null");
+                throw new ArgumentException(nameof(partition));
+            }
+            
+            if (IsNullOrEmpty(table))
+            {
+                throw new ArgumentException(nameof(table));
             }
         }
-
-        private bool IsListOrTableNullOrEmpty(ICollection partition, ICollection table)
+        private bool IsNullOrEmpty(ICollection collection)
         {
-            return partition == null || table == null || partition.Count == 0 || table.Count == 0;
+            return collection== null ||  collection.Count == 0;
         }
 
         public List<string> MinusElementsOfSetFromList(ISet<string> set, List<string> list)
@@ -68,7 +72,7 @@ namespace InvertedIndexLibrary
         public List<string> AndListWithSet(ISet<string> set, List<string> list)
         {
             ValidateSetAndList(set, list);
-            List<string> returnList = (from term in list
+            var returnList = (from term in list
                 where set.Contains(term)
                 select term).ToList();
             return returnList;
