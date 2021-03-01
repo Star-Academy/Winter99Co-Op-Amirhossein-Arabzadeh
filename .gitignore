@@ -524,22 +524,3 @@ buildNumber.properties
 
 # CMake
 
-# Mongo Explorer plugin
-
-# File-based project format
-
-# IntelliJ
-
-# mpeltonen/sbt-idea plugin
-
-# JIRA plugin
-
-# Cursive Clojure plugin
-
-# Crashlytics plugin (for Android Studio and IntelliJ)
-
-# Editor-based Rest Client
-
-# Android studio 3.1+ serialized cache file
-
-# End of https://www.toptal.com/developers/gitignore/api/java,maven,rider,intellij,csharp
