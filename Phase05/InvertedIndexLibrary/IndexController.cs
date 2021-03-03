@@ -12,9 +12,14 @@ namespace InvertedIndexLibrary
             _hashTableCreator = hashTableCreator;
         }
 
-        public void ProcessDocs(string folderRelatedPath)
+        public async void ProcessDocs(string folderRelatedPath)
         {
             Table = _hashTableCreator.CreateHashTableOfWordsAsKeyAndContainingDocsAsValue(folderRelatedPath);
+            using (var context = new InvertedIndexContext())
+            {
+                context.AddRange(Table);
+                await context.SaveChangesAsync();
+            }
         }
 
         public Dictionary<string, List<string>> GetInvertedIndexTable()

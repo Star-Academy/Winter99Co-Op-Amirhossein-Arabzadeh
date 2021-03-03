@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 
+
 namespace InvertedIndexLibrary
 {
     public class HashTableCreator : IHashTableCreator
@@ -38,7 +39,7 @@ namespace InvertedIndexLibrary
                 }
                 else
                 {
-                    tableOfWordsAsKeyAndContainingDocsAsValue[wordOccurrence.Term] = new List<string> {wordOccurrence.Doc};
+                    tableOfWordsAsKeyAndContainingDocsAsValue[wordOccurrence.Term] = new List<string> { wordOccurrence.Doc };
                 }
             }
 
