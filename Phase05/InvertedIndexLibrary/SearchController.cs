@@ -27,12 +27,12 @@ namespace InvertedIndexLibrary
         {
             PartitionInputWords(input);
             List<string> docsSearchingResultSet = new List<string>();
-            var tableOfWordsAsKeyAndContainingDocsAsValue = _indexController.GetInvertedIndexTable();
-            docsSearchingResultSet = GetIntersectedUnsignedWordsDocsSet(docsSearchingResultSet, tableOfWordsAsKeyAndContainingDocsAsValue);
+            //var tableOfWordsAsKeyAndContainingDocsAsValue = _indexController.GetInvertedIndexTable();
+            //docsSearchingResultSet = GetIntersectedUnsignedWordsDocsSet(docsSearchingResultSet, tableOfWordsAsKeyAndContainingDocsAsValue);
 
-            docsSearchingResultSet = GetIntersectedResultSetWithAllPlusSignedWordsDocs(docsSearchingResultSet, tableOfWordsAsKeyAndContainingDocsAsValue);
+            //docsSearchingResultSet = GetIntersectedResultSetWithAllPlusSignedWordsDocs(docsSearchingResultSet, tableOfWordsAsKeyAndContainingDocsAsValue);
 
-            docsSearchingResultSet = GetResultSetWithoutMinusSignedWords(docsSearchingResultSet, tableOfWordsAsKeyAndContainingDocsAsValue);
+            //docsSearchingResultSet = GetResultSetWithoutMinusSignedWords(docsSearchingResultSet, tableOfWordsAsKeyAndContainingDocsAsValue);
             
             return docsSearchingResultSet;
         }

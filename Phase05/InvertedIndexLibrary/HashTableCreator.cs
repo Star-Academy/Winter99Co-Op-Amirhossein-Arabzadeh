@@ -6,17 +6,17 @@ namespace InvertedIndexLibrary
     public class HashTableCreator : IHashTableCreator
     {
         private readonly ITokenizeController _tokenizeController;
-        
+
         public HashTableCreator(ITokenizeController tokenizeController)
         {
             _tokenizeController = tokenizeController;
-           
+
         }
 
         public Dictionary<string, List<string>> CreateHashTableOfWordsAsKeyAndContainingDocsAsValue(string relatedPath)
         {
             var tokens = _tokenizeController.TokenizeFilesTerms(relatedPath);
-            var tableOfWordsAsKeyAndContainingDocsAsValue = 
+            var tableOfWordsAsKeyAndContainingDocsAsValue =
                 IterateTokensToMergeTheIdenticalTokens(tokens);
 
             return tableOfWordsAsKeyAndContainingDocsAsValue;
@@ -33,9 +33,9 @@ namespace InvertedIndexLibrary
                     var termDocsList = tableOfWordsAsKeyAndContainingDocsAsValue[wordOccurrence.Term];
                     if (!termDocsList.Contains(wordOccurrence.Doc))
                     {
-                        termDocsList.Add(wordOccurrence.Doc);    
+                        termDocsList.Add(wordOccurrence.Doc);
                     }
-                    
+
                 }
                 else
                 {
