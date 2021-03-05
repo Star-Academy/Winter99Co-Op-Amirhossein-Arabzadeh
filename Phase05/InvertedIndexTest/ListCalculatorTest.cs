@@ -10,12 +10,15 @@ namespace InvertedIndexTest
     public class ListCalculatorTest
     {
         private static IListCalculator _listCalculator;
-        private InvertedIndexContext _invertedIndexContext;
-
         private static readonly SampleDataProvider SampleDataProvider = SampleDataProvider.GetInstance();
+        private readonly InvertedIndexContext _invertedIndexContext;
+
 
         private void Seed(InvertedIndexContext invertedIndexContext)
         {
+            var doc1 = new Doc(1);
+            var doc2 = new Doc(2);
+            var doc3 = new Doc(3);
             var searchItems = new List<SearchItem>
             {
                 new SearchItem
@@ -23,10 +26,9 @@ namespace InvertedIndexTest
                     Id = "Ali",
                     Docs = new List<Doc>
                     {
-                        new Doc(1),
-                        new Doc(2),
-                        new Doc(3),
-                        new Doc(4),
+                        doc1,
+                        doc2,
+                        doc3,
                     }
                 },
                 new SearchItem
@@ -34,10 +36,7 @@ namespace InvertedIndexTest
                     Id = "Hasan",
                     Docs = new List<Doc>
                     {
-                        new Doc(1),
-                        new Doc(2),
-                        new Doc(3),
-                        new Doc(4),
+                        doc1
                     },
                 },
                 new SearchItem
@@ -45,19 +44,18 @@ namespace InvertedIndexTest
                     Id = "Hossein",
                     Docs = new List<Doc>
                     {
-                        new Doc(1),
-                        new Doc(2),
+                        doc2,
+                        doc3
                     },
                 },
                 new SearchItem
                 {
-                    Id = "Sajad",
+                    Id = "Reza",
                     Docs = new List<Doc>
                     {
-                        new Doc(3),
-                        new Doc(5),
-                    }
-                }
+                        doc2,
+                    },
+                },
             };
             invertedIndexContext.SearchingItems.AddRange(searchItems);
             invertedIndexContext.SaveChanges();
@@ -65,21 +63,28 @@ namespace InvertedIndexTest
 
         public ListCalculatorTest()
         {
+            var option = new DbContextOptionsBuilder<InvertedIndexContext>()
+                .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString()).Options;
+            _invertedIndexContext = new InvertedIndexContext(option);
+            _invertedIndexContext.Database.EnsureCreated();
+            Seed(_invertedIndexContext);
+            
             _listCalculator = new ListCalculator(_invertedIndexContext);
+            
+            // Dispose();
+
         }
 
         [Fact]
         public void CreateSetOfDifferentPartitions_ShouldReturnSetOfDocsContainingPartitionList_WhenParametersAreValid()
         {
-            var option = new DbContextOptionsBuilder<InvertedIndexContext>()
-                .UseInMemoryDatabase(databaseName: "TestDb").Options;
-            _invertedIndexContext = new InvertedIndexContext(option);
-            _invertedIndexContext.Database.EnsureCreated();
-            Seed(_invertedIndexContext);
-
-            Assert.Equal(SampleDataProvider.ExpectedSet, _listCalculator.GetDocsOfWordsList(SampleDataProvider.Partition));
             
-            Dispose();
+            Assert.Equal(new HashSet<string>{"1", "2"}, _listCalculator.GetDocsOfWordsList(new List<string>
+            {
+                "Hasan",
+                "Reza",
+            }));
+            
             
         }
 
@@ -95,7 +100,7 @@ namespace InvertedIndexTest
         [MemberData(nameof(InvalidListAndDictionaryArguments))]
         public void
             CreateSetOfDifferentPartitions_ShouldThrowArgumentException_WhenParametersAreInvalid(
-                List<string> partition, Dictionary<string, List<string>> table)
+                List<string> partition)
         {
             Action action =  () => _listCalculator.GetDocsOfWordsList(partition);
             Assert.Throws<ArgumentException>(action);
@@ -173,11 +178,9 @@ namespace InvertedIndexTest
 
         public static IEnumerable<Object[]> InvalidListAndDictionaryArguments = new List<object[]>
         {
-            new object[] {null, null},
-            new object[] {new List<string>(), null},
-            new object[] {new List<string>(), SampleDataProvider.Table},
-            new object[] {SampleDataProvider.Partition, null},
-            new object[] {SampleDataProvider.Partition, new Dictionary<string, List<string>>()},
+            new object[] {null},
+            new object[] {new List<string>()},
+            new object[] {new List<string>()},
         };
     }
 }

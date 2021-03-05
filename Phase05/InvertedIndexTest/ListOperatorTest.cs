@@ -11,13 +11,67 @@ namespace InvertedIndexTest
     
     public class ListOperatorTest : TableProvider
     {
-        private InvertedIndexContext _invertedIndexContext;
 
         private static readonly SampleDataProvider SampleDataProvider = SampleDataProvider.GetInstance();
         private static ListOperator _listOperator;
         private readonly Mock<IListCalculator> _listCalculator;
+        private readonly InvertedIndexContext _invertedIndexContext;
+
+
+        private void Seed(InvertedIndexContext invertedIndexContext)
+        {
+            var doc1 = new Doc(1);
+            var doc2 = new Doc(2);
+            var doc3 = new Doc(3);
+            var searchItems = new List<SearchItem>
+            {
+                new SearchItem
+                {
+                    Id = "Ali",
+                    Docs = new List<Doc>
+                    {
+                        doc1,
+                        doc2,
+                        doc3,
+                    }
+                },
+                new SearchItem
+                {
+                    Id = "Hasan",
+                    Docs = new List<Doc>
+                    {
+                        doc1
+                    },
+                },
+                new SearchItem
+                {
+                    Id = "Hossein",
+                    Docs = new List<Doc>
+                    {
+                        doc2,
+                        doc3
+                    },
+                },
+                new SearchItem
+                {
+                    Id = "Reza",
+                    Docs = new List<Doc>
+                    {
+                        doc2,
+                    },
+                },
+            };
+            invertedIndexContext.SearchingItems.AddRange(searchItems);
+            invertedIndexContext.SaveChanges();
+        }
         public ListOperatorTest()
         {
+            var option = new DbContextOptionsBuilder<InvertedIndexContext>()
+                .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString()).Options;
+            _invertedIndexContext = new InvertedIndexContext(option);
+            _invertedIndexContext.Database.EnsureCreated();
+            Seed(_invertedIndexContext);
+
             _listCalculator = new Mock<IListCalculator>();
             _listOperator = new ListOperator(_listCalculator.Object, _invertedIndexContext);
         }
@@ -26,7 +80,7 @@ namespace InvertedIndexTest
         public void 
             InitializeResultSetByFirstUnsignedInputWordDocs_ShouldReturnInitializedResultSet_WhenParametersAreValid()
         {
-            const string unsignedWord = "ali";
+            const string unsignedWord = "Ali";
             var expectedReturningList = new List<string>
             {
                 "1",
@@ -59,19 +113,18 @@ namespace InvertedIndexTest
         public void
             IntersectUnsignedWordsContainingDocs_ShouldReturnIntersectedSetOfUnsignedWordsContainingDocs_WhenParametersAreValid()
         {
-            List<string> unsignedWords = new List<string>
+            var unsignedWords = new List<string>
             {
-                "ali",
-                "reza",
-                "javad"
+                "Ali",
+                "Hasan"
             };
-            List<string> inputResultList = new List<string>
+            var inputResultList = new List<string>
             {
                 "1",
                 "2",
                 "3"
             };
-            List<string> expectedReturn = new List<string>
+            var expectedReturn = new List<string>
             {
                 "1"
             };
