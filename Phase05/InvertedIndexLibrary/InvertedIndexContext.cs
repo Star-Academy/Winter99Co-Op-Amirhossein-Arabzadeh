@@ -11,7 +11,11 @@ namespace InvertedIndexLibrary
         public InvertedIndexContext(DbContextOptions<InvertedIndexContext> options) : base(options)
         {
         }
-        
+
+        public InvertedIndexContext()
+        {
+        }
+
 
         // protected override void OnConfiguring(DbContextOptionsBuilder _dbContextOptionsBuilder)
         // {
