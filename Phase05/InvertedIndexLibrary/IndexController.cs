@@ -1,52 +1,50 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace InvertedIndexLibrary
 {
     public class IndexController : IIndexController
     {
         private readonly IHashTableCreator _hashTableCreator;
-        //private Dictionary<string, List<string>> Table { get; set; }
-
         public IndexController(IHashTableCreator hashTableCreator)
         {
             _hashTableCreator = hashTableCreator;
         }
 
-        public async void ProcessDocs(string folderRelatedPath)
+        public void ProcessDocs(string folderRelatedPath)
         {
             using (var context = new InvertedIndexContext())
             {
+                var docsDictionary = new Dictionary<string, Doc>();
 
-                var searchItemsTable = _hashTableCreator.CreateHashTableOfWordsAsKeyAndContainingDocsAsValue(folderRelatedPath);
+                var searchItemsTable = _hashTableCreator.
+                    CreateHashTableOfWordsAsKeyAndContainingDocsAsValue(folderRelatedPath);
 
-            var searchItemsList = new List<SearchItem>();
-
-            foreach (var item in searchItemsTable)
-            {
-                var searchItem = new SearchItem
+                foreach (var item in searchItemsTable)
                 {
-                    Id = item.Key,
-                    Docs = new List<Doc>()
-                };
-                foreach(var doc in item.Value)
-                {
-                    var document = new Doc(int.Parse(doc));
-                    searchItem.Docs.Add(document);
-                    context.Docs.Add(document);
-                    
-                }
+                    var searchItem = new SearchItem
+                    {
+                        Id = item.Key,
+                        Docs = new List<Doc>()
+                    };
+                    foreach(var doc in item.Value)
+                    {
+                        var document = docsDictionary.GetValueOrDefault(doc);
+                        if (document is null)
+                        {
+                            document = new Doc(int.Parse(doc));
+                            docsDictionary.Add(doc, document);
+                            context.Docs.Add(document);
+                        }
+                        searchItem.Docs.Add(document);
+                    }
 
-                //searchItemsList.Add(searchItem);
                     context.SearchingItems.Add(searchItem);
+
                 }
-                
-                await context.SaveChangesAsync();
+                context.SaveChanges();
             }
         }
-
-        //public Dictionary<string, List<string>> GetInvertedIndexTable()
-        //{
-        //    return new Dictionary<string, List<string>>(Table);
-        //}
+        
     }
 }

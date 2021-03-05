@@ -2,45 +2,51 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace InvertedIndexLibrary
 {
     public class ListCalculator : IListCalculator
     {
-        public ISet<string> GetDocsOfWordsList(List<string> words, Dictionary<string, List<string>> table)
+        public ISet<string> GetDocsOfWordsList(List<string> words)
         {
-            ValidateListAndDictionary(words, table);
+            ValidateListAndDictionary(words);
             var setOfContainingDocsOfWords = new HashSet<string>();
-            IterateWordsListToTakeContainingDocsFromTable(words, table, setOfContainingDocsOfWords);
+            IterateWordsListToTakeContainingDocsFromTable(words, setOfContainingDocsOfWords);
 
             return setOfContainingDocsOfWords;
         }
 
-        private void IterateWordsListToTakeContainingDocsFromTable(IEnumerable<string> partition, Dictionary<string, List<string>> table,
+        private void IterateWordsListToTakeContainingDocsFromTable(IEnumerable<string> partition,
             ISet<string> setOfContainingDocsOfPartitionTerms)
         {
-            foreach (var term in partition)
+            using (var context = new InvertedIndexContext())
             {
-                if (!table.ContainsKey(term))
+                foreach (var term in partition)
                 {
-                    continue;
+                    var searchItemDocsList = context.SearchingItems.Include(x => x.Docs)
+                        .FirstOrDefault(x => x.Id == term);
+                    if (searchItemDocsList is null)
+                    {
+                        continue;
+                    }
+                    var docs = new List<string>();
+                    foreach (var doc in searchItemDocsList.Docs)
+                    {
+                        docs.Add(doc.Id.ToString());
+                    }
+                    setOfContainingDocsOfPartitionTerms.UnionWith(docs);
                 }
-
-                setOfContainingDocsOfPartitionTerms.UnionWith(table[term]);
             }
         }
 
-        private void ValidateListAndDictionary(ICollection partition, Dictionary<string, List<string>> table)
+        private void ValidateListAndDictionary(ICollection partition)
         {
             if (IsNullOrEmpty(partition))
             {
                 throw new ArgumentException(nameof(partition));
             }
             
-            if (IsNullOrEmpty(table))
-            {
-                throw new ArgumentException(nameof(table));
-            }
         }
         private bool IsNullOrEmpty(ICollection collection)
         {

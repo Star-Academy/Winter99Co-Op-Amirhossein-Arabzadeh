@@ -4,7 +4,7 @@ namespace InvertedIndexLibrary
 {
     public interface IPartitioner
     {
-        public List<string> GetWantedSignedWords(string searchingTerm, string sign);
-        public List<string> GetUnSignedWords(string searchingTerm);
+        List<string> GetWantedSignedWords(string searchingTerm, string sign);
+        List<string> GetUnSignedWords(string searchingTerm);
     }
 }

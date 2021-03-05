@@ -11,7 +11,7 @@ namespace ConsoleApp1
             ITokenizeController tokenizeController = new TokenizeController(fileNamesExtractor, tokenizer);
             IHashTableCreator hashTableCreator = new HashTableCreator(tokenizeController);
             IIndexController indexController = new IndexController(hashTableCreator);
-            indexController.ProcessDocs("../../../../Resources/SmallEnglishData");
+            // indexController.ProcessDocs("../../../../Resources/SmallEnglishData");
             IView view = new View();
             view.Run(indexController);
         }
