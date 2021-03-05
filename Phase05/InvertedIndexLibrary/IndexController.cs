@@ -6,15 +6,17 @@ namespace InvertedIndexLibrary
     public class IndexController : IIndexController
     {
         private readonly IHashTableCreator _hashTableCreator;
-        public IndexController(IHashTableCreator hashTableCreator)
+        private readonly InvertedIndexContext _invertedIndexContext;
+        
+        public IndexController(IHashTableCreator hashTableCreator, InvertedIndexContext indexContext)
         {
             _hashTableCreator = hashTableCreator;
+            _invertedIndexContext = indexContext;
         }
 
         public void ProcessDocs(string folderRelatedPath)
         {
-            using (var context = new InvertedIndexContext())
-            {
+            
                 var docsDictionary = new Dictionary<string, Doc>();
 
                 var searchItemsTable = _hashTableCreator.
@@ -34,16 +36,16 @@ namespace InvertedIndexLibrary
                         {
                             document = new Doc(int.Parse(doc));
                             docsDictionary.Add(doc, document);
-                            context.Docs.Add(document);
+                            _invertedIndexContext.Docs.Add(document);
                         }
                         searchItem.Docs.Add(document);
                     }
 
-                    context.SearchingItems.Add(searchItem);
+                    _invertedIndexContext.SearchingItems.Add(searchItem);
 
                 }
-                context.SaveChanges();
-            }
+                _invertedIndexContext.SaveChanges();
+            
         }
         
     }

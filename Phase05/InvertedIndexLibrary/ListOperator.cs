@@ -9,20 +9,21 @@ namespace InvertedIndexLibrary
     public class ListOperator : IListOperator
     {
         private readonly IListCalculator _listCalculator;
+        private readonly InvertedIndexContext _invertedIndexContext;
 
-        public ListOperator(IListCalculator listCalculator)
+        public ListOperator(IListCalculator listCalculator, InvertedIndexContext invertedIndexContext)
         {
+            _invertedIndexContext = invertedIndexContext;
             _listCalculator = listCalculator;
         }
 
         public List<string> InitializeResultSetByFirstUnsignedInputWordDocs(string unsignedWord)
         {
-            using (var context = new InvertedIndexContext())
-            {
+            
                 ValidateStringAndDictionary(unsignedWord);
                 var setOfDocsContainingUnsignedWord = new List<string>();
                 // var searchItem = context.SearchingItems.FirstOrDefault(x => x.Id.Equals(unsignedWord));
-                var searchItem = context.SearchingItems.
+                var searchItem = _invertedIndexContext.SearchingItems.
                     Include(d => d.Docs).FirstOrDefault(x => x.Id == unsignedWord);
                 if (searchItem == null)
                 {
@@ -41,7 +42,7 @@ namespace InvertedIndexLibrary
                 }
 
                 return setOfDocsContainingUnsignedWord;
-            }
+            
         }
 
         private void ValidateStringAndDictionary(string unsignedWord)
@@ -61,29 +62,28 @@ namespace InvertedIndexLibrary
 
         private List<string> IterateUnsignedWordsToIntersectDocsList(IEnumerable<string> unSignedWords, IEnumerable<string> result)
         {
-            using (var context = new InvertedIndexContext())
-            {
-                var tempResult = new List<string>(result);
-                
-                foreach (var unSignedWord in unSignedWords)
-                {
-                    var listOfWordDoc = context.SearchingItems.Include(x=> x.Docs)
-                        .FirstOrDefault(x => x.Id.Equals(unSignedWord));
-                    if (listOfWordDoc == null)
-                    {
-                        continue;
-                    }
 
-                    var docs = new List<string>();
-                    foreach (var doc in listOfWordDoc.Docs)
-                    {
-                        docs.Add(doc.Id.ToString());
-                    }
-                    tempResult = tempResult.Intersect(docs).ToList();
-                    
+            var tempResult = new List<string>(result);
+            
+            foreach (var unSignedWord in unSignedWords)
+            {
+                var listOfWordDoc = _invertedIndexContext.SearchingItems.Include(x=> x.Docs)
+                    .FirstOrDefault(x => x.Id.Equals(unSignedWord));
+                if (listOfWordDoc == null)
+                {
+                    continue;
                 }
-                return tempResult;
+
+                var docs = new List<string>();
+                foreach (var doc in listOfWordDoc.Docs)
+                {
+                    docs.Add(doc.Id.ToString());
+                }
+                tempResult = tempResult.Intersect(docs).ToList();
+                
             }
+            return tempResult;
+        
         }
 
         private void ValidateListsAndDictionary(ICollection words, ICollection result)

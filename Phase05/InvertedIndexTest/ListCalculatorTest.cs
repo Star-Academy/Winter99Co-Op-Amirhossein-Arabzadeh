@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using InvertedIndexLibrary;
+using Microsoft.EntityFrameworkCore;
 using Xunit;
 
 namespace InvertedIndexTest
@@ -9,19 +10,86 @@ namespace InvertedIndexTest
     public class ListCalculatorTest
     {
         private static IListCalculator _listCalculator;
-        
+        private InvertedIndexContext _invertedIndexContext;
+
         private static readonly SampleDataProvider SampleDataProvider = SampleDataProvider.GetInstance();
+
+        private void Seed(InvertedIndexContext invertedIndexContext)
+        {
+            var searchItems = new List<SearchItem>
+            {
+                new SearchItem
+                {
+                    Id = "Ali",
+                    Docs = new List<Doc>
+                    {
+                        new Doc(1),
+                        new Doc(2),
+                        new Doc(3),
+                        new Doc(4),
+                    }
+                },
+                new SearchItem
+                {
+                    Id = "Hasan",
+                    Docs = new List<Doc>
+                    {
+                        new Doc(1),
+                        new Doc(2),
+                        new Doc(3),
+                        new Doc(4),
+                    },
+                },
+                new SearchItem
+                {
+                    Id = "Hossein",
+                    Docs = new List<Doc>
+                    {
+                        new Doc(1),
+                        new Doc(2),
+                    },
+                },
+                new SearchItem
+                {
+                    Id = "Sajad",
+                    Docs = new List<Doc>
+                    {
+                        new Doc(3),
+                        new Doc(5),
+                    }
+                }
+            };
+            invertedIndexContext.SearchingItems.AddRange(searchItems);
+            invertedIndexContext.SaveChanges();
+        }
 
         public ListCalculatorTest()
         {
-            _listCalculator = new ListCalculator();
+            _listCalculator = new ListCalculator(_invertedIndexContext);
         }
 
         [Fact]
         public void CreateSetOfDifferentPartitions_ShouldReturnSetOfDocsContainingPartitionList_WhenParametersAreValid()
         {
-            Assert.Equal(SampleDataProvider.ExpectedSet, _listCalculator.GetDocsOfWordsList(SampleDataProvider.Partition, SampleDataProvider.Table));
+            var option = new DbContextOptionsBuilder<InvertedIndexContext>()
+                .UseInMemoryDatabase(databaseName: "TestDb").Options;
+            _invertedIndexContext = new InvertedIndexContext(option);
+            _invertedIndexContext.Database.EnsureCreated();
+            Seed(_invertedIndexContext);
+
+            Assert.Equal(SampleDataProvider.ExpectedSet, _listCalculator.GetDocsOfWordsList(SampleDataProvider.Partition));
+            
+            Dispose();
+            
         }
+
+
+        public void Dispose()
+        {
+            _invertedIndexContext.Database.EnsureDeleted();
+            _invertedIndexContext.Dispose();
+        }
+
 
         [Theory]
         [MemberData(nameof(InvalidListAndDictionaryArguments))]
@@ -29,7 +97,7 @@ namespace InvertedIndexTest
             CreateSetOfDifferentPartitions_ShouldThrowArgumentException_WhenParametersAreInvalid(
                 List<string> partition, Dictionary<string, List<string>> table)
         {
-            Action action =  () => _listCalculator.GetDocsOfWordsList(partition, table);
+            Action action =  () => _listCalculator.GetDocsOfWordsList(partition);
             Assert.Throws<ArgumentException>(action);
         }
 
@@ -66,12 +134,12 @@ namespace InvertedIndexTest
         [Fact]
         public void AndListWithSet_ShouldReturnInputListWithoutElementOfInputSet_WhenParametersAreValid()
         {
-            List<string> sampleInputList = (from number in  Enumerable.Range(1, 60)
+            var sampleInputList = (from number in  Enumerable.Range(1, 60)
                 select number.ToString()).ToList();
             ISet<string> sampleInputSet = (from number in  Enumerable.Range(1, 5)
                 select number.ToString()).ToHashSet();
             
-            List<string> expectedList = new List<string>
+            var expectedList = new List<string>
             {
                 "1",
                 "2",

@@ -15,8 +15,9 @@ namespace InvertedIndexLibrary
         public SearchController(IIndexController indexController)
         {
             _partitioner = new Partitioner();
-            IListCalculator listCalculator = new ListCalculator();
-            _listOperator = new ListOperator(listCalculator);
+            InvertedIndexContext invertedIndexContext = new InvertedIndexContext();
+            IListCalculator listCalculator = new ListCalculator(invertedIndexContext);
+            _listOperator = new ListOperator(listCalculator, invertedIndexContext);
             _indexController = indexController;
             _unsignedWords = new List<string>();
             _minusSignedWords = new List<string>();

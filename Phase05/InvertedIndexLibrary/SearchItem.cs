@@ -10,7 +10,7 @@ namespace InvertedIndexLibrary
 {
     public class SearchItem
     {
-        //public int Id { get; set; }
+
         public List<Doc> Docs { get; set; }
 
         [Key, DatabaseGenerated(DatabaseGeneratedOption.None)]

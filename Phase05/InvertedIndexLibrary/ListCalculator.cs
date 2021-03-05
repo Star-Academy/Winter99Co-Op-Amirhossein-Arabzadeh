@@ -8,6 +8,13 @@ namespace InvertedIndexLibrary
 {
     public class ListCalculator : IListCalculator
     {
+        private readonly InvertedIndexContext _invertedIndexContext;
+
+        public ListCalculator(InvertedIndexContext invertedIndexContext)
+        {
+            _invertedIndexContext = invertedIndexContext;
+        }
+
         public ISet<string> GetDocsOfWordsList(List<string> words)
         {
             ValidateListAndDictionary(words);
@@ -20,24 +27,22 @@ namespace InvertedIndexLibrary
         private void IterateWordsListToTakeContainingDocsFromTable(IEnumerable<string> partition,
             ISet<string> setOfContainingDocsOfPartitionTerms)
         {
-            using (var context = new InvertedIndexContext())
+            foreach (var term in partition)
             {
-                foreach (var term in partition)
+                var searchItemDocsList = _invertedIndexContext.SearchingItems.Include(x => x.Docs)
+                    .FirstOrDefault(x => x.Id == term);
+                if (searchItemDocsList is null)
                 {
-                    var searchItemDocsList = context.SearchingItems.Include(x => x.Docs)
-                        .FirstOrDefault(x => x.Id == term);
-                    if (searchItemDocsList is null)
-                    {
-                        continue;
-                    }
-                    var docs = new List<string>();
-                    foreach (var doc in searchItemDocsList.Docs)
-                    {
-                        docs.Add(doc.Id.ToString());
-                    }
-                    setOfContainingDocsOfPartitionTerms.UnionWith(docs);
+                    continue;
                 }
+                var docs = new List<string>();
+                foreach (var doc in searchItemDocsList.Docs)
+                {
+                    docs.Add(doc.Id.ToString());
+                }
+                setOfContainingDocsOfPartitionTerms.UnionWith(docs);
             }
+        
         }
 
         private void ValidateListAndDictionary(ICollection partition)
