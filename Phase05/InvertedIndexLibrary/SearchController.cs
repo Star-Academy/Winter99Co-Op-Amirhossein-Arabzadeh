@@ -89,8 +89,8 @@ namespace InvertedIndexLibrary
         private void PartitionInputWords(string input)
         {
             _unsignedWords = _partitioner.GetUnSignedWords(input);
-            _minusSignedWords = _partitioner.GetWantedSignedWords(input, "-");
-            _plusSignedWords = _partitioner.GetWantedSignedWords(input, "+");
+            _minusSignedWords = _partitioner.GetSignedWords(input, "-");
+            _plusSignedWords = _partitioner.GetSignedWords(input, "+");
         }
     }
 }

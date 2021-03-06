@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 
 namespace InvertedIndexLibrary
 {
@@ -17,36 +15,58 @@ namespace InvertedIndexLibrary
 
         public void ProcessDocs(string folderRelatedPath)
         {
-            
-                var docsDictionary = new Dictionary<string, Doc>();
+            var docsDictionary = new Dictionary<string, Doc>();
 
-                var searchItemsTable = _hashTableCreator.
-                    CreateHashTableOfWordsAsKeyAndContainingDocsAsValue(folderRelatedPath);
-                
-                foreach (var item in searchItemsTable)
-                {
-                    var searchItem = new SearchItem
-                    {
-                        Term = item.Key.ToLower(),
-                        Docs = new List<Doc>()
-                    };
-                    foreach(var doc in item.Value)
-                    {
-                        var document = docsDictionary.GetValueOrDefault(doc);
-                        if (document is null)
-                        {
-                            document = new Doc(doc);
-                            docsDictionary.Add(doc, document);
-                            _invertedIndexContext.Docs.Add(document);
-                        }
-                        searchItem.Docs.Add(document);
-                    }
+            var searchItemsTable =
+                _hashTableCreator.CreateHashTableOfWordsAsKeyAndContainingDocsAsValue(folderRelatedPath);
 
-                    _invertedIndexContext.SearchingItems.Add(searchItem);
+            AddSearchItemsToDb(searchItemsTable, docsDictionary);
 
-                }
-                _invertedIndexContext.SaveChanges();
+            _invertedIndexContext.SaveChanges();
         }
-        
+
+        private void AddSearchItemsToDb(Dictionary<string, List<string>> searchItemsTable, Dictionary<string, Doc> docsDictionary)
+        {
+            foreach (var (term, docs) in searchItemsTable)
+            {
+                var searchItem = GetNewSearchItem(term);
+                AddDocsToSearchItem(docsDictionary, docs, searchItem);
+
+                _invertedIndexContext.SearchingItems.Add(searchItem);
+            }
+        }
+
+        private void AddDocsToSearchItem(Dictionary<string, Doc> docsDictionary, IEnumerable<string> docs, SearchItem searchItem)
+        {
+            foreach (var doc in docs)
+            {
+                var document = docsDictionary.GetValueOrDefault(doc) ?? GetNewDoc(docsDictionary, doc);
+                searchItem.Docs.Add(document);
+            }
+        }
+
+        private Doc GetNewDoc(IDictionary<string, Doc> docsDictionary, string doc)
+        {
+            var document = CreateNewDoc(doc);
+            docsDictionary.Add(doc, document);
+            return document;
+        }
+
+        private Doc CreateNewDoc(string doc)
+        {
+            var document = new Doc(doc);
+            _invertedIndexContext.Docs.Add(document);
+            return document;
+        }
+
+        private SearchItem GetNewSearchItem(string term)
+        {
+            var searchItem = new SearchItem
+            {
+                Term = term.ToLower(),
+                Docs = new List<Doc>()
+            };
+            return searchItem;
+        }
     }
 }
