@@ -33,7 +33,6 @@ namespace InvertedIndexLibrary
                     {
                         termDocsList.Add(wordOccurrence.Doc);
                     }
-
                 }
                 else
                 {

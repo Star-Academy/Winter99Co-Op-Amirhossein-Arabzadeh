@@ -9,7 +9,7 @@ namespace InvertedIndexLibrary
         {
             IInputGetter inputGetter = new InputGetter();
             var input = inputGetter.GetInput();
-            ISearchController searchController = new SearchController(indexController, invertedIndexContext);
+            ISearchController searchController = new SearchController(invertedIndexContext);
             var docsSearchingResultSet = searchController.SearchDocs(input);
             foreach (var doc in docsSearchingResultSet)
             {

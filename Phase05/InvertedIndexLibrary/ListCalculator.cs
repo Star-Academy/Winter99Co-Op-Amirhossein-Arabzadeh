@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
@@ -35,7 +34,6 @@ namespace InvertedIndexLibrary
                 var docs = searchItemDocsList.Docs.Select(doc => doc.Id.ToString()).ToList();
                 setOfContainingDocsOfPartitionTerms.UnionWith(docs);
             }
-
             return setOfContainingDocsOfPartitionTerms;
 
         }
@@ -48,7 +46,7 @@ namespace InvertedIndexLibrary
             return searchItemDocsList;
         }
 
-        private void ValidateListAndDictionary(ICollection partition)
+        private void ValidateListAndDictionary(ICollection<string> partition)
         {
             if (IsNullOrEmpty(partition))
             {
@@ -56,7 +54,7 @@ namespace InvertedIndexLibrary
             }
             
         }
-        private bool IsNullOrEmpty(ICollection collection)
+        private bool IsNullOrEmpty<T>(ICollection<T> collection)
         {
             return collection== null ||  collection.Count == 0;
         }
@@ -70,17 +68,17 @@ namespace InvertedIndexLibrary
             return returnList;
         }
 
-        private void ValidateSetAndList(ICollection<string> set, ICollection list)
+        private void ValidateSetAndList(ICollection<string> set, ICollection<string> list)
         {
-            if (IsSetOrListNullOrEmpty(set, list))
+            if (IsNullOrEmpty(set))
             {
                 throw new ArgumentException("Set or List is either null or empty");
             }
-        }
 
-        private bool IsSetOrListNullOrEmpty(ICollection<string> set, ICollection list)
-        {
-            return set is null || list is null || set.Count == 0 || list.Count == 0;
+            if (IsNullOrEmpty(list))
+            {
+                throw new ArgumentException("Set or List is either null or empty");
+            }
         }
 
         public List<string> AndListWithSet(ISet<string> set, List<string> list)

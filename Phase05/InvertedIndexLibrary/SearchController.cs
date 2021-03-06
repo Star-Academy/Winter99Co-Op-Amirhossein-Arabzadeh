@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace InvertedIndexLibrary
@@ -7,17 +8,15 @@ namespace InvertedIndexLibrary
     {
         private readonly IPartitioner _partitioner;
         private readonly IListOperator _listOperator;
-        private readonly IIndexController _indexController;
         private List<string> _unsignedWords;
         private List<string> _plusSignedWords;
         private List<string> _minusSignedWords;
 
-        public SearchController(IIndexController indexController, InvertedIndexContext invertedIndexContext)
+        public SearchController(InvertedIndexContext invertedIndexContext)
         {
             _partitioner = new Partitioner();
             IListCalculator listCalculator = new ListCalculator(invertedIndexContext);
             _listOperator = new ListOperator(listCalculator, invertedIndexContext);
-            _indexController = indexController;
             _unsignedWords = new List<string>();
             _minusSignedWords = new List<string>();
             _plusSignedWords = new List<string>();
@@ -63,7 +62,7 @@ namespace InvertedIndexLibrary
             return docsSearchingResultSet;
         }
 
-        private bool IsResultSetAndPlusSignedWordsNotEmpty(List<string> docsSearchingResultSet)
+        private bool IsResultSetAndPlusSignedWordsNotEmpty(ICollection docsSearchingResultSet)
         {
             return _plusSignedWords.Count > 0 && docsSearchingResultSet.Count > 0;
         }

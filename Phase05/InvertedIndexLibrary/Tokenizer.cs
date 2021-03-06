@@ -32,7 +32,7 @@ namespace InvertedIndexLibrary
             return tokens;
         }
 
-        private static string[] ValidateExistenceOfFile(string filePath)
+        private static IEnumerable<string> ValidateExistenceOfFile(string filePath)
         {
             string[] lines;
             try

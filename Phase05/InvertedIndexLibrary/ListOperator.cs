@@ -19,35 +19,39 @@ namespace InvertedIndexLibrary
 
         public List<string> InitializeResultSetByFirstUnsignedInputWordDocs(string unsignedWord)
         {
-            
-                ValidateStringAndDictionary(unsignedWord);
-                var setOfDocsContainingUnsignedWord = new List<string>();
-                // var searchItem = context.SearchingItems.FirstOrDefault(x => x.Id.Equals(unsignedWord));
-                
-                var searchItem = _invertedIndexContext
-                    .SearchingItems.
-                    Include(d => d.Docs).FirstOrDefault(x => x.Term.ToLower() == unsignedWord);
-            
-                if (searchItem == null)
-                {
-                    return setOfDocsContainingUnsignedWord;
-                }
+            ValidateStringAndDictionary(unsignedWord);
+            var setOfDocsContainingUnsignedWord = new List<string>();
 
-                var searchItemDocs = searchItem.Docs;
-                if (searchItemDocs.Count() != 0)
-                {
-                    var docsNames = new List<string>();
-                    foreach (var doc in searchItemDocs)
-                    {
-                        docsNames.Add(doc.Id.ToString());
-                    }
-                    setOfDocsContainingUnsignedWord.AddRange(docsNames);
-                }
+            var searchItem = GetSearchItemFromDb(unsignedWord);
 
+            if (searchItem == null)
+            {
                 return setOfDocsContainingUnsignedWord;
+            }
+
+            var searchItemDocs = searchItem.Docs;
+            
+            if (searchItemDocs.Count == 0) return setOfDocsContainingUnsignedWord;
+
+            var docsNames = searchItemDocs.Select(doc => doc.Id.ToString()).ToList();
+            
+            setOfDocsContainingUnsignedWord.AddRange(docsNames);
+
+            return setOfDocsContainingUnsignedWord;
             
         }
 
+        private SearchItem GetSearchItemFromDb(string unsignedWord)
+        {
+            var searchItem = _invertedIndexContext
+                .SearchingItems.Include(d => d.Docs).FirstOrDefault(x => x.Term.ToLower() == unsignedWord);
+            return searchItem;
+        }
+
+        private bool IsNullOrEmpty<T>(ICollection<T> collection)
+        {
+            return collection== null ||  collection.Count == 0;
+        }
         private void ValidateStringAndDictionary(string unsignedWord)
         {
             if (string.IsNullOrWhiteSpace(unsignedWord))
@@ -67,39 +71,28 @@ namespace InvertedIndexLibrary
         {
 
             var tempResult = new List<string>(result);
-            
-            foreach (var unSignedWord in unSignedWords)
-            {
-                var listOfWordDoc = _invertedIndexContext.SearchingItems.Include(x=> x.Docs)
-                    .FirstOrDefault(x => x.Term.Equals(unSignedWord));
-                if (listOfWordDoc == null)
-                {
-                    continue;
-                }
 
-                var docs = new List<string>();
-                foreach (var doc in listOfWordDoc.Docs)
-                {
-                    docs.Add(doc.Id.ToString());
-                }
-                tempResult = tempResult.Intersect(docs).ToList();
-                
-            }
-            return tempResult;
+            return (from unSignedWord in unSignedWords
+                select _invertedIndexContext.SearchingItems.Include(x => x.Docs)
+                    .FirstOrDefault(x => x.Term.Equals(unSignedWord))
+                into searchItem
+                where searchItem != null
+                select searchItem.Docs.Select(doc => doc.Id.ToString()).ToList())
+                .Aggregate(tempResult, (current, docs) => current.Intersect(docs).ToList());
         
         }
 
-        private void ValidateListsAndDictionary(ICollection words, ICollection result)
+        private void ValidateListsAndDictionary(ICollection<string> words, ICollection<string> result)
         {
-            if (AreListsOrDictionaryNullOrEmpty(words, result))
+            if (IsNullOrEmpty(words))
             {
                 throw new ArgumentException("One or more of the parameters is either null or empty");
             }
-        }
 
-        private bool AreListsOrDictionaryNullOrEmpty(ICollection unSignedWords, ICollection result)
-        {
-            return unSignedWords is null || result is null || unSignedWords.Count == 0 || result.Count == 0;
+            if (IsNullOrEmpty(result))
+            {
+                throw new ArgumentException("One or more of the parameters is either null or empty");
+            }
         }
 
         public List<string> GetDocsWithoutPlusWords(List<string> plusSignedWords, List<string> result)
