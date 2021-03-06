@@ -22,8 +22,7 @@ namespace InvertedIndexLibrary
 
                 var searchItemsTable = _hashTableCreator.
                     CreateHashTableOfWordsAsKeyAndContainingDocsAsValue(folderRelatedPath);
-
-                Console.WriteLine("after table");
+                
                 foreach (var item in searchItemsTable)
                 {
                     var searchItem = new SearchItem
@@ -47,7 +46,6 @@ namespace InvertedIndexLibrary
 
                 }
                 _invertedIndexContext.SaveChanges();
-            
         }
         
     }

@@ -23,7 +23,7 @@ namespace InvertedIndexTest
             {
                 new SearchItem
                 {
-                    Term = "Ali",
+                    Term = "ali",
                     Docs = new List<Doc>
                     {
                         doc1,
@@ -33,7 +33,7 @@ namespace InvertedIndexTest
                 },
                 new SearchItem
                 {
-                    Term = "Hasan",
+                    Term = "hasan",
                     Docs = new List<Doc>
                     {
                         doc1
@@ -41,7 +41,7 @@ namespace InvertedIndexTest
                 },
                 new SearchItem
                 {
-                    Term = "Hossein",
+                    Term = "hossein",
                     Docs = new List<Doc>
                     {
                         doc2,
@@ -50,7 +50,7 @@ namespace InvertedIndexTest
                 },
                 new SearchItem
                 {
-                    Term = "Reza",
+                    Term = "reza",
                     Docs = new List<Doc>
                     {
                         doc2,
@@ -81,8 +81,8 @@ namespace InvertedIndexTest
             
             Assert.Equal(new HashSet<string>{"1", "2"}, _listCalculator.GetDocsOfWordsList(new List<string>
             {
-                "Hasan",
-                "Reza",
+                "hasan",
+                "reza",
             }));
             
             

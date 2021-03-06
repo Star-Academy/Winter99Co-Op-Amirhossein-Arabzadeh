@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 
 namespace InvertedIndexLibrary
@@ -11,7 +10,6 @@ namespace InvertedIndexLibrary
         public HashTableCreator(ITokenizeController tokenizeController)
         {
             _tokenizeController = tokenizeController;
-
         }
 
         public Dictionary<string, List<string>> CreateHashTableOfWordsAsKeyAndContainingDocsAsValue(string relatedPath)
@@ -25,13 +23,9 @@ namespace InvertedIndexLibrary
 
         private Dictionary<string, List<string>> IterateTokensToMergeTheIdenticalTokens(IEnumerable<WordOccurrence> tokens)
         {
-            var tableOfWordsAsKeyAndContainingDocsAsValue =
-                new Dictionary<string, List<string>>();
-            int i = 0;
+            var tableOfWordsAsKeyAndContainingDocsAsValue = new Dictionary<string, List<string>>();
             foreach (var wordOccurrence in tokens)
             {
-                Console.WriteLine(i);
-                i++;
                 if (tableOfWordsAsKeyAndContainingDocsAsValue.ContainsKey(wordOccurrence.Term))
                 {
                     var termDocsList = tableOfWordsAsKeyAndContainingDocsAsValue[wordOccurrence.Term];

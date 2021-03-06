@@ -20,14 +20,14 @@ namespace InvertedIndexTest
 
         private void Seed(InvertedIndexContext invertedIndexContext)
         {
-            var doc1 = new Doc(1.ToString());
-            var doc2 = new Doc(2.ToString());
-            var doc3 = new Doc(3.ToString());
+            var doc1 = new Doc("1");
+            var doc2 = new Doc("2");
+            var doc3 = new Doc("3");
             var searchItems = new List<SearchItem>
             {
                 new SearchItem
                 {
-                    Term = "Ali",
+                    Term = "ali",
                     Docs = new List<Doc>
                     {
                         doc1,
@@ -37,7 +37,7 @@ namespace InvertedIndexTest
                 },
                 new SearchItem
                 {
-                    Term = "Hasan",
+                    Term = "hasan",
                     Docs = new List<Doc>
                     {
                         doc1
@@ -45,7 +45,7 @@ namespace InvertedIndexTest
                 },
                 new SearchItem
                 {
-                    Term = "Hossein",
+                    Term = "hossein",
                     Docs = new List<Doc>
                     {
                         doc2,
@@ -80,7 +80,7 @@ namespace InvertedIndexTest
         public void 
             InitializeResultSetByFirstUnsignedInputWordDocs_ShouldReturnInitializedResultSet_WhenParametersAreValid()
         {
-            const string unsignedWord = "Ali";
+            const string unsignedWord = "ali";
             var expectedReturningList = new List<string>
             {
                 "1",
@@ -115,8 +115,8 @@ namespace InvertedIndexTest
         {
             var unsignedWords = new List<string>
             {
-                "Ali",
-                "Hasan"
+                "ali",
+                "hasan"
             };
             var inputResultList = new List<string>
             {
