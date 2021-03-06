@@ -18,31 +18,34 @@ namespace InvertedIndexLibrary
         public ISet<string> GetDocsOfWordsList(List<string> words)
         {
             ValidateListAndDictionary(words);
-            var setOfContainingDocsOfWords = new HashSet<string>();
-            IterateWordsListToTakeContainingDocsFromTable(words, setOfContainingDocsOfWords);
-
+            var setOfContainingDocsOfWords = IterateWordsListToTakeContainingDocsFromTable(words);
             return setOfContainingDocsOfWords;
         }
 
-        private void IterateWordsListToTakeContainingDocsFromTable(IEnumerable<string> partition,
-            ISet<string> setOfContainingDocsOfPartitionTerms)
+        private ISet<string> IterateWordsListToTakeContainingDocsFromTable(IEnumerable<string> partition)
         {
+            var setOfContainingDocsOfPartitionTerms = new HashSet<string>();
             foreach (var term in partition)
             {
-                var searchItemDocsList = _invertedIndexContext.SearchingItems.Include(x => x.Docs)
-                    .FirstOrDefault(x => x.Term == term.ToLower());
+                var searchItemDocsList = GetSearchItemDocsList(term);
                 if (searchItemDocsList is null)
                 {
                     continue;
                 }
-                var docs = new List<string>();
-                foreach (var doc in searchItemDocsList.Docs)
-                {
-                    docs.Add(doc.Id.ToString());
-                }
+                var docs = searchItemDocsList.Docs.Select(doc => doc.Id.ToString()).ToList();
                 setOfContainingDocsOfPartitionTerms.UnionWith(docs);
             }
-        
+
+            return setOfContainingDocsOfPartitionTerms;
+
+        }
+
+        private SearchItem GetSearchItemDocsList(string term)
+        {
+            var searchItemDocsList = _invertedIndexContext.SearchingItems
+                .Include(x => x.Docs)
+                .FirstOrDefault(x => x.Term == term.ToLower());
+            return searchItemDocsList;
         }
 
         private void ValidateListAndDictionary(ICollection partition)
