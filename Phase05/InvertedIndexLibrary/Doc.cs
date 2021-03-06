@@ -11,14 +11,14 @@ namespace InvertedIndexLibrary
 {
     public class Doc
     {
-        public Doc(int id)
+        public Doc(string name)
         {
-            this.Id = id;
+            Name = name;
         }
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.None)]
-        [Required]
+
         public int Id { get; set; }
 
+        public string Name { get; set; }
         public List<SearchItem> SearchItems { get; set; }
 
         public override bool Equals(object obj)

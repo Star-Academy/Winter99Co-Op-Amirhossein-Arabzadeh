@@ -16,14 +16,14 @@ namespace InvertedIndexTest
 
         private void Seed(InvertedIndexContext invertedIndexContext)
         {
-            var doc1 = new Doc(1);
-            var doc2 = new Doc(2);
-            var doc3 = new Doc(3);
+            var doc1 = new Doc(1.ToString());
+            var doc2 = new Doc(2.ToString());
+            var doc3 = new Doc(3.ToString());
             var searchItems = new List<SearchItem>
             {
                 new SearchItem
                 {
-                    Id = "Ali",
+                    Term = "Ali",
                     Docs = new List<Doc>
                     {
                         doc1,
@@ -33,7 +33,7 @@ namespace InvertedIndexTest
                 },
                 new SearchItem
                 {
-                    Id = "Hasan",
+                    Term = "Hasan",
                     Docs = new List<Doc>
                     {
                         doc1
@@ -41,7 +41,7 @@ namespace InvertedIndexTest
                 },
                 new SearchItem
                 {
-                    Id = "Hossein",
+                    Term = "Hossein",
                     Docs = new List<Doc>
                     {
                         doc2,
@@ -50,7 +50,7 @@ namespace InvertedIndexTest
                 },
                 new SearchItem
                 {
-                    Id = "Reza",
+                    Term = "Reza",
                     Docs = new List<Doc>
                     {
                         doc2,

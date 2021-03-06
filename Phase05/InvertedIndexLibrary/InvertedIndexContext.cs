@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
 
 namespace InvertedIndexLibrary
 {
@@ -11,17 +12,16 @@ namespace InvertedIndexLibrary
         public InvertedIndexContext(DbContextOptions<InvertedIndexContext> options) : base(options)
         {
         }
-
-        public InvertedIndexContext()
+        
+    }
+    public class InvertedIndexContextFactory : IDesignTimeDbContextFactory<InvertedIndexContext>
+    {
+        public InvertedIndexContext CreateDbContext(string[] args)
         {
+            var optionsBuilder = new DbContextOptionsBuilder<InvertedIndexContext>();
+            optionsBuilder.UseSqlServer(@"Server=DESKTOP-PT8A28F;Database=InvertedIndexDb;Trusted_Connection=True;");
+    
+            return new InvertedIndexContext(optionsBuilder.Options);
         }
-
-
-        // protected override void OnConfiguring(DbContextOptionsBuilder _dbContextOptionsBuilder)
-        // {
-        //     _dbContextOptionsBuilder.UseSqlServer(@"Server=DESKTOP-PT8A28F;Database=InvertedIndexDb;Trusted_Connection=True;");
-        // }
-
-
     }
 }

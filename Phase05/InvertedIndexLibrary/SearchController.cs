@@ -12,10 +12,9 @@ namespace InvertedIndexLibrary
         private List<string> _plusSignedWords;
         private List<string> _minusSignedWords;
 
-        public SearchController(IIndexController indexController)
+        public SearchController(IIndexController indexController, InvertedIndexContext invertedIndexContext)
         {
             _partitioner = new Partitioner();
-            InvertedIndexContext invertedIndexContext = null;//new InvertedIndexContext();
             IListCalculator listCalculator = new ListCalculator(invertedIndexContext);
             _listOperator = new ListOperator(listCalculator, invertedIndexContext);
             _indexController = indexController;

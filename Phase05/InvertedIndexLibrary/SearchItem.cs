@@ -13,11 +13,9 @@ namespace InvertedIndexLibrary
 
         public List<Doc> Docs { get; set; }
 
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.None)]
-        [Required]
-        public string Id{ get; set; }
+        public int Id{ get; set; }
 
-
+        public string Term { get; set; }
         public override bool Equals(object obj)
         {
             return obj is SearchItem item &&

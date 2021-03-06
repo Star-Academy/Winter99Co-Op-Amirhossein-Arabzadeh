@@ -30,7 +30,7 @@ namespace InvertedIndexLibrary
             foreach (var term in partition)
             {
                 var searchItemDocsList = _invertedIndexContext.SearchingItems.Include(x => x.Docs)
-                    .FirstOrDefault(x => x.Id == term);
+                    .FirstOrDefault(x => x.Term == term.ToLower());
                 if (searchItemDocsList is null)
                 {
                     continue;

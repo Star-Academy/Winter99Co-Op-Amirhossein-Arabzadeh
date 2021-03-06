@@ -23,8 +23,11 @@ namespace InvertedIndexLibrary
                 ValidateStringAndDictionary(unsignedWord);
                 var setOfDocsContainingUnsignedWord = new List<string>();
                 // var searchItem = context.SearchingItems.FirstOrDefault(x => x.Id.Equals(unsignedWord));
-                var searchItem = _invertedIndexContext.SearchingItems.
-                    Include(d => d.Docs).FirstOrDefault(x => x.Id == unsignedWord);
+                
+                var searchItem = _invertedIndexContext
+                    .SearchingItems.
+                    Include(d => d.Docs).FirstOrDefault(x => x.Term.ToLower() == unsignedWord);
+            
                 if (searchItem == null)
                 {
                     return setOfDocsContainingUnsignedWord;
@@ -68,7 +71,7 @@ namespace InvertedIndexLibrary
             foreach (var unSignedWord in unSignedWords)
             {
                 var listOfWordDoc = _invertedIndexContext.SearchingItems.Include(x=> x.Docs)
-                    .FirstOrDefault(x => x.Id.Equals(unSignedWord));
+                    .FirstOrDefault(x => x.Term.Equals(unSignedWord));
                 if (listOfWordDoc == null)
                 {
                     continue;

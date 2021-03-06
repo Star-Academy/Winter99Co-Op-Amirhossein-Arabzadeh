@@ -2,6 +2,6 @@
 {
     public interface IView
     {
-        void Run(IIndexController indexController);
+        void Run(IIndexController indexController, InvertedIndexContext invertedIndexContext);
     }
 }

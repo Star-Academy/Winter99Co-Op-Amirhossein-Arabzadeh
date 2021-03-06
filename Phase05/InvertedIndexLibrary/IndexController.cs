@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace InvertedIndexLibrary
@@ -22,11 +23,12 @@ namespace InvertedIndexLibrary
                 var searchItemsTable = _hashTableCreator.
                     CreateHashTableOfWordsAsKeyAndContainingDocsAsValue(folderRelatedPath);
 
+                Console.WriteLine("after table");
                 foreach (var item in searchItemsTable)
                 {
                     var searchItem = new SearchItem
                     {
-                        Id = item.Key,
+                        Term = item.Key.ToLower(),
                         Docs = new List<Doc>()
                     };
                     foreach(var doc in item.Value)
@@ -34,7 +36,7 @@ namespace InvertedIndexLibrary
                         var document = docsDictionary.GetValueOrDefault(doc);
                         if (document is null)
                         {
-                            document = new Doc(int.Parse(doc));
+                            document = new Doc(doc);
                             docsDictionary.Add(doc, document);
                             _invertedIndexContext.Docs.Add(document);
                         }

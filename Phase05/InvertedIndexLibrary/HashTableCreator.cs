@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 
 namespace InvertedIndexLibrary
@@ -26,8 +27,11 @@ namespace InvertedIndexLibrary
         {
             var tableOfWordsAsKeyAndContainingDocsAsValue =
                 new Dictionary<string, List<string>>();
+            int i = 0;
             foreach (var wordOccurrence in tokens)
             {
+                Console.WriteLine(i);
+                i++;
                 if (tableOfWordsAsKeyAndContainingDocsAsValue.ContainsKey(wordOccurrence.Term))
                 {
                     var termDocsList = tableOfWordsAsKeyAndContainingDocsAsValue[wordOccurrence.Term];
