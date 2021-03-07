@@ -15,12 +15,13 @@ namespace ConsoleApp1
                 DbContextOptionsBuilder<InvertedIndexContext>().
                 UseSqlServer(@"Server=DESKTOP-PT8A28F;Database=InvertedIndexDb;Trusted_Connection=True;").Options;
 
-            var invertedIndexContext = new InvertedIndexContext(option);
-            
-            IIndexController indexController = new IndexController(hashTableCreator, invertedIndexContext);
-            // indexController.ProcessDocs("../../../../Resources/BigEnglishData");
-            IView view = new View();
-            view.Run(indexController, invertedIndexContext);
+            using (var invertedIndexContext = new InvertedIndexContext(option))
+            {
+                IIndexController indexController = new IndexController(hashTableCreator, invertedIndexContext);
+                // indexController.ProcessDocs("../../../../Resources/BigEnglishData");
+                IView view = new View();
+                view.Run(indexController, invertedIndexContext);    
+            }
         }
     }
 }
