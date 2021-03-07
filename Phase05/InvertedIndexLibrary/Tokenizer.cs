@@ -8,6 +8,7 @@ namespace InvertedIndexLibrary
 {
     public class Tokenizer : ITokenizer
     {
+        private int i = 0;
         public List<WordOccurrence> TokenizeFiles(IEnumerable<string> filePaths)
         {
             var tokens = new List<WordOccurrence>(); 
@@ -49,8 +50,15 @@ namespace InvertedIndexLibrary
 
         private IEnumerable<WordOccurrence> TokenizeLine(string line, string filePath)
         {
-            var terms = Regex.Split(line, @"\s");
-
+            var terms = Regex.Split(line.ToLower(), @"\W+");
+            foreach (var term in terms)
+            {
+                if (term.Equals("hello"))
+                {
+                    i++;
+                    Console.WriteLine(i);
+                }
+            }
             return terms.Select(term => new WordOccurrence(term.ToLower(), Path.GetFileName(filePath))).ToList();
         }
     }
