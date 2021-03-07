@@ -48,14 +48,14 @@ namespace InvertedIndexTest
             CreateSetOfDifferentPartitions_ShouldThrowArgumentException_WhenParametersAreInvalid(
                 List<string> partition)
         {
-            Action action =  () => _listCalculator.GetDocsOfWordsList(partition);
-            Assert.Throws<ArgumentException>(action);
+            void Action() => _listCalculator.GetDocsOfWordsList(partition);
+            Assert.Throws<ArgumentException>(Action);
         }
 
         [Fact]
         public void MinusElementsOfSetFromList_ShouldReturnInputListWithoutElementOfInputSet_WhenParametersAreValid()
         {
-            List<string> sampleInputList = (from number in  Enumerable.Range(1, 60)
+            var sampleInputList = (from number in  Enumerable.Range(1, 60)
                     select number.ToString()).ToList();
             ISet<string> sampleInputSet = (from number in  Enumerable.Range(1, 60)
                 select number.ToString()).ToHashSet();
@@ -79,8 +79,8 @@ namespace InvertedIndexTest
             MinusElementsOfSetFromList_ShouldThrowArgumentException_WhenParametersAreInvalid(
                 ISet<string> set, List<string> list)
         {
-            Action action = () => _listCalculator.MinusElementsOfSetFromList(set, list);
-            Assert.Throws<ArgumentException>(action);
+            void Action() => _listCalculator.MinusElementsOfSetFromList(set, list);
+            Assert.Throws<ArgumentException>(Action);
         }
         [Fact]
         public void AndListWithSet_ShouldReturnInputListWithoutElementOfInputSet_WhenParametersAreValid()
@@ -107,12 +107,12 @@ namespace InvertedIndexTest
             AndListWithSet_ShouldThrowArgumentException_WhenParametersAreInvalid(
                 ISet<string> set, List<string> list)
         {
-            Action action = () => _listCalculator.AndListWithSet(set, list);
-            Assert.Throws<ArgumentException>(action);
+            void Action() => _listCalculator.AndListWithSet(set, list);
+            Assert.Throws<ArgumentException>(Action);
         }
 
 
-        public static IEnumerable<Object[]> InvalidSetAndListArguments = new List<object[]>
+        public static IEnumerable<object[]> InvalidSetAndListArguments = new List<object[]>
         {
             new object[] {null, null},
             new object[] {new HashSet<string>(), null},
@@ -122,7 +122,7 @@ namespace InvertedIndexTest
         };
 
 
-        public static IEnumerable<Object[]> InvalidListAndDictionaryArguments = new List<object[]>
+        public static IEnumerable<object[]> InvalidListAndDictionaryArguments = new List<object[]>
         {
             new object[] {null},
             new object[] {new List<string>()},
