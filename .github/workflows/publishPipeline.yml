@@ -16,7 +16,7 @@ jobs:
       with:
         dotnet-version: 3.1.301
     - name: Get current release version
-      id: 1.0.0
+      id: version
       uses: pozetroninc/github-action-get-latest-release@master
       with:
         repository: Star-Academy/Winter99Co-Op-Amirhossein-Arabzadeh
