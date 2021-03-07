@@ -12,63 +12,13 @@ namespace InvertedIndexTest
         private static IListCalculator _listCalculator;
         private static readonly SampleDataProvider SampleDataProvider = SampleDataProvider.GetInstance();
         private readonly InvertedIndexContext _invertedIndexContext;
+        private readonly TestDbContextFactory _context;
 
-
-        private void Seed(InvertedIndexContext invertedIndexContext)
-        {
-            var doc1 = new Doc(1.ToString());
-            var doc2 = new Doc(2.ToString());
-            var doc3 = new Doc(3.ToString());
-            var searchItems = new List<SearchItem>
-            {
-                new SearchItem
-                {
-                    Term = "ali",
-                    Docs = new List<Doc>
-                    {
-                        doc1,
-                        doc2,
-                        doc3,
-                    }
-                },
-                new SearchItem
-                {
-                    Term = "hasan",
-                    Docs = new List<Doc>
-                    {
-                        doc1
-                    },
-                },
-                new SearchItem
-                {
-                    Term = "hossein",
-                    Docs = new List<Doc>
-                    {
-                        doc2,
-                        doc3
-                    },
-                },
-                new SearchItem
-                {
-                    Term = "reza",
-                    Docs = new List<Doc>
-                    {
-                        doc2,
-                    },
-                },
-            };
-            invertedIndexContext.SearchingItems.AddRange(searchItems);
-            invertedIndexContext.SaveChanges();
-        }
-
+        
         public ListCalculatorTest()
         {
-            var option = new DbContextOptionsBuilder<InvertedIndexContext>()
-                .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString()).Options;
-            _invertedIndexContext = new InvertedIndexContext(option);
-            _invertedIndexContext.Database.EnsureCreated();
-            Seed(_invertedIndexContext);
-            
+            var testDbContextFactory = new TestDbContextFactory();
+            _invertedIndexContext = testDbContextFactory.Seed();
             _listCalculator = new ListCalculator(_invertedIndexContext);
             
             // Dispose();

@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using InvertedIndexLibrary;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
 using Moq;
 using Xunit;
 
 namespace InvertedIndexTest
 {
     
-    public class ListOperatorTest : TableProvider
+    public class ListOperatorTest : TableProvider, IDisposable
     {
 
         private static readonly SampleDataProvider SampleDataProvider = SampleDataProvider.GetInstance();
@@ -18,60 +16,11 @@ namespace InvertedIndexTest
         private readonly InvertedIndexContext _invertedIndexContext;
 
 
-        private void Seed(InvertedIndexContext invertedIndexContext)
-        {
-            var doc1 = new Doc("1");
-            var doc2 = new Doc("2");
-            var doc3 = new Doc("3");
-            var searchItems = new List<SearchItem>
-            {
-                new SearchItem
-                {
-                    Term = "ali",
-                    Docs = new List<Doc>
-                    {
-                        doc1,
-                        doc2,
-                        doc3,
-                    }
-                },
-                new SearchItem
-                {
-                    Term = "hasan",
-                    Docs = new List<Doc>
-                    {
-                        doc1
-                    },
-                },
-                new SearchItem
-                {
-                    Term = "hossein",
-                    Docs = new List<Doc>
-                    {
-                        doc2,
-                        doc3
-                    },
-                },
-                new SearchItem
-                {
-                    Term = "Reza",
-                    Docs = new List<Doc>
-                    {
-                        doc2,
-                    },
-                },
-            };
-            invertedIndexContext.SearchingItems.AddRange(searchItems);
-            invertedIndexContext.SaveChanges();
-        }
         public ListOperatorTest()
         {
-            var option = new DbContextOptionsBuilder<InvertedIndexContext>()
-                .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString()).Options;
-            _invertedIndexContext = new InvertedIndexContext(option);
-            _invertedIndexContext.Database.EnsureCreated();
-            Seed(_invertedIndexContext);
-
+            var testDbContextFactory = new TestDbContextFactory();
+            _invertedIndexContext = testDbContextFactory.Seed();
+            
             _listCalculator = new Mock<IListCalculator>();
             _listOperator = new ListOperator(_listCalculator.Object, _invertedIndexContext);
         }
@@ -217,12 +166,12 @@ namespace InvertedIndexTest
             };
             _listCalculator.Setup(x => x.GetDocsOfWordsList(
                 It.IsAny<List<string>>())).Returns(plusSignedWordsDocs);
-            List<string> minusSignedWords = new List<string>
+            var minusSignedWords = new List<string>
             {
                 "ali",
                 "reza",
             };
-            List<string> inputResultList = new List<string>
+            var inputResultList = new List<string>
             {
                 "1",
                 "2",
@@ -230,7 +179,7 @@ namespace InvertedIndexTest
                 "10",
                 "35",
             };
-            List<string> expectedReturn = new List<string>
+            var expectedReturn = new List<string>
             {
                 "10",
                 "35",
@@ -259,6 +208,9 @@ namespace InvertedIndexTest
         }
 
 
-        
+        public void Dispose()
+        {
+            _invertedIndexContext?.Dispose();
+        }
     }
 }
