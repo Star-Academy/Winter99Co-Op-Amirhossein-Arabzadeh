@@ -7,7 +7,7 @@ namespace InvertedIndexLibrary
         public string GetInput()
         {
             Console.WriteLine("Please Type Your plusSigned Words and MinusSigned and unSigned words");
-            var input = Console.ReadLine();
+            var input = Console.ReadLine().ToLower();
             return input;
         }
     }
