@@ -9,8 +9,6 @@ namespace InvertedIndexTest
     
     public class ListOperatorTest : TableProvider, IDisposable
     {
-
-        private static readonly SampleDataProvider SampleDataProvider = SampleDataProvider.GetInstance();
         private static ListOperator _listOperator;
         private readonly Mock<IListCalculator> _listCalculator;
         private readonly InvertedIndexContext _invertedIndexContext;
@@ -210,7 +208,9 @@ namespace InvertedIndexTest
 
         public void Dispose()
         {
-            _invertedIndexContext?.Dispose();
+            _invertedIndexContext.Database.EnsureDeleted();
+            _invertedIndexContext.Dispose();
         }
+
     }
 }

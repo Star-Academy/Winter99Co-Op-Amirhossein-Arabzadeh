@@ -2,27 +2,23 @@
 using System.Collections.Generic;
 using System.Linq;
 using InvertedIndexLibrary;
-using Microsoft.EntityFrameworkCore;
 using Xunit;
 
 namespace InvertedIndexTest
 {
-    public class ListCalculatorTest
+    public class ListCalculatorTest : IDisposable
     {
         private static IListCalculator _listCalculator;
         private static readonly SampleDataProvider SampleDataProvider = SampleDataProvider.GetInstance();
         private readonly InvertedIndexContext _invertedIndexContext;
-        private readonly TestDbContextFactory _context;
 
-        
+
         public ListCalculatorTest()
         {
             var testDbContextFactory = new TestDbContextFactory();
             _invertedIndexContext = testDbContextFactory.Seed();
             _listCalculator = new ListCalculator(_invertedIndexContext);
             
-            // Dispose();
-
         }
 
         [Fact]
