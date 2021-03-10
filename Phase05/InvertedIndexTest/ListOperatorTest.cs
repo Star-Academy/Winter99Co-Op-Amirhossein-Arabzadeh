@@ -7,7 +7,7 @@ using Xunit;
 namespace InvertedIndexTest
 {
     
-    public class ListOperatorTest : TableProvider, IDisposable
+    public class ListOperatorTest : IDisposable
     {
         private static ListOperator _listOperator;
         private readonly Mock<IListCalculator> _listCalculator;

@@ -51,14 +51,6 @@ namespace InvertedIndexLibrary
         private IEnumerable<WordOccurrence> TokenizeLine(string line, string filePath)
         {
             var terms = Regex.Split(line.ToLower(), @"\W+");
-            foreach (var term in terms)
-            {
-                if (term.Equals("hello"))
-                {
-                    i++;
-                    Console.WriteLine(i);
-                }
-            }
             return terms.Select(term => new WordOccurrence(term.ToLower(), Path.GetFileName(filePath))).ToList();
         }
     }

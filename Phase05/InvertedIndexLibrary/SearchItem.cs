@@ -22,5 +22,15 @@ namespace InvertedIndexLibrary
                    EqualityComparer<List<Doc>>.Default.Equals(Docs, item.Docs) &&
                    Id.Equals(item.Id);
         }
+
+        protected bool Equals(SearchItem other)
+        {
+            return Equals(Docs, other.Docs) && Id == other.Id && Term == other.Term;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Docs, Id, Term);
+        }
     }
 }

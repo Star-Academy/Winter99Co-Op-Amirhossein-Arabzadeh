@@ -63,17 +63,18 @@ namespace InvertedIndexLibrary
         public List<string> GetIntersectedUnsignedWordsContainingDocs(List<string> unSignedWords, List<string> result)
         {
             ValidateListsAndDictionary(unSignedWords, result);
-            var tempResult = IterateUnsignedWordsToIntersectDocsList(unSignedWords, result);
+            var tempResult = GetIntersectedDocsList(unSignedWords, result);
             return tempResult;
         }
 
-        private List<string> IterateUnsignedWordsToIntersectDocsList(IEnumerable<string> unSignedWords, IEnumerable<string> result)
+        private List<string> GetIntersectedDocsList(IEnumerable<string> unSignedWords, IEnumerable<string> result)
         {
 
             var tempResult = new List<string>(result);
 
             return (from unSignedWord in unSignedWords
-                select _invertedIndexContext.SearchingItems.Include(x => x.Docs)
+                select _invertedIndexContext.SearchingItems
+                    .Include(x => x.Docs)
                     .FirstOrDefault(x => x.Term.Equals(unSignedWord))
                 into searchItem
                 where searchItem != null

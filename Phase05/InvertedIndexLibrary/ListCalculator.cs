@@ -17,11 +17,11 @@ namespace InvertedIndexLibrary
         public ISet<string> GetDocsOfWordsList(List<string> words)
         {
             ValidateListAndDictionary(words);
-            var setOfContainingDocsOfWords = IterateWordsListToTakeContainingDocsFromTable(words);
+            var setOfContainingDocsOfWords = GetContainingDocsFromTable(words);
             return setOfContainingDocsOfWords;
         }
 
-        private ISet<string> IterateWordsListToTakeContainingDocsFromTable(IEnumerable<string> partition)
+        private ISet<string> GetContainingDocsFromTable(IEnumerable<string> partition)
         {
             var setOfContainingDocsOfPartitionTerms = new HashSet<string>();
             foreach (var term in partition)

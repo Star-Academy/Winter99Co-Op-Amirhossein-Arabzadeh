@@ -19,7 +19,7 @@ namespace InvertedIndexLibrary
         public InvertedIndexContext CreateDbContext(string[] args)
         {
             var optionsBuilder = new DbContextOptionsBuilder<InvertedIndexContext>();
-            optionsBuilder.UseSqlServer(@"Server=DESKTOP-PT8A28F;Database=InvertedIndexDb;Trusted_Connection=True;");
+            optionsBuilder.UseSqlServer(@"Server=.;Database=InvertedIndexDb;Trusted_Connection=True;");
     
             return new InvertedIndexContext(optionsBuilder.Options);
         }
