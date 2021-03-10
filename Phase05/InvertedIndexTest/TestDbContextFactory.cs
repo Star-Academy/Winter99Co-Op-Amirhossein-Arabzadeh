@@ -11,7 +11,7 @@ namespace InvertedIndexTest
         public InvertedIndexContext Seed()
         {
             var option = new DbContextOptionsBuilder<InvertedIndexContext>()
-                .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString()).Options;
+                .UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             var invertedIndexContext = new InvertedIndexContext(option);
             invertedIndexContext.Database.EnsureCreated();
             var doc1 = new Doc(1.ToString());
