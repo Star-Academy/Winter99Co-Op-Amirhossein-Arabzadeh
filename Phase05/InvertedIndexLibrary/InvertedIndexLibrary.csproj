@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
-        <PackageId>StarAcademy.Amirhossein-Arabzadeh.InvertedIndexLibrary]</PackageId>
+        <PackageId>StarAcademy.AmirhosseinArabzadeh.InvertedIndexLibrary]</PackageId>
         <Authors>Amirhossein-Arbzadeh</Authors>
         <Company>Star Academy</Company>
     </PropertyGroup>
