@@ -21,10 +21,8 @@ namespace InvertedIndexTest
         [Theory]
         [InlineData("../../../../Resources/SmallEnglishData")]
         public void TokenizeFiles_ShouldReturnListOfTokensOfWordsInDirectory_WhenDirectoryPathIsValidAndNotEmpty(string relativePath)
-        { 
-            
-            
-            var filesRelativePaths = _fileNames.Select(s => relativePath+ "\\" + s );
+        {
+            var filesRelativePaths = _fileNames.Select(s => Path.Combine(relativePath, s) );
             
             var tokens = new List<WordOccurrence>
             {
@@ -42,12 +40,9 @@ namespace InvertedIndexTest
         [Theory]
         [InlineData("../../../../Resources/SmallEnglishDatas")]
         public void TokenizeFiles_ShouldThrowDirectoryNotFoundException_WhenDirectoryPathIsInvalidButNotEmpty(string relativePath)
-        { 
-            
-            
+        {
             var filesRelativePaths = _fileNames.Select(s => relativePath+ "\\" + s );
-
-
+            
             Action action = () => _tokenizer.TokenizeFiles(filesRelativePaths);
             Assert.Throws<FileNotFoundException>(action);
 
