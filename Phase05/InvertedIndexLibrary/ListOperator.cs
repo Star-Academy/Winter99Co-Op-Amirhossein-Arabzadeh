@@ -72,15 +72,29 @@ namespace InvertedIndexLibrary
 
             var tempResult = new List<string>(result);
 
-            return (from unSignedWord in unSignedWords
-                select _invertedIndexContext.SearchingItems
-                    .Include(x => x.Docs)
-                    .FirstOrDefault(x => x.Term.Equals(unSignedWord))
-                into searchItem
-                where searchItem != null
-                select searchItem.Docs.Select(doc => doc.Id.ToString()).ToList())
-                .Aggregate(tempResult, (current, docs) => current.Intersect(docs).ToList());
+            foreach (var unSignedWord in unSignedWords)
+            {
+                var searchItem = GetSearchItem(unSignedWord);
+                if (searchItem == null) continue;
+                var docsNames = GetDocsName(searchItem);
+                tempResult = tempResult.Intersect(docsNames).ToList();
+            }
+
+            return tempResult;
         
+        }
+
+        private List<string> GetDocsName(SearchItem searchItem)
+        {
+            var list = searchItem.Docs.Select(doc => doc.Id.ToString()).ToList();
+            return list;
+        }
+
+        private SearchItem GetSearchItem(string unSignedWord)
+        {
+            var searchItem = _invertedIndexContext.SearchingItems.Include(x => x.Docs)
+                .FirstOrDefault(x => x.Term.Equals(unSignedWord));
+            return searchItem;
         }
 
         private void ValidateListsAndDictionary(ICollection<string> words, ICollection<string> result)
