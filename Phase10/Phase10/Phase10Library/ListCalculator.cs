@@ -14,9 +14,9 @@ namespace Phase10Library
 
     public class ListCalculator : IListCalculator
     {
-        private IElasticClient _client;
+        private IMyElasticClient _client;
 
-        public ListCalculator(IElasticClient client)
+        public ListCalculator(IMyElasticClient client)
         {
             _client = client;
         }
@@ -51,14 +51,7 @@ namespace Phase10Library
         //TODO: this function should not be in this class
         private ISearchResponse<Doc> GetSearchItemDocsList(string term)
         {
-            var response = _client.Search<Doc>(s => s
-                .Index(Indexes.DocsIndex)
-                .Query(q => q
-                    .Bool(b => b
-                        .Must(must => must
-                            .Match(match => match
-                                .Field(p => p.Content)
-                                .Query(term))))));
+            var response = _client.GetSearchItemFromDb(term);
             return response;
         }
 

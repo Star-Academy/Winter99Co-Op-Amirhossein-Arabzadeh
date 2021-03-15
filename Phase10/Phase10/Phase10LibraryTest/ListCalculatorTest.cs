@@ -21,17 +21,19 @@ namespace Phase10LibraryTest
         {
             var docs = new HashSet<Doc>
             {
-                new Doc("1", "It.IsAny<string>()"),
-                new Doc("2", "It.IsAny<string>()"),
+                new Doc("1", "hasan"),
+                new Doc("2", "reza"),
             };
 
             var mockSearchResponse = new Mock<ISearchResponse<Doc>>();
             mockSearchResponse.Setup(x => x.Documents).Returns(docs);
             
-            var mockElasticClient = new Mock<IElasticClient>();
+            var mockElasticClient = new Mock<IMyElasticClient>();
             mockElasticClient
-                .Setup(x => x.Search<Doc>(It.IsAny<Func<SearchDescriptor<Doc>
-                    , ISearchRequest>>()))
+                .Setup(x => x.GetSearchItemFromDb("hasan"))
+                .Returns(mockSearchResponse.Object);
+            mockElasticClient
+                .Setup(x => x.GetSearchItemFromDb("reza"))
                 .Returns(mockSearchResponse.Object);
 
             _listCalculator = new ListCalculator(mockElasticClient.Object);
