@@ -7,16 +7,14 @@ namespace Phase10Library
         public static PropertiesDescriptor<Doc> AddIdFieldMapping(this PropertiesDescriptor<Doc> propertiesDescriptor)
         {
             return propertiesDescriptor
-                .Number(t => t
-                    .Type(NumberType.Long)
+                .Keyword(t => t
                     .Name(n => n.Id));
         }
         
         public static PropertiesDescriptor<Doc> AddContentFieldMapping(this PropertiesDescriptor<Doc> propertiesDescriptor)
         {
             return propertiesDescriptor
-                .Number(t => t
-                    .Type(NumberType.Long)
+                .Text(t => t
                     .Name(n => n.Content)
                     .Fields(f => f
                         .Text(t=>t

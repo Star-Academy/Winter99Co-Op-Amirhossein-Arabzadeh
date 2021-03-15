@@ -4,7 +4,7 @@ namespace Phase10Library
 {
     public class Doc
     {
-        public Doc(int id, string content)
+        public Doc(string id, string content)
         {
             ValidateId(id);
             ValidateContent(content);
@@ -21,15 +21,15 @@ namespace Phase10Library
             }
         }
 
-        private void ValidateId(int id)
+        private void ValidateId(string id)
         {
-            if (id < 0)
+            if (string.IsNullOrWhiteSpace(id))
             {
                 throw new ArgumentException();
             }
         }
 
-        public int Id { get; set; }
+        public string Id { get; set; }
         public string Content { get; set; }
         
     }
