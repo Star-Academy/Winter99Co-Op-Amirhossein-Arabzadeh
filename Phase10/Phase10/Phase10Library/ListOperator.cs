@@ -5,7 +5,7 @@ using Nest;
 
 namespace Phase10Library
 {
-    public class ListOperator
+    public class ListOperator : IListOperator
     {
         private readonly IListCalculator _listCalculator;
         private readonly IMyElasticClient _myElasticClient;
