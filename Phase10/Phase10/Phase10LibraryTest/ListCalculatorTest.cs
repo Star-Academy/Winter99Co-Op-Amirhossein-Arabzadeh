@@ -14,7 +14,7 @@ namespace Phase10LibraryTest
     {
         private static IListCalculator _listCalculator;
         private static readonly SampleDataProvider SampleDataProvider = SampleDataProvider.GetInstance();
-        private readonly ElasticClientFactory _invertedIndexContext;
+        private readonly ElasticClientFactory _elasticClientFactory;
 
 
         public ListCalculatorTest()

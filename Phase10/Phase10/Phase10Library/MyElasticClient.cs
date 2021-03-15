@@ -7,6 +7,7 @@ namespace Phase10Library
         ISearchResponse<Doc> GetSearchItemFromDb(string unsignedWord);
     }
 
+    //TODO: test this query
     public class MyElasticClient : IMyElasticClient
     {
         private IElasticClient _elasticClient = new ElasticClient();
