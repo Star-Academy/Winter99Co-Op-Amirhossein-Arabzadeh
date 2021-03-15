@@ -1,10 +1,10 @@
 using System;
 using System.IO;
-using Xunit;
 using System.Linq;
 using Phase10Library;
+using Xunit;
 
-namespace InvertedIndexTest
+namespace Phase10LibraryTest
 {
     public class FileNamesExtractorTest
     {

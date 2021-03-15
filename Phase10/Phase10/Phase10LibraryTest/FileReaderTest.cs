@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using Moq;
 using Phase10Library;
 using Xunit;
 
-namespace InvertedIndexTest
+namespace Phase10LibraryTest
 {
     public class FileReaderTest
     {
