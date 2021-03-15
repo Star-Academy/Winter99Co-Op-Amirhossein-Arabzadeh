@@ -3,6 +3,7 @@ using System.IO;
 using InvertedIndexLibrary;
 using Xunit;
 using System.Linq;
+using Phase10Library;
 
 namespace InvertedIndexTest
 {

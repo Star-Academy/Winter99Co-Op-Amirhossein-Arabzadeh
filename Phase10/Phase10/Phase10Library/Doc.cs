@@ -23,7 +23,7 @@ namespace InvertedIndexLibrary
         {
             if (string.IsNullOrWhiteSpace(content))
             {
-                throw new ArgumentException();
+                throw new ArgumentException("Doc content is either null or white space or id is negative");
             }
         }
 

@@ -1,7 +1,7 @@
 ﻿using System;
 using Nest;
 
-namespace Phase10
+namespace Phase10Library
 {
     internal static class ElasticClientFactory 
     {

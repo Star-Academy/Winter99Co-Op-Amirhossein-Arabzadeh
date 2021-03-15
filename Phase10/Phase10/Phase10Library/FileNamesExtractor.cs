@@ -2,7 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 
-namespace InvertedIndexLibrary
+namespace Phase10Library
 {
     public interface IFileNamesExtractor
     {
