@@ -3,13 +3,13 @@ using Nest;
 
 namespace Phase10Library
 {
-    internal static class ElasticClientFactory 
+    public class ElasticClientFactory 
     {
-        private static IElasticClient client = CreateInitialClient();
+        private IElasticClient _client;
 
-        private static IElasticClient CreateInitialClient()
+        private IElasticClient CreateInitialClient(string url)
         {
-            var uri = new Uri ("http://localhost:9200");
+            var uri = new Uri (url);
             var connectionSettings = new ConnectionSettings (uri);
             // DebugMode gives you the request in each request to make debuging easier
             // But don't forget to only use it in debugging, because its usage has some overhead
@@ -18,8 +18,9 @@ namespace Phase10Library
             return new ElasticClient (connectionSettings);
         }
 
-        public static IElasticClient CreateElasticClient() 
+        public IElasticClient CreateElasticClient(string url)
         {
+            var client = CreateInitialClient(url);
             return client;
         }
     }

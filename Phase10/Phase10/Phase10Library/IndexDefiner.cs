@@ -4,16 +4,17 @@ namespace Phase10Library
 {
     internal class IndexDefiner
     {
-        private readonly IElasticClient client;
+        private readonly IElasticClient _client;
 
         public IndexDefiner()
         {
-            client = ElasticClientFactory.CreateElasticClient();
+            ElasticClientFactory elasticClientFactory = new ElasticClientFactory();
+            _client = elasticClientFactory.CreateElasticClient("http://localhost:9200");
         }
 
         public void CreateIndex(string index)
         {
-            var response = client.Indices.Create(index, s => s
+            var response = _client.Indices.Create(index, s => s
                 .Settings(CreateSettings)
                 .Map<Doc>(CreateMapping));
         }
@@ -45,7 +46,8 @@ namespace Phase10Library
             return analyzersDescriptor
                 .Custom(Analyzers.NgramAnalyzer, custom => custom
                     .Tokenizer("standard")
-                    .Filters("lowercase", TokenFilters.NgramFilter));
+                    .Filters("lowercase", TokenFilters.Standard, TokenFilters.NgramFilter, TokenFilters.LowerCase,
+                        TokenFilters.WordDelimiter, TokenFilters.EnglishStopWords));
         }
 
         private static IPromise<ITokenFilters> CreateTokenFilters(TokenFiltersDescriptor tokenFiltersDescriptor)
