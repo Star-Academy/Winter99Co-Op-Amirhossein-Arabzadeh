@@ -25,21 +25,12 @@ namespace Phase10Library
                 .Analysis(CreateAnalysis);
         }
 
-        private ITypeMapping CreateMapping(TypeMappingDescriptor<Person> mappingDescriptor)
+        private ITypeMapping CreateMapping(TypeMappingDescriptor<Doc> mappingDescriptor)
         {
             return mappingDescriptor
                 .Properties(pr => pr
-                    .AddAgeFieldMapping()
-                    .AddEyeColorFieldMapping()
-                    .AddNameFieldMapping()
-                    .AddGenderFieldMapping()
-                    .AddCompanyFieldMapping()
-                    .AddEmailFieldMapping()
-                    .AddPhoneFieldMapping()
-                    .AddAddressFieldMapping()
-                    .AddAboutFieldMapping()
-                    .AddRegistrationDateFieldMapping()
-                    .AddLocationFieldMapping());
+                    .AddIdFieldMapping()
+                    .AddContentFieldMapping());
         }
 
         private IAnalysis CreateAnalysis(AnalysisDescriptor analysisDescriptor)
@@ -52,15 +43,15 @@ namespace Phase10Library
         private static IPromise<IAnalyzers> CreateAnalyzers(AnalyzersDescriptor analyzersDescriptor)
         {
             return analyzersDescriptor
-                .Custom(Nest.Analyzers.NgramAnalyzer, custom => custom
+                .Custom(Analyzers.NgramAnalyzer, custom => custom
                     .Tokenizer("standard")
-                    .Filters("lowercase", Nest.TokenFilters.NgramFilter));
+                    .Filters("lowercase", TokenFilters.NgramFilter));
         }
 
         private static IPromise<ITokenFilters> CreateTokenFilters(TokenFiltersDescriptor tokenFiltersDescriptor)
         {
             return tokenFiltersDescriptor
-                .NGram(Nest.TokenFilters.NgramFilter, ng => ng
+                .NGram(TokenFilters.NgramFilter, ng => ng
                     .MinGram(3)
                     .MaxGram(10));
         }
