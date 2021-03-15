@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using InvertedIndexLibrary;
 using Xunit;
 using System.Linq;
 using Phase10Library;

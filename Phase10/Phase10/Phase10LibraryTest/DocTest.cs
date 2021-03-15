@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using InvertedIndexLibrary;
 using Xunit;
 using Moq;
+using Phase10Library;
 
 
 namespace InvertedIndexTest
