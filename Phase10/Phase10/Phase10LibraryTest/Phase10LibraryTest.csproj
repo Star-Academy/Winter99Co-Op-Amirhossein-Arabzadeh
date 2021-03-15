@@ -25,4 +25,10 @@
       <ProjectReference Include="..\Phase10Library\Phase10Library.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Update="GetContentTestFile.txt">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
 </Project>
