@@ -9,7 +9,7 @@ namespace ViewRun
         static void Main(string[] args)
         {
 
-            IMyElasticClient elasticClient = new MyElasticClient();
+            IMyElasticClient2 elasticClient = new MyElasticClient();
 
             View view = new View();
             view.Run();

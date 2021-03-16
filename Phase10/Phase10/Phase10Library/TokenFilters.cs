@@ -3,8 +3,8 @@
     public static class TokenFilters
     {
         public const string NgramFilter = "my-ngram-filter";
-        public static string EnglishStopWords = "stop";
-        public static string WordDelimiter = "word_delimiter";
-        public static string LowerCase = "lowercase";
+        public const string EnglishStopWords = "stop";
+        public const string WordDelimiter = "word_delimiter";
+        public const string LowerCase = "lowercase";
     }
 }

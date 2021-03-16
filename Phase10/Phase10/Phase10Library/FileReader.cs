@@ -5,13 +5,14 @@ using System.Linq;
 
 namespace Phase10Library
 {
-    public class FileReader
+    public class FileReader : IFileReader
     {
         public IEnumerable<Doc> GetDocs(IEnumerable<string> filePaths)
         {
-            return filePaths.Select(filePath => new Doc(filePath.Substring(37), GetFileContent(filePath))).ToList();
+            return filePaths.Select(filePath => new Doc(filePath.Substring(37),
+                GetFileContent(filePath))).ToList();
         }
-        public string GetFileContent(string filePath)
+        private string GetFileContent(string filePath)
         {
             ValidateFilePath(filePath);
             try

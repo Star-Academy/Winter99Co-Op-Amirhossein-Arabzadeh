@@ -3,14 +3,14 @@ using Nest;
 
 namespace Phase10Library
 {
-    public class IndexDefiner
+    public class IndexDefiner : IIndexDefiner
     {
         private readonly IElasticClient _client;
 
         public IndexDefiner()
         {
             var elasticClientFactory = new ElasticClientFactory();
-            _client = elasticClientFactory.CreateElasticClient("http://localhost:9200");
+            _client = elasticClientFactory.CreateElasticClient(Addresses.HttpLocalhost);
         }
 
         public void CreateIndex(string index)
@@ -24,7 +24,7 @@ namespace Phase10Library
         private IPromise<IIndexSettings> CreateSettings(IndexSettingsDescriptor settingsDescriptor)
         {
             return settingsDescriptor
-                .Setting("max_ngram_diff", 7)
+                .Setting(KeyWords.MaxNgramDiff, 7)
                 .Analysis(CreateAnalysis);
         }
 
@@ -47,7 +47,7 @@ namespace Phase10Library
         {
             return analyzersDescriptor
                 .Custom(Analyzers.NgramAnalyzer, custom => custom
-                    .Tokenizer("standard")
+                    .Tokenizer(KeyWords.Standard)
                     .Filters(TokenFilters.LowerCase, TokenFilters.WordDelimiter, TokenFilters.EnglishStopWords, TokenFilters.NgramFilter));
         }
 

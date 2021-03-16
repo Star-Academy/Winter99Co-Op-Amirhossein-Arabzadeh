@@ -2,11 +2,6 @@
 
 namespace Phase10Library
 {
-    public interface IInputGetter
-    {
-        string GetInput();
-    }
-
     public class InputGetter : IInputGetter
     {
         public string GetInput()

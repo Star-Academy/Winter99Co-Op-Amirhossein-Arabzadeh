@@ -4,11 +4,6 @@ using System.IO;
 
 namespace Phase10Library
 {
-    public interface IFileNamesExtractor
-    {
-        string[] GetFilesRelatedPaths([NotNull] string folderRelativePath);
-    }
-
     public class FileNamesExtractor : IFileNamesExtractor
     {
         public string[] GetFilesRelatedPaths([NotNull] string folderRelativePath)

@@ -3,7 +3,7 @@ using Nest;
 
 namespace Phase10Library
 {
-    public class Importer<T> where T : class
+    public class Importer<T> : IImporter<T> where T : class
     {
         private readonly IElasticClient _client;
 

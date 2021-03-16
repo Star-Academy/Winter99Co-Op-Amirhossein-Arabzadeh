@@ -3,7 +3,7 @@ using Nest;
 
 namespace Phase10Library
 {
-    public class ElasticClientFactory 
+    public class ElasticClientFactory : IElasticClientFactory
     { 
         private IElasticClient CreateInitialClient(string url)
         {

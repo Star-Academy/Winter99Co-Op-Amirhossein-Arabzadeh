@@ -5,13 +5,8 @@ using Nest;
 
 namespace Phase10Library
 {
-    public interface IMyElasticClient
-    {
-        ISearchResponse<Doc> GetSearchItemFromDb(string unsignedWord);
-    }
-
     //TODO: test this query
-    public class MyElasticClient : IMyElasticClient
+    public class MyElasticClient : IMyElasticClient2
     {
         private readonly ElasticClientFactory _elasticClientFactory = new ElasticClientFactory();
         private readonly IElasticClient _elasticClient;
@@ -36,7 +31,8 @@ namespace Phase10Library
         }
 
 
-        public List<string> GetResultSetOfSearch(List<string> unsignedWords, List<string> plusSignedWords, List<string> minusSignedWords)
+        //TODO: make this method simple
+        public IEnumerable<string> GetResultSetOfSearch(List<string> unsignedWords, List<string> plusSignedWords, List<string> minusSignedWords)
         {
             var unsignedWordString = new StringBuilder();
             foreach (var unsignedWord in unsignedWords)
