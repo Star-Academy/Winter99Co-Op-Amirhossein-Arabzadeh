@@ -8,9 +8,6 @@ namespace IndexRun
     {
         static void Main(string[] args)
         {
-            //TODO: move it to another class
-            var indexDefiner = new IndexDefiner();
-            indexDefiner.CreateIndex(Indexes.DocsIndex);
             FileNamesExtractor fileNamesExtractor = new FileNamesExtractor();
             var filePaths = fileNamesExtractor.GetFilesRelatedPaths("../../../../Resources/BigEnglishData");
             FileReader fileReader = new FileReader();
