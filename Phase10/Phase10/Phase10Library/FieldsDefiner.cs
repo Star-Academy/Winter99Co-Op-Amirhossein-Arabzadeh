@@ -4,10 +4,11 @@ namespace Phase10Library
 {
     internal static class FieldsDefiner
     {
-        public static PropertiesDescriptor<Doc> AddIdFieldMapping(this PropertiesDescriptor<Doc> propertiesDescriptor)
+        public static PropertiesDescriptor<Doc> AddNameFieldMapping(this PropertiesDescriptor<Doc> propertiesDescriptor)
         {
             return propertiesDescriptor
-                .Keyword(t => t
+                .Number(t => t
+                    .Type(NumberType.Long)
                     .Name(n => n.Name));
         }
         

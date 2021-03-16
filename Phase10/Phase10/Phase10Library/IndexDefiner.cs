@@ -32,7 +32,7 @@ namespace Phase10Library
         {
             return mappingDescriptor
                 .Properties(pr => pr
-                    .AddIdFieldMapping()
+                    .AddNameFieldMapping()
                     .AddContentFieldMapping());
         }
 
@@ -48,8 +48,7 @@ namespace Phase10Library
             return analyzersDescriptor
                 .Custom(Analyzers.NgramAnalyzer, custom => custom
                     .Tokenizer("standard")
-                    .Filters("lowercase", TokenFilters.NgramFilter, TokenFilters.LowerCase,
-                        TokenFilters.WordDelimiter, TokenFilters.EnglishStopWords));
+                    .Filters(TokenFilters.LowerCase, TokenFilters.WordDelimiter, TokenFilters.EnglishStopWords, TokenFilters.NgramFilter));
         }
 
         private static IPromise<ITokenFilters> CreateTokenFilters(TokenFiltersDescriptor tokenFiltersDescriptor)
