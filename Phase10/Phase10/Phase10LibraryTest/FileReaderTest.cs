@@ -8,6 +8,8 @@ namespace Phase10LibraryTest
 {
     public class FileReaderTest
     {
+        
+        
         public static IEnumerable<object[]> GetFileContentInvalidArguments = new List<object[]>
         {
             new object[] {"chert"},

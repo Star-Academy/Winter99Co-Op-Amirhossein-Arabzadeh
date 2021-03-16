@@ -2,7 +2,7 @@
 
 namespace Phase10Library
 {
-    internal class IndexDefiner
+    public class IndexDefiner
     {
         private readonly IElasticClient _client;
 

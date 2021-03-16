@@ -3,7 +3,7 @@ using Nest;
 
 namespace Phase10Library
 {
-    internal class Importer<T> where T : class
+    public class Importer<T> where T : class
     {
         private ElasticClientFactory _elasticClientFactory;
         private readonly IElasticClient client;
