@@ -14,7 +14,7 @@ namespace Phase10Library
 
     public class ListCalculator : IListCalculator
     {
-        private IMyElasticClient _client;
+        private readonly IMyElasticClient _client;
 
         public ListCalculator(IMyElasticClient client)
         {

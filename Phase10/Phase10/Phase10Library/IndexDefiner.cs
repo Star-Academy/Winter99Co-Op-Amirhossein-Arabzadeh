@@ -9,7 +9,7 @@ namespace Phase10Library
 
         public IndexDefiner()
         {
-            ElasticClientFactory elasticClientFactory = new ElasticClientFactory();
+            var elasticClientFactory = new ElasticClientFactory();
             _client = elasticClientFactory.CreateElasticClient("http://localhost:9200");
         }
 

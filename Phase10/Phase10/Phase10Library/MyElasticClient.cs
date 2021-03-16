@@ -13,8 +13,8 @@ namespace Phase10Library
     //TODO: test this query
     public class MyElasticClient : IMyElasticClient
     {
-        private ElasticClientFactory _elasticClientFactory = new ElasticClientFactory();
-        private IElasticClient _elasticClient;
+        private readonly ElasticClientFactory _elasticClientFactory = new ElasticClientFactory();
+        private readonly IElasticClient _elasticClient;
 
         public MyElasticClient()
         {
@@ -38,52 +38,51 @@ namespace Phase10Library
 
         public List<string> GetResultSetOfSearch(List<string> unsignedWords, List<string> plusSignedWords, List<string> minusSignedWords)
         {
-            StringBuilder unsignedWordString = new StringBuilder();
+            var unsignedWordString = new StringBuilder();
             foreach (var unsignedWord in unsignedWords)
             {
                 unsignedWordString.Append(" " + unsignedWord);
             }
             
-            StringBuilder plusSignedWordString =new StringBuilder();
+            var plusSignedWordString =new StringBuilder();
             foreach (var plusSignedWord in plusSignedWords)
             {
                 plusSignedWordString.Append(" " + plusSignedWord);
             }
 
-            StringBuilder minusSignedWordString = new StringBuilder();
+            var minusSignedWordString = new StringBuilder();
             foreach (var minusSignedWord in minusSignedWords)
             {
                 minusSignedWordString.Append(" " + minusSignedWord);
             }
             var response = _elasticClient.Search<Doc>(s => s
                 .Index(Indexes.DocsIndex)
+                .Size(1000)
                 .Query(q => q
                     .Bool(b => b
                         .Must(must => must
                             .Match(match => match
                                 .Field(p => p.Content)
                                 .Query(unsignedWordString.ToString())
+                                .Operator(Operator.And)
                                 .Analyzer(Analyzers.NgramAnalyzer)
                                 ))
                         .Should(should => should
                             .Match(match => match
                                 .Field(p => p.Content)
                                 .Query(plusSignedWordString.ToString())
+                                .Operator(Operator.Or)
                                 .Analyzer(Analyzers.NgramAnalyzer)
                                 ))
                         .MustNot(must => must
                             .Match(match => match
                                 .Field(p => p.Content)
                                 .Query(minusSignedWordString.ToString())
+                                .Operator(Operator.Or)
                                 .Analyzer(Analyzers.NgramAnalyzer)
                                 )))));
-            List<string> result = new List<string>();
-            foreach (var doc in response.Documents)
-            {
-                result.Add(doc.Name);
-            }
 
-            return result;
+            return response.Documents.Select(doc => doc.Name).ToList();
 
         }
     }

@@ -14,6 +14,11 @@ namespace Phase10Library
         public string[] GetFilesRelatedPaths([NotNull] string folderRelativePath)
         {
             CheckIfPathIsWhiteSpaceOrNull(folderRelativePath);
+            return TryToGetFilesRelatedPath(folderRelativePath);
+        }
+
+        private string[] TryToGetFilesRelatedPath(string folderRelativePath)
+        {
             try
             {
                 return Directory.GetFiles(folderRelativePath);
@@ -28,7 +33,7 @@ namespace Phase10Library
         {
             if (string.IsNullOrWhiteSpace(folderRelativePath))
             {
-                throw new ArgumentNullException("directory path is entered white space");
+                throw new ArgumentNullException(nameof(folderRelativePath));
             }
         }
     }

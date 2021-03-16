@@ -7,7 +7,7 @@ namespace Phase10Library
 {
     public class FileReader
     {
-        public List<Doc> GetDocs(IEnumerable<string> filePaths)
+        public IEnumerable<Doc> GetDocs(IEnumerable<string> filePaths)
         {
             return filePaths.Select(filePath => new Doc(filePath.Substring(37), GetFileContent(filePath))).ToList();
         }

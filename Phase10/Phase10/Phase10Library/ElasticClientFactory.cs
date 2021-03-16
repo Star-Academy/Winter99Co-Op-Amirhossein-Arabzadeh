@@ -4,18 +4,19 @@ using Nest;
 namespace Phase10Library
 {
     public class ElasticClientFactory 
-    {
-        private IElasticClient _client;
-
+    { 
         private IElasticClient CreateInitialClient(string url)
         {
-            var uri = new Uri (url);
-            var connectionSettings = new ConnectionSettings (uri);
-            // DebugMode gives you the request in each request to make debuging easier
-            // But don't forget to only use it in debugging, because its usage has some overhead
-            // and should not be used in production
+            var uri = new Uri(url);
+            var connectionSettings = CreateConnectionSettings(uri);
+            return new ElasticClient(connectionSettings);
+        }
+
+        private ConnectionSettings CreateConnectionSettings(Uri uri)
+        {
+            var connectionSettings = new ConnectionSettings(uri);
             connectionSettings.EnableDebugMode();
-            return new ElasticClient (connectionSettings);
+            return connectionSettings;
         }
 
         public IElasticClient CreateElasticClient(string url)

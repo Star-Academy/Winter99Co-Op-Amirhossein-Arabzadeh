@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using Nest;
 
 namespace Phase10Library
@@ -27,70 +25,15 @@ namespace Phase10Library
         {
             PartitionInputWords(input);
             var docsSearchingResultSet = new List<string>();
-            // docsSearchingResultSet = GetIntersectedUnsignedWordsDocsSet(docsSearchingResultSet);
-            //
-            // docsSearchingResultSet = GetIntersectedResultSetWithAllPlusSignedWordsDocs(docsSearchingResultSet);
-            //
-            // docsSearchingResultSet = GetResultSetWithoutMinusSignedWords(docsSearchingResultSet);
             docsSearchingResultSet = GetResultSetFromElasticsearh(_unsignedWords, _plusSignedWords, _minusSignedWords);
             return docsSearchingResultSet;
         }
 
         private List<string> GetResultSetFromElasticsearh(List<string> unsignedWords, List<string> plusSignedWords, List<string> minusSignedWords)
         {
-            MyElasticClient elasticClient = new MyElasticClient();
+            var elasticClient = new MyElasticClient();
             return elasticClient.GetResultSetOfSearch(unsignedWords,
                 plusSignedWords, minusSignedWords);
-        }
-
-        private List<string> GetResultSetWithoutMinusSignedWords(List<string> docsSearchingResultSet)
-        {
-            if (IsResultSetAndMinusSignedWordsNotEmpty(docsSearchingResultSet))
-            {
-                docsSearchingResultSet = _listOperator.GetDocsExcludingMinusSignedWords(_minusSignedWords,
-                    docsSearchingResultSet);
-            }
-
-            return docsSearchingResultSet;
-        }
-
-        private bool IsResultSetAndMinusSignedWordsNotEmpty(List<string> docsSearchingResultSet)
-        {
-            return _minusSignedWords.Count > 0 && docsSearchingResultSet.Count > 0;
-        }
-
-        private List<string> GetIntersectedResultSetWithAllPlusSignedWordsDocs(List<string> docsSearchingResultSet)
-        {
-            if (IsResultSetAndPlusSignedWordsNotEmpty(docsSearchingResultSet))
-            {
-                docsSearchingResultSet = _listOperator.GetDocsWithoutPlusWords(_plusSignedWords,
-                    docsSearchingResultSet);
-            }
-
-            return docsSearchingResultSet;
-        }
-
-        private bool IsResultSetAndPlusSignedWordsNotEmpty(ICollection docsSearchingResultSet)
-        {
-            return _plusSignedWords.Count > 0 && docsSearchingResultSet.Count > 0;
-        }
-
-        private List<string> GetIntersectedUnsignedWordsDocsSet(List<string> docsSearchingResultSet)
-        {
-            if (_unsignedWords.Count <= 0)
-            {
-                return docsSearchingResultSet;
-            }
-
-            docsSearchingResultSet =
-                _listOperator.InitializeResultSetByFirstUnsignedInputWordDocs(_unsignedWords.ElementAt(0));
-            if (docsSearchingResultSet.Count > 0)
-            {
-                docsSearchingResultSet = _listOperator.GetIntersectedUnsignedWordsContainingDocs(_unsignedWords,
-                    docsSearchingResultSet);
-            }
-            
-            return docsSearchingResultSet;
         }
 
         private void PartitionInputWords(string input)

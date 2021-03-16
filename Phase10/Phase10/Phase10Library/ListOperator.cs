@@ -77,7 +77,7 @@ namespace Phase10Library
         
         }
 
-        private List<string> GetDocsName(ISearchResponse<Doc> searchItem)
+        private IEnumerable<string> GetDocsName(ISearchResponse<Doc> searchItem)
         {
             var list = searchItem.Documents.Select(doc => doc.Name).ToList();
             return list;

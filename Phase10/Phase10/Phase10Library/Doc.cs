@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq.Expressions;
 
 namespace Phase10Library
 {
@@ -7,7 +6,19 @@ namespace Phase10Library
     {
         public Doc(string name, string content)
         {
+            Validate(name, content);
+            Name = name;
+            Content = content;
+        }
+
+        private void Validate(string name, string content)
+        {
             ValidateId(name);
+            TryValidateContent(content);
+        }
+
+        private void TryValidateContent(string content)
+        {
             try
             {
                 ValidateContent(content);
@@ -16,16 +27,13 @@ namespace Phase10Library
             {
                 Console.WriteLine(exception.Message);
             }
-            
-            Name = name;
-            Content = content;
         }
 
         private void ValidateContent(string content)
         {
             if (string.IsNullOrWhiteSpace(content))
             {
-                throw new ArgumentException("Doc content is either null or white space or id is negative"); 
+                throw new ArgumentException("Doc content is either null or white space or id is negative:\n"); 
             }
         }
 
@@ -33,12 +41,12 @@ namespace Phase10Library
         {
             if (string.IsNullOrWhiteSpace(id))
             {
-                throw new ArgumentException();
+                throw new ArgumentException("Provided Id is either null or whiteSpace");
             }
         }
 
-        public string Name { get; set; }
-        public string Content { get; set; }
+        public string Name { get;}
+        public string Content { get;}
         
     }
 }

@@ -12,6 +12,7 @@ namespace Phase10Library
             var input = inputGetter.GetInput();
             SearchController searchController = new SearchController(myElasticClient);
             var docsSearchingResultSet = searchController.SearchDocs(input);
+            Console.WriteLine(docsSearchingResultSet.Count());
             foreach (var doc in docsSearchingResultSet)
             {
                 Console.WriteLine(doc);

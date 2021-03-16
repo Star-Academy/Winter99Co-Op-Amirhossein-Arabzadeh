@@ -18,7 +18,7 @@ namespace Phase10Library
                 .Text(t => t
                     .Name(n => n.Content)
                     .Fields(f => f
-                        .Text(t=>t
+                        .Text(tpd=>tpd
                             .Name(n => n.Content)
                             .SetAnalyzer())
                         .SetKeyWord()));
@@ -33,7 +33,7 @@ namespace Phase10Library
         {
             return selector
                 .Keyword(ng => ng
-                    .Name("keyword"));
+                    .Name(KeyWords.KeyWord));
         }
     }
 }

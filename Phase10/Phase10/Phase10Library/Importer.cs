@@ -1,26 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.ConstrainedExecution;
-using System.Threading.Tasks;
-using Elasticsearch.Net;
+﻿using System.Collections.Generic;
 using Nest;
 
 namespace Phase10Library
 {
     public class Importer<T> where T : class
     {
-        private readonly IElasticClient client;
+        private readonly IElasticClient _client;
 
         public Importer(IElasticClient myElasticClient)
         {
-            client = myElasticClient;
+            _client = myElasticClient;
         }
 
         public void Import(IEnumerable<T> documents, string index)
         {
             var bulk = CreateBulk(documents, index); 
-            client.Bulk(bulk);
+            _client.Bulk(bulk);
         }
 
         private BulkDescriptor CreateBulk(IEnumerable<T> documents, string index)
