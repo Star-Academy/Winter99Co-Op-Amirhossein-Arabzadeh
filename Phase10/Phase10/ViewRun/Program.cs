@@ -1,4 +1,6 @@
 ﻿using System;
+using Nest;
+using Phase10Library;
 
 namespace ViewRun
 {
@@ -6,7 +8,11 @@ namespace ViewRun
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+
+            IMyElasticClient elasticClient = new MyElasticClient();
+
+            View view = new View();
+            view.Run(elasticClient);
         }
     }
 }
