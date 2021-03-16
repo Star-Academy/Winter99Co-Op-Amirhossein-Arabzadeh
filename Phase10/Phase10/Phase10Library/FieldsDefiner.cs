@@ -8,7 +8,7 @@ namespace Phase10Library
         {
             return propertiesDescriptor
                 .Keyword(t => t
-                    .Name(n => n.Id));
+                    .Name(n => n.Name));
         }
         
         public static PropertiesDescriptor<Doc> AddContentFieldMapping(this PropertiesDescriptor<Doc> propertiesDescriptor)

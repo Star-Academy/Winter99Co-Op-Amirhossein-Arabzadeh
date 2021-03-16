@@ -2,6 +2,6 @@
 {
     public static class Indexes
     {
-        public const string DocsIndex = "Docs";
+        public const string DocsIndex = "my_docs";
     }
 }

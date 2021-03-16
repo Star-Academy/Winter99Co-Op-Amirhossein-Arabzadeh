@@ -1,4 +1,5 @@
-﻿using Nest;
+﻿using System;
+using Nest;
 
 namespace Phase10Library
 {
@@ -17,6 +18,7 @@ namespace Phase10Library
             var response = _client.Indices.Create(index, s => s
                 .Settings(CreateSettings)
                 .Map<Doc>(CreateMapping));
+            Console.WriteLine(response.ServerError);
         }
 
         private IPromise<IIndexSettings> CreateSettings(IndexSettingsDescriptor settingsDescriptor)
@@ -46,7 +48,7 @@ namespace Phase10Library
             return analyzersDescriptor
                 .Custom(Analyzers.NgramAnalyzer, custom => custom
                     .Tokenizer("standard")
-                    .Filters("lowercase", TokenFilters.Standard, TokenFilters.NgramFilter, TokenFilters.LowerCase,
+                    .Filters("lowercase", TokenFilters.NgramFilter, TokenFilters.LowerCase,
                         TokenFilters.WordDelimiter, TokenFilters.EnglishStopWords));
         }
 

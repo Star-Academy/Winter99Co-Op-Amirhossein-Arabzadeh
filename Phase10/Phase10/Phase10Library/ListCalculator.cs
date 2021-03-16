@@ -40,7 +40,7 @@ namespace Phase10Library
                     continue;
                 }
                 var docsIds = searchItemDocsList.Documents
-                    .Select(responseDocument => responseDocument.Id).ToList();
+                    .Select(responseDocument => responseDocument.Name).ToList();
                 
                 setOfContainingDocsOfPartitionTerms.UnionWith(docsIds);
 

@@ -5,9 +5,9 @@ namespace Phase10Library
 {
     public class Doc
     {
-        public Doc(string id, string content)
+        public Doc(string name, string content)
         {
-            ValidateId(id);
+            ValidateId(name);
             try
             {
                 ValidateContent(content);
@@ -17,7 +17,7 @@ namespace Phase10Library
                 Console.WriteLine(exception.Message);
             }
             
-            Id = id;
+            Name = name;
             Content = content;
         }
 
@@ -37,7 +37,7 @@ namespace Phase10Library
             }
         }
 
-        public string Id { get; set; }
+        public string Name { get; set; }
         public string Content { get; set; }
         
     }

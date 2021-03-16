@@ -8,7 +8,7 @@ namespace Phase10Library
     }
 
     //TODO: test this query
-    public class MyElasticClient : IMyElasticClient
+    public class MyElasticClient : ElasticClientFactory, IMyElasticClient
     {
         private IElasticClient _elasticClient = new ElasticClient();
         public ISearchResponse<Doc> GetSearchItemFromDb(string unsignedWord)
@@ -22,6 +22,8 @@ namespace Phase10Library
                                 .Field(p => p.Content)
                                 .Query(unsignedWord))))));
             return response;
-        } 
+        }
+
+        
     }
 }

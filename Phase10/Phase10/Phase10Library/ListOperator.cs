@@ -31,7 +31,7 @@ namespace Phase10Library
 
             if (searchItemDocs.Documents.Count == 0) return setOfDocsContainingUnsignedWord;
             
-            var docsIds = searchItemDocs.Documents.Select(document => document.Id).ToList();
+            var docsIds = searchItemDocs.Documents.Select(document => document.Name).ToList();
 
             setOfDocsContainingUnsignedWord.AddRange(docsIds);
 
@@ -79,7 +79,7 @@ namespace Phase10Library
 
         private List<string> GetDocsName(ISearchResponse<Doc> searchItem)
         {
-            var list = searchItem.Documents.Select(doc => doc.Id).ToList();
+            var list = searchItem.Documents.Select(doc => doc.Name).ToList();
             return list;
         }
         private void ValidateListsAndDictionary(ICollection<string> words, ICollection<string> result)

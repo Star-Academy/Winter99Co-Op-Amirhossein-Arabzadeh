@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Net.Http;
-using System.Text.Json;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Nest;
 using Phase10Library;
-using Index = System.Index;
 
 namespace IndexRun
 {
@@ -14,8 +8,9 @@ namespace IndexRun
     {
         static void Main(string[] args)
         {
-            var indexDefiner = new IndexDefiner();
-            indexDefiner.CreateIndex(Indexes.DocsIndex);
+            //TODO: move it to another class
+            // var indexDefiner = new IndexDefiner();
+            // indexDefiner.CreateIndex(Indexes.DocsIndex);
             FileNamesExtractor fileNamesExtractor = new FileNamesExtractor();
             var filePaths = fileNamesExtractor.GetFilesRelatedPaths("../../../../Resources/BigEnglishData");
             FileReader fileReader = new FileReader();
@@ -25,7 +20,8 @@ namespace IndexRun
         private static void IndexDocs(IEnumerable<Doc> docs)
         {
             ElasticClientFactory elasticClientFactory = new ElasticClientFactory();
-            var importer = new Importer<Doc>(elasticClientFactory);
+            IElasticClient elasticClient = elasticClientFactory.CreateElasticClient("http://localhost:9200");
+            var importer = new Importer<Doc>(elasticClient);
             importer.Import(docs, Indexes.DocsIndex);
         }
 
