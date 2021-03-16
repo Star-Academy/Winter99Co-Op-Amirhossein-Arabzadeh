@@ -12,7 +12,7 @@ namespace ViewRun
             IMyElasticClient elasticClient = new MyElasticClient();
 
             View view = new View();
-            view.Run(elasticClient);
+            view.Run();
         }
     }
 }

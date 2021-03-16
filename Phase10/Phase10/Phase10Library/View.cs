@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Linq;
-using Nest;
 
 namespace Phase10Library
 {
     public class View
     {
-        public void Run(IMyElasticClient myElasticClient)
+        public void Run()
         {
             IInputGetter inputGetter = new InputGetter();
             var input = inputGetter.GetInput();
-            SearchController searchController = new SearchController(myElasticClient);
+            var searchController = new SearchController();
             var docsSearchingResultSet = searchController.SearchDocs(input);
             Console.WriteLine(docsSearchingResultSet.Count());
             foreach (var doc in docsSearchingResultSet)
