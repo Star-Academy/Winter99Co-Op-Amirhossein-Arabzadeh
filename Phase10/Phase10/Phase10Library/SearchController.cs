@@ -27,13 +27,20 @@ namespace Phase10Library
         {
             PartitionInputWords(input);
             var docsSearchingResultSet = new List<string>();
-            docsSearchingResultSet = GetIntersectedUnsignedWordsDocsSet(docsSearchingResultSet);
-
-            docsSearchingResultSet = GetIntersectedResultSetWithAllPlusSignedWordsDocs(docsSearchingResultSet);
-
-            docsSearchingResultSet = GetResultSetWithoutMinusSignedWords(docsSearchingResultSet);
-            
+            // docsSearchingResultSet = GetIntersectedUnsignedWordsDocsSet(docsSearchingResultSet);
+            //
+            // docsSearchingResultSet = GetIntersectedResultSetWithAllPlusSignedWordsDocs(docsSearchingResultSet);
+            //
+            // docsSearchingResultSet = GetResultSetWithoutMinusSignedWords(docsSearchingResultSet);
+            docsSearchingResultSet = GetResultSetFromElasticsearh(_unsignedWords, _plusSignedWords, _minusSignedWords);
             return docsSearchingResultSet;
+        }
+
+        private List<string> GetResultSetFromElasticsearh(List<string> unsignedWords, List<string> plusSignedWords, List<string> minusSignedWords)
+        {
+            MyElasticClient elasticClient = new MyElasticClient();
+            return elasticClient.GetResultSetOfSearch(unsignedWords,
+                plusSignedWords, minusSignedWords);
         }
 
         private List<string> GetResultSetWithoutMinusSignedWords(List<string> docsSearchingResultSet)
