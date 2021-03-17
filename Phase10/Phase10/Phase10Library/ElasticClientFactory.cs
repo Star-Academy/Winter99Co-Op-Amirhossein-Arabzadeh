@@ -21,8 +21,17 @@ namespace Phase10Library
 
         public IElasticClient CreateElasticClient(string url)
         {
+            ValidateUrl(url);
             var client = CreateInitialClient(url);
             return client;
+        }
+
+        private void ValidateUrl(string url)
+        {
+            if (string.IsNullOrWhiteSpace(url))
+            {
+                throw new ArgumentException();
+            }
         }
     }
 }
