@@ -6,9 +6,6 @@ namespace ViewRun
     {
         static void Main(string[] args)
         {
-
-            var elasticClient = new MyElasticClient();
-
             var view = new View();
             view.Run();
         }
