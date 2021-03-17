@@ -26,8 +26,14 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Update="GetContentTestFile.txt">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <None Update="GetContentTestFile1.txt">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="GetContentTestFile2.txt">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="GetContentTestFile3.txt">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
     </ItemGroup>
 

@@ -7,20 +7,39 @@ namespace Phase10Library
 {
     public class FileReader : IFileReader
     {
-        public IEnumerable<Doc> GetDocs(IEnumerable<string> filePaths)
+        public IEnumerable<Doc> GetDocs(IEnumerable<string> filePaths, int indexOfFileNameStartInRelatedPath)
         {
-            return filePaths.Select(filePath => new Doc(filePath.Substring(37),
+            ValidateFilePaths(filePaths);
+            return filePaths.Select(filePath => new Doc(filePath.Substring(indexOfFileNameStartInRelatedPath),
                 GetFileContent(filePath))).ToList();
         }
+
+        private void ValidateFilePaths(IEnumerable<string> filePaths)
+        {
+            if (filePaths is null)
+            {
+                throw new ArgumentNullException("filePaths");
+            }
+
+            if (filePaths.Count() == 0)
+            {
+                throw new ArgumentException("provided filePaths enumerable is empty");
+            }
+
+            foreach (var filePath in filePaths)
+            {
+                ValidateFilePath(filePath);
+            }
+        }
+
         private string GetFileContent(string filePath)
         {
-            ValidateFilePath(filePath);
             try
             {
                 var content = File.ReadAllText(filePath);
                 return content;
             }
-            catch (Exception fileNotFoundException)
+            catch (FileNotFoundException fileNotFoundException)
             {
                 Console.WriteLine(fileNotFoundException);
                 throw new FileNotFoundException(fileNotFoundException.Message);

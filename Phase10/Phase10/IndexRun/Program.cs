@@ -11,7 +11,7 @@ namespace IndexRun
             var fileNamesExtractor = new FileNamesExtractor();
             var filePaths = fileNamesExtractor.GetFilesRelatedPaths(Addresses.FolderRelativePath);
             var fileReader = new FileReader();
-            var docs = fileReader.GetDocs(filePaths);
+            var docs = fileReader.GetDocs(filePaths, 37);
             IndexDocs(docs);
         }
         private static void IndexDocs(IEnumerable<Doc> docs)

@@ -4,6 +4,6 @@ namespace Phase10Library
 {
     public interface IFileReader
     {
-        IEnumerable<Doc> GetDocs(IEnumerable<string> filePaths);
+        IEnumerable<Doc> GetDocs(IEnumerable<string> filePaths, int indexOfFileNameStartInRelatedPath);
     }
 }
