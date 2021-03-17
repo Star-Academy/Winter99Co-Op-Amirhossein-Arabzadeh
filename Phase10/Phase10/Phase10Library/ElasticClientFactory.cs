@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using Nest;
 
 namespace Phase10Library

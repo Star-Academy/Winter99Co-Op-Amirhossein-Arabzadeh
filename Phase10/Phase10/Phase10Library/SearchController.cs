@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Elasticsearch.Net;
 using Nest;
 
 namespace Phase10Library
@@ -36,7 +35,6 @@ namespace Phase10Library
         private IEnumerable<string> GetResultSetFromElasticsearch(IEnumerable<string> unsignedWords,
             IEnumerable<string> plusSignedWords, IEnumerable<string> minusSignedWords)
         {
-            var elasticClient = new MyElasticClient();
             return GetResultSetOfSearch(unsignedWords,
                 plusSignedWords, minusSignedWords);
         }
@@ -67,7 +65,7 @@ namespace Phase10Library
 
         
 
-        private StringBuilder CreateWordStrings(IEnumerable<string> unsignedWords, IEnumerable<string> plusSignedWords,
+        private void CreateWordStrings(IEnumerable<string> unsignedWords, IEnumerable<string> plusSignedWords,
             IEnumerable<string> minusSignedWords, out StringBuilder plusSignedWordString, out StringBuilder minusSignedWordString,
             out StringBuilder unsignedWordString)
         {
@@ -76,7 +74,6 @@ namespace Phase10Library
             plusSignedWordString = GetPlusSignedWordString(plusSignedWords);
 
             minusSignedWordString = GetMinusSignedWordString(minusSignedWords);
-            return unsignedWordString;
         }
 
         private StringBuilder GetMinusSignedWordString(IEnumerable<string> minusSignedWords)
