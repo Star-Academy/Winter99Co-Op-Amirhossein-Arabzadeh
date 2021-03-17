@@ -26,6 +26,7 @@ namespace Phase10Library
             catch (ArgumentException exception)
             {
                 Console.WriteLine(exception.Message);
+                throw new ArgumentException("Provide content is wither null or empty");
             }
         }
 

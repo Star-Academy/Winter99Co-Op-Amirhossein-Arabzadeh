@@ -10,10 +10,10 @@ namespace Phase10LibraryTest
     {
         public static IEnumerable<object[]> GetDocArguments = new List<object[]>
         {
-            new object[] {It.IsAny<string>(),"    "},
-            new object[] {It.IsAny<string>(),null},
-            new object[] {"   ",It.IsAny<string>()},
-            new object[] {null,It.IsAny<string>()},
+            new object[] {"ProperName","    "},
+            new object[] {"ProperName",null},
+            new object[] {"   ","ProperContent"},
+            new object[] {null,"ProperContent"},
         };
         [Theory]
         [MemberData(nameof(GetDocArguments))]
@@ -21,6 +21,14 @@ namespace Phase10LibraryTest
         {
             void Action() => new Doc(id, content);
             Assert.Throws<ArgumentException>(Action);
+        }
+
+        [Fact]
+        public void Doc_ShouldCreateDocWithoutException_WhenParametersAreValid()
+        {
+            Doc doc = new Doc("152", "sdjfnkjdf{POPDJODJ^$R^&^(**865365756IUHGGVHBIJ\n\r\"dfgsfdgdfgfds");
+            Assert.Equal(doc.Name, "152");
+            Assert.Equal(doc.Content, "sdjfnkjdf{POPDJODJ^$R^&^(**865365756IUHGGVHBIJ\n\r\"dfgsfdgdfgfds");
         }
     }
 }
