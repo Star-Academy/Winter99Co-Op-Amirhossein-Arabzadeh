@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Nest;
 
 namespace Phase10Library
@@ -7,18 +8,30 @@ namespace Phase10Library
     {
         private readonly IElasticClient _client;
 
-        public IndexDefiner()
+        public IndexDefiner(IElasticClient client)
         {
-            var elasticClientFactory = new ElasticClientFactory();
-            _client = elasticClientFactory.CreateElasticClient(Addresses.HttpLocalhost);
+            _client = client;
         }
 
         public void CreateIndex(string index)
         {
+            ValidateIndexName(index);
             var response = _client.Indices.Create(index, s => s
                 .Settings(CreateSettings)
                 .Map<Doc>(CreateMapping));
             Console.WriteLine(response.ServerError);
+        }
+
+        private void ValidateIndexName(string index)
+        {
+            if (string.IsNullOrWhiteSpace(index))
+            {
+                throw new ArgumentException("Provided index name is either null or empty");
+            }
+            if (index.Any(char.IsUpper))
+            {
+                throw new ArgumentException("Provided index name has an uppercase character");
+            }
         }
 
         private IPromise<IIndexSettings> CreateSettings(IndexSettingsDescriptor settingsDescriptor)

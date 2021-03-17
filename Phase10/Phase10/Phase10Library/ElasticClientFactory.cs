@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Nest;
 
 namespace Phase10Library
@@ -30,7 +31,7 @@ namespace Phase10Library
         {
             if (string.IsNullOrWhiteSpace(url))
             {
-                throw new ArgumentException();
+                throw new ArgumentException("Provided uri is either null or empty");
             }
         }
     }
