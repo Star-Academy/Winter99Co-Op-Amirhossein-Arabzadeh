@@ -5,6 +5,7 @@ namespace Phase10Library
 {
     public class ElasticResponseValidator<T>  where T : class
     {
+        //TODO: implement this class
         public void Validate(ElasticsearchResponse<T> response)
         {
             if (response.Success)
