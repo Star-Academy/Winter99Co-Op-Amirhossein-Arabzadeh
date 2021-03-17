@@ -6,7 +6,7 @@ using Nest;
 namespace Phase10Library
 {
     //TODO: test this query
-    public class MyElasticClient : IMyElasticClient2
+    public class MyElasticClient : IMyElasticClient
     {
         private readonly ElasticClientFactory _elasticClientFactory = new ElasticClientFactory();
         private readonly IElasticClient _elasticClient;
