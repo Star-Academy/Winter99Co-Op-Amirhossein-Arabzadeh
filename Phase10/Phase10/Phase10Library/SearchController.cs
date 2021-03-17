@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Elasticsearch.Net;
 using Nest;
 
 namespace Phase10Library
@@ -12,10 +13,12 @@ namespace Phase10Library
         private List<string> _plusSignedWords;
         private List<string> _minusSignedWords;
         private readonly IElasticClient _elasticClient;
+        private readonly QueryCreator _queryCreator;
 
-        public SearchController(IElasticClient elasticClient)
+        public SearchController(IElasticClient elasticClient, QueryCreator queryCreator)
         {
             _elasticClient = elasticClient;
+            _queryCreator = queryCreator;
             _partitioner = new Partitioner();
             _unsignedWords = new List<string>();
             _minusSignedWords = new List<string>();
@@ -30,61 +33,83 @@ namespace Phase10Library
             return docsSearchingResultSet;
         }
 
-        private IEnumerable<string> GetResultSetFromElasticsearch(List<string> unsignedWords, List<string> plusSignedWords, List<string> minusSignedWords)
+        private IEnumerable<string> GetResultSetFromElasticsearch(IEnumerable<string> unsignedWords,
+            IEnumerable<string> plusSignedWords, IEnumerable<string> minusSignedWords)
         {
             var elasticClient = new MyElasticClient();
             return GetResultSetOfSearch(unsignedWords,
                 plusSignedWords, minusSignedWords);
         }
         //TODO: make this method simple
-        private IEnumerable<string> GetResultSetOfSearch(IEnumerable<string> unsignedWords, IEnumerable<string> plusSignedWords, IEnumerable<string> minusSignedWords)
+        private IEnumerable<string> GetResultSetOfSearch(IEnumerable<string> unsignedWords,
+            IEnumerable<string> plusSignedWords, IEnumerable<string> minusSignedWords)
+        {
+            CreateWordStrings(unsignedWords, plusSignedWords, minusSignedWords, out var plusSignedWordString,
+                out var minusSignedWordString, out var unsignedWordString);
+
+            var response = GetResponseFromClient(unsignedWordString, plusSignedWordString, minusSignedWordString);
+
+            return response.Documents.Select(doc => doc.Name).ToList();
+
+        }
+
+        private ISearchResponse<Doc> GetResponseFromClient(StringBuilder unsignedWordString, StringBuilder plusSignedWordString,
+            StringBuilder minusSignedWordString)
+        {
+            var query = _queryCreator.GetQueryContainer(unsignedWordString, plusSignedWordString, minusSignedWordString,
+                "Content");
+            var response = _elasticClient.Search<Doc>(s => s
+                .Index(Indexes.DocsIndex)
+                .Size(1000)
+                .Query(q => query));
+            return response;
+        }
+
+        
+
+        private StringBuilder CreateWordStrings(IEnumerable<string> unsignedWords, IEnumerable<string> plusSignedWords,
+            IEnumerable<string> minusSignedWords, out StringBuilder plusSignedWordString, out StringBuilder minusSignedWordString,
+            out StringBuilder unsignedWordString)
+        {
+            unsignedWordString = GetUnsignedWordString(unsignedWords);
+
+            plusSignedWordString = GetPlusSignedWordString(plusSignedWords);
+
+            minusSignedWordString = GetMinusSignedWordString(minusSignedWords);
+            return unsignedWordString;
+        }
+
+        private StringBuilder GetMinusSignedWordString(IEnumerable<string> minusSignedWords)
+        {
+            var minusSignedWordString = new StringBuilder();
+            foreach (var minusSignedWord in minusSignedWords)
+            {
+                minusSignedWordString.Append(" " + minusSignedWord);
+            }
+
+            return minusSignedWordString;
+        }
+
+        private StringBuilder GetPlusSignedWordString(IEnumerable<string> plusSignedWords)
+        {
+            var plusSignedWordString = new StringBuilder();
+            foreach (var plusSignedWord in plusSignedWords)
+            {
+                plusSignedWordString.Append(" " + plusSignedWord);
+            }
+
+            return plusSignedWordString;
+        }
+
+        private StringBuilder GetUnsignedWordString(IEnumerable<string> unsignedWords)
         {
             var unsignedWordString = new StringBuilder();
             foreach (var unsignedWord in unsignedWords)
             {
                 unsignedWordString.Append(" " + unsignedWord);
             }
-            
-            var plusSignedWordString =new StringBuilder();
-            foreach (var plusSignedWord in plusSignedWords)
-            {
-                plusSignedWordString.Append(" " + plusSignedWord);
-            }
 
-            var minusSignedWordString = new StringBuilder();
-            foreach (var minusSignedWord in minusSignedWords)
-            {
-                minusSignedWordString.Append(" " + minusSignedWord);
-            }
-            var response = _elasticClient.Search<Doc>(s => s
-                .Index(Indexes.DocsIndex)
-                .Size(1000)
-                .Query(q => q
-                    .Bool(b => b
-                        .Must(must => must
-                            .Match(match => match
-                                .Field(p => p.Content)
-                                .Query(unsignedWordString.ToString())
-                                .Operator(Operator.And)
-                                .Analyzer(Analyzers.NgramAnalyzer)
-                                ))
-                        .Should(should => should
-                            .Match(match => match
-                                .Field(p => p.Content)
-                                .Query(plusSignedWordString.ToString())
-                                .Operator(Operator.Or)
-                                .Analyzer(Analyzers.NgramAnalyzer)
-                                ))
-                        .MustNot(must => must
-                            .Match(match => match
-                                .Field(p => p.Content)
-                                .Query(minusSignedWordString.ToString())
-                                .Operator(Operator.Or)
-                                .Analyzer(Analyzers.NgramAnalyzer)
-                                )))));
-
-            return response.Documents.Select(doc => doc.Name).ToList();
-
+            return unsignedWordString;
         }
 
         private void PartitionInputWords(string input)
