@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Moq;
 using Phase10Library;
 using Xunit;
 
@@ -26,9 +25,9 @@ namespace Phase10LibraryTest
         [Fact]
         public void Doc_ShouldCreateDocWithoutException_WhenParametersAreValid()
         {
-            Doc doc = new Doc("152", "sdjfnkjdf{POPDJODJ^$R^&^(**865365756IUHGGVHBIJ\n\r\"dfgsfdgdfgfds");
-            Assert.Equal(doc.Name, "152");
-            Assert.Equal(doc.Content, "sdjfnkjdf{POPDJODJ^$R^&^(**865365756IUHGGVHBIJ\n\r\"dfgsfdgdfgfds");
+            var doc = new Doc("152", "sdjfnkjdf{POPDJODJ^$R^&^(**865365756IUHGGVHBIJ\n\r\"dfgsfdgdfgfds");
+            Assert.Equal("152", doc.Name);
+            Assert.Equal("sdjfnkjdf{POPDJODJ^$R^&^(**865365756IUHGGVHBIJ\n\r\"dfgsfdgdfgfds", doc.Content);
         }
     }
 }
