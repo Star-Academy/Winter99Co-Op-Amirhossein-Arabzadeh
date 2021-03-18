@@ -9,9 +9,16 @@ namespace Phase10Library
     {
         public IEnumerable<Doc> GetDocs(IEnumerable<string> filePaths, int indexOfFileNameStartInRelatedPath)
         {
-            ValidateFilePaths(filePaths);
-            return filePaths.Select(filePath => new Doc(filePath.Substring(indexOfFileNameStartInRelatedPath),
+            var pathsArray = GetFilePathsArray(filePaths);
+            ValidateFilePaths(pathsArray);
+            return pathsArray.Select(filePath => new Doc(filePath.Substring(indexOfFileNameStartInRelatedPath),
                 GetFileContent(filePath))).ToList();
+        }
+
+        private string[] GetFilePathsArray(IEnumerable<string> filePaths)
+        {
+            var pathsArray = filePaths as string[] ?? filePaths.ToArray();
+            return pathsArray;
         }
 
         private void ValidateFilePaths(IEnumerable<string> filePaths)

@@ -38,7 +38,6 @@ namespace Phase10Library
             return GetResultSetOfSearch(unsignedWords,
                 plusSignedWords, minusSignedWords);
         }
-        //TODO: make this method simple
         private IEnumerable<string> GetResultSetOfSearch(IEnumerable<string> unsignedWords,
             IEnumerable<string> plusSignedWords, IEnumerable<string> minusSignedWords)
         {
@@ -46,7 +45,7 @@ namespace Phase10Library
                 out var minusSignedWordString, out var unsignedWordString);
 
             var response = GetResponseFromClient(unsignedWordString, plusSignedWordString, minusSignedWordString);
-            ElasticResponseValidator<Doc>.Validate(response);
+            ElasticResponseValidator.Validate(response);
             return response.Documents.Select(doc => doc.Name).ToList();
 
         }
@@ -60,7 +59,7 @@ namespace Phase10Library
                 .Index(Indexes.DocsIndex)
                 .Size(1000)
                 .Query(q => query));
-            ElasticResponseValidator<Doc>.Validate(response);
+            ElasticResponseValidator.Validate(response);
             return response;
         }
 

@@ -3,7 +3,7 @@ using Elasticsearch.Net;
 
 namespace Phase10Library
 {
-    public class ElasticResponseValidator<T>  where T : class
+    public class ElasticResponseValidator
     {
         public static void Validate(IElasticsearchResponse response)
         {

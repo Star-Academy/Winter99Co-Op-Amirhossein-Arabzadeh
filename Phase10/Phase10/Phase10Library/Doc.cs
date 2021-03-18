@@ -48,21 +48,6 @@ namespace Phase10Library
 
         public string Name { get;}
         public string Content { get;}
-        // public override bool Equals(object? obj)
-        // {
-        //     return obj is not null &&
-        //            obj is Doc &&
-        //            ((Doc) obj).Name == this.Name;
-        // }
-        //
-        // protected bool Equals(Doc other)
-        // {
-        //     return Name == other.Name && Content == other.Content;
-        // }
-        //
-        // public override int GetHashCode()
-        // {
-        //     return HashCode.Combine(Name, Content);
-        // }
+        
     }
 }
