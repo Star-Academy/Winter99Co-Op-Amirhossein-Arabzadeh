@@ -18,24 +18,23 @@ namespace Phase10LibraryTest
             var indexDefiner = new IndexDefiner(client);
             indexDefiner.CreateIndex("my_index");
             var response = client.LowLevel.Indices.GetMapping<StringResponse>("my_index");
-            var expectedMapping =
-                "{\n  \"my_index\" : {\n" +
-                "    \"mappings\" : {\n " +
-                "     \"properties\" : {\n" +
-                "        \"content\" : {\n" +
-                "          \"type\" : \"text\",\n" +
-                "          \"fields\" : {\n" +
-                "            \"content\" : {\n" +
-                "              \"type\" : \"text\",\n" +
-                "              \"analyzer\" : \"my-ngram-analyzer\"\n" +
-                "            },\n            \"keyword\" : {\n" +
-                "              \"type\" : \"keyword\"\n" +
-                "            }\n          }\n        },\n        \"name\" : {\n" +
-                "          \"type\" : \"long\"\n" +
-                "        }\n      }\n    }\n  }\n}";
+            const string expectedMapping = "{\n  \"my_index\" : {\n" +
+                                           "    \"mappings\" : {\n " +
+                                           "     \"properties\" : {\n" +
+                                           "        \"content\" : {\n" +
+                                           "          \"type\" : \"text\",\n" +
+                                           "          \"fields\" : {\n" +
+                                           "            \"content\" : {\n" +
+                                           "              \"type\" : \"text\",\n" +
+                                           "              \"analyzer\" : \"my-ngram-analyzer\"\n" +
+                                           "            },\n            \"keyword\" : {\n" +
+                                           "              \"type\" : \"keyword\"\n" +
+                                           "            }\n          }\n        },\n        \"name\" : {\n" +
+                                           "          \"type\" : \"long\"\n" +
+                                           "        }\n      }\n    }\n  }\n}";
             var trimmedExpectedMapping = string.Concat(expectedMapping.Where(c => !Char.IsWhiteSpace(c)));
-            string trimmedResponseBody = string.Concat(response.Body.Where(c => !Char.IsWhiteSpace(c)));
-            Assert.Equal(trimmedResponseBody, trimmedExpectedMapping);
+            var trimmedResponseBody = string.Concat(response.Body.Where(c => !Char.IsWhiteSpace(c)));
+            Assert.Equal(trimmedExpectedMapping, trimmedResponseBody);
         }
         
         public static IEnumerable<object[]> CreateIndexInvalidArguments = new List<object[]>

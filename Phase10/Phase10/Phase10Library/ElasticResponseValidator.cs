@@ -5,16 +5,22 @@ namespace Phase10Library
 {
     public class ElasticResponseValidator<T>  where T : class
     {
-        public void Validate(ElasticsearchResponse<T> response)
+        public static void Validate(IElasticsearchResponse response)
         {
-            if (response.Success)
+            if (response is not ElasticsearchResponse<Doc>)
+            {
+                return;
+            }
+
+            var elasticsearchResponse = (ElasticsearchResponse<Doc>) response;
+            if (elasticsearchResponse.Success)
             {
                 Console.WriteLine("Response is alright but we should check if all shards are checked.");
                 return;   
                 
             }
 
-            if (response.OriginalException is not ElasticsearchClientException exception) return;
+            if (elasticsearchResponse.OriginalException is not ElasticsearchClientException exception) return;
             switch (exception.FailureReason)
             {
                 case PipelineFailure.Unexpected:

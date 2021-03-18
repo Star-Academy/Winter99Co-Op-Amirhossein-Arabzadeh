@@ -20,6 +20,7 @@ namespace Phase10Library
                 .Settings(CreateSettings)
                 .Map<Doc>(CreateMapping));
             Console.WriteLine(response.ServerError);
+            ElasticResponseValidator<Doc>.Validate(response);
         }
 
         private void ValidateIndexName(string index)

@@ -46,7 +46,7 @@ namespace Phase10Library
                 out var minusSignedWordString, out var unsignedWordString);
 
             var response = GetResponseFromClient(unsignedWordString, plusSignedWordString, minusSignedWordString);
-
+            ElasticResponseValidator<Doc>.Validate(response);
             return response.Documents.Select(doc => doc.Name).ToList();
 
         }
@@ -60,6 +60,7 @@ namespace Phase10Library
                 .Index(Indexes.DocsIndex)
                 .Size(1000)
                 .Query(q => query));
+            ElasticResponseValidator<Doc>.Validate(response);
             return response;
         }
 
