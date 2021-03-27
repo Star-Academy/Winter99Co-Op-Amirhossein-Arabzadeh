@@ -8,6 +8,9 @@ namespace Phase10Library
     {
         private readonly IElasticClient _client;
         private readonly ElasticResponseValidator _elasticResponseValidator;
+        private const int MaxNgramDiff = 7;
+        private const int MinGram = 3;
+        private const int MaxGram = 10;
 
         public IndexDefiner(IElasticClient client, ElasticResponseValidator elasticResponseValidator)
         {
@@ -40,7 +43,7 @@ namespace Phase10Library
         private IPromise<IIndexSettings> CreateSettings(IndexSettingsDescriptor settingsDescriptor)
         {
             return settingsDescriptor
-                .Setting(KeyWords.MaxNgramDiff, 7)
+                .Setting(KeyWords.MaxNgramDiff, MaxNgramDiff)
                 .Analysis(CreateAnalysis);
         }
 
@@ -71,8 +74,8 @@ namespace Phase10Library
         {
             return tokenFiltersDescriptor
                 .NGram(TokenFilters.NgramFilter, ng => ng
-                    .MinGram(3)
-                    .MaxGram(10));
+                    .MinGram(MinGram)
+                    .MaxGram(MaxGram));
         }
     }
 }

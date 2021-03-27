@@ -7,8 +7,7 @@ namespace Phase10Library
         public string GetInput()
         {
             Console.WriteLine("Please Type Your plusSigned Words and MinusSigned and unSigned words");
-            var input = Console.ReadLine()?.ToLower();
-            return input;
+            return Console.ReadLine()?.ToLower();
         }
     }
 }

@@ -49,7 +49,7 @@ namespace Phase10Library
             catch (FileNotFoundException fileNotFoundException)
             {
                 Console.WriteLine(fileNotFoundException);
-                throw new FileNotFoundException(fileNotFoundException.Message);
+                throw;
             }
             
         }

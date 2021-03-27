@@ -6,6 +6,10 @@ namespace Phase10Library
 {
     public class QueryCreator
     {
+        public QueryCreator()
+        {
+        }
+
         public QueryContainer GetQueryContainer(StringBuilder unsignedWordString, StringBuilder plusSignedWordString,
             StringBuilder minusSignedWordString, string field)
         {
