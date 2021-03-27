@@ -26,12 +26,16 @@ namespace Phase10LibraryTest
             void Action() => fileReader.GetDocs(filePaths, 37);
             Assert.Throws<ArgumentException>(Action);
         }
+        
+        private const string WhiteSpace = "   ";
+        private const string ProperFilepath = "properFilePath";
+
         public static IEnumerable<object[]> GetDocsInvalidArguments = new List<object[]>
         {
             new object[] {new List<string>
             {
-                "   ",
-                "properFilePath",
+                WhiteSpace,
+                ProperFilepath,
                 null
             }},
             new object[] {new List<string>
@@ -40,9 +44,11 @@ namespace Phase10LibraryTest
             }},
             new object[] {new List<string>
             {
-                "   ",
+                WhiteSpace,
             }},
         };
+
+        
         [Theory]
         [MemberData(nameof(GetDocsInvalidArguments))]
         public void GetDocs_ShouldThrowArgumentException_WhenOneOrMoreFilePathIsEmpty(IEnumerable<string> filePaths)
@@ -55,17 +61,21 @@ namespace Phase10LibraryTest
         [Fact]
         public void GetDocs_ShouldReturnWantedNumberOfDocs_WhenParameterIsValid()
         {
+            const string filePath3 = "../../../GetContentTestFile3.txt";
+            const string filePath2 = "../../../GetContentTestFile2.txt";
+            const string filePath1 = "../../../GetContentTestFile1.txt";
             var fileReader = new FileReader();
             var filePaths = new List<string>
             {
-                "../../../GetContentTestFile1.txt",
-                "../../../GetContentTestFile2.txt",
-                "../../../GetContentTestFile3.txt",
+                filePath1,
+                filePath2,
+                filePath3,
             };
             var docs = fileReader.GetDocs(filePaths, 8);
             Assert.Equal(3, docs.Count());
         }
-        
+
+
         [Fact]
         public void GetDocs_ShouldReturnFileNotFoundException_WhenParameterHasNotExistingFilePaths()
         {

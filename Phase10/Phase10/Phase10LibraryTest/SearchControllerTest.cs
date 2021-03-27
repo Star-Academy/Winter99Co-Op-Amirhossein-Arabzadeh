@@ -12,11 +12,16 @@ namespace Phase10LibraryTest
         [Fact]
         public void SearchDocs_ShouldReturnResultWithoutAnyException_WhenParameterIsValid()
         {
-            var input = "street +stories -last";
+            
+            const string name2 = "1";
+            const string content2 = "street";
+            const string content1 = "street stories";
+            const string name1 = "2";
+            const string input = "street +stories -last";
             var docs = new List<Doc>
             {
-                new Doc("2", "street stories"),
-                new Doc("1", "street"),
+                new(name1, content1),
+                new(name2, content2),
             };
             var mockSearchResponse = new Mock<ISearchResponse<Doc>>();
             mockSearchResponse.Setup(x => x.Documents).Returns(docs);
@@ -33,5 +38,6 @@ namespace Phase10LibraryTest
             };
             Assert.Equal(expectedDocs, searchController.SearchDocs(input));
         }
+
     }
 }

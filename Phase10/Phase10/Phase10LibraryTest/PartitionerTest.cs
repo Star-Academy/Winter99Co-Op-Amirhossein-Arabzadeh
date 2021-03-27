@@ -17,17 +17,21 @@ namespace Phase10LibraryTest
         [Fact]
         public void GetWantedSignedWords_ShouldReturnSignedWords_WhenParametersAreValid()
         {
-            
+            const string word2 = "ghasem";
+            const string word1 = "mohammad";
             const string sampleSearchingTerm = "ali reza +mohammad +ghasem -fatemeh -zahra";
             var expectedReturningList = new List<string>
             {
-                "mohammad",
-                "ghasem",
+                word1,
+                word2,
                 
             };
             Assert.Equal(expectedReturningList, _partitioner.GetSignedWords(sampleSearchingTerm, "+"));
 
         }
+
+        
+
         public static IEnumerable<object[]> GetWantedSignedWordsInvalidArguments = new List<object[]>
         {
             new object[] {It.IsAny<string>(), null},
@@ -41,19 +45,20 @@ namespace Phase10LibraryTest
         public void GetWantedSignedWords_ShouldThrowArgumentException_WhenParametersAreInvalid(string searchingTerm,
             string sign)
         {
-            Action action = () =>
-                _partitioner.GetSignedWords(searchingTerm, sign);
+            Action action = () => _partitioner.GetSignedWords(searchingTerm, sign);
             Assert.Throws<ArgumentException>(action);
         }
 
         [Fact]
         public void GetUnSignedWords_ShouldReturnUnsignedWords_WhenParametersAreValid()
         {
+            const string word1 = "ali";
+            const string word2 = "reza";
             const string sampleSearchingTerm = "ali reza +mohammad +ghasem -fatemeh -zahra";
             var expectedReturningList = new List<string>
             {
-                "ali",
-                "reza",
+                word1,
+                word2,
                 
             };
             Assert.Equal(expectedReturningList, _partitioner.GetUnSignedWords(sampleSearchingTerm));
@@ -69,8 +74,7 @@ namespace Phase10LibraryTest
         [MemberData(nameof(GetUnsignedWordsInvalidArguments))]
         public void GetUnsignedWords_ShouldThrowArgumentException_WhenParametersAreInvalid(string searchingTerm)
         {
-            Action action = () =>
-                _partitioner.GetUnSignedWords(searchingTerm);
+            Action action = () => _partitioner.GetUnSignedWords(searchingTerm);
             Assert.Throws<ArgumentException>(action);
         }
     }

@@ -40,8 +40,9 @@ namespace Phase10Library
         private IEnumerable<string> GetResultSetOfSearch(IEnumerable<string> unsignedWords,
             IEnumerable<string> plusSignedWords, IEnumerable<string> minusSignedWords)
         {
-            CreateWordStrings(unsignedWords, plusSignedWords, minusSignedWords, out var plusSignedWordString,
-                out var minusSignedWordString, out var unsignedWordString);
+            var plusSignedWordString = GetPlusSignedWordString(plusSignedWords);;
+            var minusSignedWordString = GetMinusSignedWordString(minusSignedWords);
+            var unsignedWordString = GetUnsignedWordString(unsignedWords);
 
             var response = GetResponseFromClient(unsignedWordString, plusSignedWordString, minusSignedWordString);
             _elasticResponseValidator.Validate(response);
@@ -61,19 +62,6 @@ namespace Phase10Library
                 .Query(q => query));
             _elasticResponseValidator.Validate(response);
             return response;
-        }
-
-        
-
-        private void CreateWordStrings(IEnumerable<string> unsignedWords, IEnumerable<string> plusSignedWords,
-            IEnumerable<string> minusSignedWords, out string plusSignedWordString, out string minusSignedWordString,
-            out string unsignedWordString)
-        {
-            unsignedWordString = GetUnsignedWordString(unsignedWords);
-
-            plusSignedWordString = GetPlusSignedWordString(plusSignedWords);
-
-            minusSignedWordString = GetMinusSignedWordString(minusSignedWords);
         }
 
         private string GetMinusSignedWordString(IEnumerable<string> minusSignedWords)

@@ -11,10 +11,10 @@ namespace Phase10Library
         private readonly string _field;
         public QueryCreator(string unsignedWordString, string plusSignedWordString, string minusSignedWordString, string field)
         {
-            this._unsignedWordString = unsignedWordString;
-            this._plusSignedWordString = plusSignedWordString;
-            this._minusSignedWordString = minusSignedWordString;
-            this._field = field;
+            _unsignedWordString = unsignedWordString;
+            _plusSignedWordString = plusSignedWordString;
+            _minusSignedWordString = minusSignedWordString;
+            _field = field;
         }
 
         public QueryContainer GetQueryContainer()
@@ -23,33 +23,48 @@ namespace Phase10Library
             {
                 Must = new List<QueryContainer>
                 {
-                    new MatchQuery
-                    {
-                        Field = _field,
-                        Query = _unsignedWordString,
-                        Operator = Operator.And
-                    }
+                    GetMustPartOfQuery()
                 },
                 Should = new List<QueryContainer>
                 {
-                    new MatchQuery
-                    {
-                        Field = _field,
-                        Query = _plusSignedWordString,
-                        Operator = Operator.Or
-                    }
+                    GetShouldPartOfQuery()
                 },
                 MustNot = new List<QueryContainer>
                 {
-                    new MatchQuery
-                    {
-                        Field = _field,
-                        Query = _minusSignedWordString,
-                        Operator = Operator.Or
-                    }
+                    GetMustNotPartOfQuery()
                 }
             };
             return query;
+        }
+
+        private MatchQuery GetMustNotPartOfQuery()
+        {
+            return new MatchQuery
+            {
+                Field = _field,
+                Query = _minusSignedWordString,
+                Operator = Operator.Or
+            };
+        }
+
+        private MatchQuery GetShouldPartOfQuery()
+        {
+            return new MatchQuery
+            {
+                Field = _field,
+                Query = _plusSignedWordString,
+                Operator = Operator.Or
+            };
+        }
+
+        private MatchQuery GetMustPartOfQuery()
+        {
+            return new MatchQuery
+            {
+                Field = _field,
+                Query = _unsignedWordString,
+                Operator = Operator.And
+            };
         }
     }
 }
