@@ -8,7 +8,8 @@ namespace ImportRun
         {
             var elasticClientFactory = new ElasticClientFactory();
             var elasticClient = elasticClientFactory.CreateElasticClient(Addresses.HttpLocalhost);
-            var indexDefiner = new IndexDefiner(elasticClient);
+            var elasticResponseValidator = new ElasticResponseValidator();
+            var indexDefiner = new IndexDefiner(elasticClient, elasticResponseValidator);
             indexDefiner.CreateIndex(Indexes.DocsIndex);
         }
     }

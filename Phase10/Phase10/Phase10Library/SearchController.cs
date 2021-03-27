@@ -13,11 +13,13 @@ namespace Phase10Library
         private List<string> _minusSignedWords;
         private readonly IElasticClient _elasticClient;
         private readonly QueryCreator _queryCreator;
+        private readonly ElasticResponseValidator _elasticResponseValidator;
 
-        public SearchController(IElasticClient elasticClient, QueryCreator queryCreator)
+        public SearchController(IElasticClient elasticClient, QueryCreator queryCreator, ElasticResponseValidator elasticResponseValidator)
         {
             _elasticClient = elasticClient;
             _queryCreator = queryCreator;
+            _elasticResponseValidator = elasticResponseValidator;
             _partitioner = new Partitioner();
             _unsignedWords = new List<string>();
             _minusSignedWords = new List<string>();
@@ -45,7 +47,7 @@ namespace Phase10Library
                 out var minusSignedWordString, out var unsignedWordString);
 
             var response = GetResponseFromClient(unsignedWordString, plusSignedWordString, minusSignedWordString);
-            ElasticResponseValidator.Validate(response);
+            _elasticResponseValidator.Validate(response);
             return response.Documents.Select(doc => doc.Name).ToList();
 
         }
@@ -59,7 +61,7 @@ namespace Phase10Library
                 .Index(Indexes.DocsIndex)
                 .Size(1000)
                 .Query(q => query));
-            ElasticResponseValidator.Validate(response);
+            _elasticResponseValidator.Validate(response);
             return response;
         }
 

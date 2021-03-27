@@ -15,7 +15,8 @@ namespace Phase10LibraryTest
         {
             var uri = new Uri(Addresses.HttpLocalhost);
             IElasticClient client = new ElasticClient(uri);
-            var indexDefiner = new IndexDefiner(client);
+            var elasticResponseValidator = new ElasticResponseValidator();
+            var indexDefiner = new IndexDefiner(client, elasticResponseValidator);
             indexDefiner.CreateIndex("my_index");
             var response = client.LowLevel.Indices.GetMapping<StringResponse>("my_index");
             const string expectedMapping = "{\n  \"my_index\" : {\n" +
@@ -49,7 +50,8 @@ namespace Phase10LibraryTest
         {
             Uri url = new Uri(Addresses.HttpLocalhost);
             IElasticClient client = new ElasticClient(url);
-            IndexDefiner indexDefiner = new IndexDefiner(client);
+            var elasticResponseValidator = new ElasticResponseValidator();
+            IndexDefiner indexDefiner = new IndexDefiner(client, elasticResponseValidator);
             void Action() => indexDefiner.CreateIndex(indexName);
             Assert.Throws<ArgumentException>(Action);
         }

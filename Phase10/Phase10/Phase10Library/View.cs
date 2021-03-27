@@ -12,7 +12,8 @@ namespace Phase10Library
             IInputGetter inputGetter = new InputGetter();
             var input = inputGetter.GetInput();
             var queryCreator = new QueryCreator();
-            var searchController = new SearchController(myElasticClient, queryCreator);
+            var elasticResponseValidator = new ElasticResponseValidator();
+            var searchController = new SearchController(myElasticClient, queryCreator, elasticResponseValidator);
             var docsSearchingResultSet = searchController.SearchDocs(input);
             Console.WriteLine(docsSearchingResultSet.Count());
             foreach (var doc in docsSearchingResultSet)

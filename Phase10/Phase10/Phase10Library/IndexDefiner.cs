@@ -7,10 +7,12 @@ namespace Phase10Library
     public class IndexDefiner : IIndexDefiner
     {
         private readonly IElasticClient _client;
+        private readonly ElasticResponseValidator _elasticResponseValidator;
 
-        public IndexDefiner(IElasticClient client)
+        public IndexDefiner(IElasticClient client, ElasticResponseValidator elasticResponseValidator)
         {
             _client = client;
+            _elasticResponseValidator = elasticResponseValidator;
         }
 
         public void CreateIndex(string index)
@@ -20,7 +22,7 @@ namespace Phase10Library
                 .Settings(CreateSettings)
                 .Map<Doc>(CreateMapping));
             Console.WriteLine(response.ServerError);
-            ElasticResponseValidator.Validate(response);
+            _elasticResponseValidator.Validate(response);
         }
 
         private void ValidateIndexName(string index)
