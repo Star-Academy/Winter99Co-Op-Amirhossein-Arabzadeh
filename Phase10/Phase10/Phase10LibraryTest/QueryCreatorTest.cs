@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.Json;
 using Nest;
 using Phase10Library;
@@ -28,10 +27,10 @@ namespace Phase10LibraryTest
         private static string ProvideTrimmedActualQuery(string unsignedWordString, string plusSignedWordString,
             string minusSignedWordString)
         {
-            var queryCreator = new QueryCreator();
+            var queryCreator = new QueryCreator(unsignedWordString,
+                plusSignedWordString, minusSignedWordString, Field);
             var actualQuery = JsonSerializer
-                .Serialize(queryCreator.GetQueryContainer(unsignedWordString,
-                    plusSignedWordString, minusSignedWordString, Field));
+                .Serialize(queryCreator.GetQueryContainer());
             
             var trimmedActualQuery = string.Concat(actualQuery.Where(c => !Char.IsWhiteSpace(c)));
             
@@ -68,7 +67,7 @@ namespace Phase10LibraryTest
                     new MatchQuery
                     {
                         Field = Field,
-                        Query = plusSignedWordString.ToString(),
+                        Query = plusSignedWordString,
                         Operator = Operator.Or
                     }
                 },
@@ -77,7 +76,7 @@ namespace Phase10LibraryTest
                     new MatchQuery
                     {
                         Field = Field,
-                        Query = minusSignedWordString.ToString(),
+                        Query = minusSignedWordString,
                         Operator = Operator.Or
                     }
                 }

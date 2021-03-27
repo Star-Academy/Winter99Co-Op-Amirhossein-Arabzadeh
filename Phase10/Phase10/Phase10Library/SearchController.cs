@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Nest;
 
 namespace Phase10Library
@@ -12,13 +11,11 @@ namespace Phase10Library
         private List<string> _plusSignedWords;
         private List<string> _minusSignedWords;
         private readonly IElasticClient _elasticClient;
-        private readonly QueryCreator _queryCreator;
         private readonly ElasticResponseValidator _elasticResponseValidator;
 
-        public SearchController(IElasticClient elasticClient, QueryCreator queryCreator, ElasticResponseValidator elasticResponseValidator)
+        public SearchController(IElasticClient elasticClient, ElasticResponseValidator elasticResponseValidator)
         {
             _elasticClient = elasticClient;
-            _queryCreator = queryCreator;
             _elasticResponseValidator = elasticResponseValidator;
             _partitioner = new Partitioner();
             _unsignedWords = new List<string>();
@@ -55,8 +52,9 @@ namespace Phase10Library
         private ISearchResponse<Doc> GetResponseFromClient(string unsignedWordString, string plusSignedWordString,
             string minusSignedWordString)
         {
-            var query = _queryCreator.GetQueryContainer(unsignedWordString, plusSignedWordString, minusSignedWordString,
+            var queryCreator = new QueryCreator(unsignedWordString, plusSignedWordString, minusSignedWordString,
                 "Content");
+            var query = queryCreator.GetQueryContainer();
             var response = _elasticClient.Search<Doc>(s => s
                 .Index(Indexes.DocsIndex)
                 .Size(1000)

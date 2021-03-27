@@ -1,17 +1,23 @@
 ﻿using System.Collections.Generic;
-using System.Text;
 using Nest;
 
 namespace Phase10Library
 {
     public class QueryCreator
     {
-        public QueryCreator()
+        private readonly string _unsignedWordString;
+        private readonly string _plusSignedWordString;
+        private readonly string _minusSignedWordString;
+        private readonly string _field;
+        public QueryCreator(string unsignedWordString, string plusSignedWordString, string minusSignedWordString, string field)
         {
+            this._unsignedWordString = unsignedWordString;
+            this._plusSignedWordString = plusSignedWordString;
+            this._minusSignedWordString = minusSignedWordString;
+            this._field = field;
         }
 
-        public QueryContainer GetQueryContainer(string unsignedWordString, string plusSignedWordString,
-            string minusSignedWordString, string field)
+        public QueryContainer GetQueryContainer()
         {
             QueryContainer query = new BoolQuery
             {
@@ -19,8 +25,8 @@ namespace Phase10Library
                 {
                     new MatchQuery
                     {
-                        Field = field,
-                        Query = unsignedWordString.ToString(),
+                        Field = _field,
+                        Query = _unsignedWordString,
                         Operator = Operator.And
                     }
                 },
@@ -28,8 +34,8 @@ namespace Phase10Library
                 {
                     new MatchQuery
                     {
-                        Field = field,
-                        Query = plusSignedWordString.ToString(),
+                        Field = _field,
+                        Query = _plusSignedWordString,
                         Operator = Operator.Or
                     }
                 },
@@ -37,8 +43,8 @@ namespace Phase10Library
                 {
                     new MatchQuery
                     {
-                        Field = field,
-                        Query = minusSignedWordString.ToString(),
+                        Field = _field,
+                        Query = _minusSignedWordString,
                         Operator = Operator.Or
                     }
                 }

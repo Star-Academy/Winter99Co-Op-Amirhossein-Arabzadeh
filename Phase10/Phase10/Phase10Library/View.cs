@@ -11,9 +11,8 @@ namespace Phase10Library
             var myElasticClient = elasticClientFactory.CreateElasticClient(Addresses.HttpLocalhost);
             IInputGetter inputGetter = new InputGetter();
             var input = inputGetter.GetInput();
-            var queryCreator = new QueryCreator();
             var elasticResponseValidator = new ElasticResponseValidator();
-            var searchController = new SearchController(myElasticClient, queryCreator, elasticResponseValidator);
+            var searchController = new SearchController(myElasticClient, elasticResponseValidator);
             var docsSearchingResultSet = searchController.SearchDocs(input);
             Console.WriteLine(docsSearchingResultSet.Count());
             foreach (var doc in docsSearchingResultSet)

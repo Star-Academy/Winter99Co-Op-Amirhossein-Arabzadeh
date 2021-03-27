@@ -24,9 +24,8 @@ namespace Phase10LibraryTest
             mockingElasticClient.Setup(x => x
                     .Search(It.IsAny<Func<SearchDescriptor<Doc>, ISearchRequest>>()))
                 .Returns(mockSearchResponse.Object);
-            var queryCreator = new QueryCreator();
             var elasticResponseValidator = new ElasticResponseValidator();
-            var searchController = new SearchController(mockingElasticClient.Object, queryCreator, elasticResponseValidator);
+            var searchController = new SearchController(mockingElasticClient.Object, elasticResponseValidator);
             var expectedDocs = new List<string>
             {
                 "2",
