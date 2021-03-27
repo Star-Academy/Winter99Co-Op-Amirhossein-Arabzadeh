@@ -25,8 +25,8 @@ namespace Phase10LibraryTest
             Assert.Equal(trimmedExpectedQuery, trimmedActualQuery);
         }
 
-        private static string ProvideTrimmedActualQuery(StringBuilder unsignedWordString, StringBuilder plusSignedWordString,
-            StringBuilder minusSignedWordString)
+        private static string ProvideTrimmedActualQuery(string unsignedWordString, string plusSignedWordString,
+            string minusSignedWordString)
         {
             var queryCreator = new QueryCreator();
             var actualQuery = JsonSerializer
@@ -38,8 +38,8 @@ namespace Phase10LibraryTest
             return trimmedActualQuery;
         }
 
-        private static string ProvideTrimmedExpectedQuery(StringBuilder unsignedWordString, StringBuilder plusSignedWordString,
-            StringBuilder minusSignedWordString)
+        private static string ProvideTrimmedExpectedQuery(string unsignedWordString, string plusSignedWordString,
+            string minusSignedWordString)
         {
             var query = CreateExpectedQueryContainer(unsignedWordString, plusSignedWordString, minusSignedWordString);
 
@@ -49,8 +49,8 @@ namespace Phase10LibraryTest
             return trimmedExpectedQuery;
         }
 
-        private static QueryContainer CreateExpectedQueryContainer(StringBuilder unsignedWordString, StringBuilder plusSignedWordString,
-            StringBuilder minusSignedWordString)
+        private static QueryContainer CreateExpectedQueryContainer(string unsignedWordString, string plusSignedWordString,
+            string minusSignedWordString)
         {
             QueryContainer query = new BoolQuery
             {
@@ -85,12 +85,12 @@ namespace Phase10LibraryTest
             return query;
         }
 
-        private static void CreateSearchingWordsString(out StringBuilder plusSignedWordString,
-            out StringBuilder minusSignedWordString, out StringBuilder unsignedWordString)
+        private static void CreateSearchingWordsString(out string plusSignedWordString,
+            out string minusSignedWordString, out string unsignedWordString)
         {
-            unsignedWordString = new StringBuilder("ali hasan hossein");
-            plusSignedWordString = new StringBuilder("sajad mohammad jafar");
-            minusSignedWordString = new StringBuilder("moosa reza mahdi");
+            unsignedWordString = "ali hasan hossein";
+            plusSignedWordString = "sajad mohammad jafar";
+            minusSignedWordString = "moosa reza mahdi";
         }
     }
 }

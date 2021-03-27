@@ -52,8 +52,8 @@ namespace Phase10Library
 
         }
 
-        private ISearchResponse<Doc> GetResponseFromClient(StringBuilder unsignedWordString, StringBuilder plusSignedWordString,
-            StringBuilder minusSignedWordString)
+        private ISearchResponse<Doc> GetResponseFromClient(string unsignedWordString, string plusSignedWordString,
+            string minusSignedWordString)
         {
             var query = _queryCreator.GetQueryContainer(unsignedWordString, plusSignedWordString, minusSignedWordString,
                 "Content");
@@ -68,8 +68,8 @@ namespace Phase10Library
         
 
         private void CreateWordStrings(IEnumerable<string> unsignedWords, IEnumerable<string> plusSignedWords,
-            IEnumerable<string> minusSignedWords, out StringBuilder plusSignedWordString, out StringBuilder minusSignedWordString,
-            out StringBuilder unsignedWordString)
+            IEnumerable<string> minusSignedWords, out string plusSignedWordString, out string minusSignedWordString,
+            out string unsignedWordString)
         {
             unsignedWordString = GetUnsignedWordString(unsignedWords);
 
@@ -78,34 +78,34 @@ namespace Phase10Library
             minusSignedWordString = GetMinusSignedWordString(minusSignedWords);
         }
 
-        private StringBuilder GetMinusSignedWordString(IEnumerable<string> minusSignedWords)
+        private string GetMinusSignedWordString(IEnumerable<string> minusSignedWords)
         {
-            var minusSignedWordString = new StringBuilder();
+            var minusSignedWordString = "";
             foreach (var minusSignedWord in minusSignedWords)
             {
-                minusSignedWordString.Append(" " + minusSignedWord);
+                minusSignedWordString.Concat(" " + minusSignedWord);
             }
 
             return minusSignedWordString;
         }
 
-        private StringBuilder GetPlusSignedWordString(IEnumerable<string> plusSignedWords)
+        private string GetPlusSignedWordString(IEnumerable<string> plusSignedWords)
         {
-            var plusSignedWordString = new StringBuilder();
+            var plusSignedWordString = "";
             foreach (var plusSignedWord in plusSignedWords)
             {
-                plusSignedWordString.Append(" " + plusSignedWord);
+                plusSignedWordString.Concat(" " + plusSignedWord);
             }
 
             return plusSignedWordString;
         }
 
-        private StringBuilder GetUnsignedWordString(IEnumerable<string> unsignedWords)
+        private string GetUnsignedWordString(IEnumerable<string> unsignedWords)
         {
-            var unsignedWordString = new StringBuilder();
+            var unsignedWordString = "";
             foreach (var unsignedWord in unsignedWords)
             {
-                unsignedWordString.Append(" " + unsignedWord);
+                unsignedWordString.Concat(" " + unsignedWord);
             }
 
             return unsignedWordString;

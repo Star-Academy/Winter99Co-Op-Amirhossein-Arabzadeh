@@ -10,8 +10,8 @@ namespace Phase10Library
         {
         }
 
-        public QueryContainer GetQueryContainer(StringBuilder unsignedWordString, StringBuilder plusSignedWordString,
-            StringBuilder minusSignedWordString, string field)
+        public QueryContainer GetQueryContainer(string unsignedWordString, string plusSignedWordString,
+            string minusSignedWordString, string field)
         {
             QueryContainer query = new BoolQuery
             {
