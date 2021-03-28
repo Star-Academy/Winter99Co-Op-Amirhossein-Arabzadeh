@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using ImportRun;
+using Microsoft.Extensions.Configuration;
 using Phase10Library;
 using Xunit;
 
@@ -9,6 +11,12 @@ namespace Phase10LibraryTest
         [Fact]
         public void Import_ShouldBulkDocsWithoutAnyError_WhenParametersAreValid()
         {
+            var configuration = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json", false, true)
+                .Build();
+
+            var settings = configuration.Get<Settings>();
+
             const string properName2 = "properName2";
             const string properName1 = "properName";
             var docs = new List<Doc>
@@ -17,9 +25,9 @@ namespace Phase10LibraryTest
                 new Doc(properName2, "proper content2"),
             };
             var elasticClientFactory = new ElasticClientFactory();
-            var elasticClient = elasticClientFactory.CreateElasticClient(Addresses.HttpLocalhost);
+            var elasticClient = elasticClientFactory.CreateElasticClient(settings.Addresses.HttpLocalhost);
             var importer = new Importer<Doc>(elasticClient);
-            importer.Import(docs, Indexes.DocsIndex);
+            importer.Import(docs, settings.Indexes.DocsIndex);
         }
 
          

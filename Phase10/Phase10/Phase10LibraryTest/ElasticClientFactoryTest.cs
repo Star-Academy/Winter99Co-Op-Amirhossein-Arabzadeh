@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using ImportRun;
+using Microsoft.Extensions.Configuration;
 using Phase10Library;
 using Xunit;
 
@@ -10,8 +12,14 @@ namespace Phase10LibraryTest
         [Fact]
         public void CreateElasticClient_ShouldCreateClientProperly_WhenParametersAreValid()
         {
+            var configuration = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json", false, true)
+                .Build();
+
+            var settings = configuration.Get<Settings>();
+
             var elasticClientFactory = new ElasticClientFactory();
-            var elasticClient = elasticClientFactory.CreateElasticClient(Addresses.HttpLocalhost);
+            var elasticClient = elasticClientFactory.CreateElasticClient(settings.Addresses.HttpLocalhost);
             Assert.NotNull(elasticClient);
         }
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Elasticsearch.Net;
+using Microsoft.Extensions.Configuration;
 using Nest;
 using Phase10Library;
 using Xunit;
@@ -13,11 +14,17 @@ namespace Phase10LibraryTest
         [Fact]
         public void CreateIndex_ShouldCreateIndexMatchingByWantedElasticQuery_WhenParameterIsValid()
         {
+            var configuration = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json", false, true)
+                .Build();
+
+            var settings = configuration.Get<Settings>();
+
             const string indexName = "my_index";
-            var uri = new Uri(Addresses.HttpLocalhost);
+            var uri = new Uri(settings.Addresses.HttpLocalhost);
             IElasticClient client = new ElasticClient(uri);
             var elasticResponseValidator = new ElasticResponseValidator();
-            var indexDefiner = new IndexDefiner(client, elasticResponseValidator);
+            var indexDefiner = new IndexDefiner(client, elasticResponseValidator, settings);
             indexDefiner.CreateIndex(indexName);
             var response = client.LowLevel.Indices.GetMapping<StringResponse>("my_index");
             const string expectedMapping = "{\n  \"my_index\" : {\n" +
@@ -54,10 +61,16 @@ namespace Phase10LibraryTest
         [MemberData(nameof(CreateIndexInvalidArguments))]
         public void CreateIndex_ShouldThrowArgumentException_WhenParametersAreInvalid(string indexName)
         {
-            var url = new Uri(Addresses.HttpLocalhost);
+            var configuration = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json", false, true)
+                .Build();
+
+            var settings = configuration.Get<Settings>();
+
+            var url = new Uri(settings.Addresses.HttpLocalhost);
             IElasticClient client = new ElasticClient(url);
             var elasticResponseValidator = new ElasticResponseValidator();
-            var indexDefiner = new IndexDefiner(client, elasticResponseValidator);
+            var indexDefiner = new IndexDefiner(client, elasticResponseValidator, settings);
             void Action() => indexDefiner.CreateIndex(indexName);
             Assert.Throws<ArgumentException>(Action);
         }

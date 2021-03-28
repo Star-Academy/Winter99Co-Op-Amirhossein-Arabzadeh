@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Microsoft.Extensions.Configuration;
 using Phase10Library;
 
 namespace IndexRun
@@ -8,18 +9,24 @@ namespace IndexRun
         
         static void Main(string[] args)
         {
+            var configuration = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json", false, true)
+                .Build();
+
+            var settings = configuration.Get<Settings>();
+
             var fileNamesExtractor = new FileNamesExtractor();
-            var filePaths = fileNamesExtractor.GetFilesRelatedPaths(Addresses.FolderRelativePath);
+            var filePaths = fileNamesExtractor.GetFilesRelatedPaths(settings.Addresses.FolderRelativePath);
             var fileReader = new FileReader();
             var docs = fileReader.GetDocs(filePaths, 37);
-            IndexDocs(docs);
+            IndexDocs(docs, settings);
         }
-        private static void IndexDocs(IEnumerable<Doc> docs)
+        private static void IndexDocs(IEnumerable<Doc> docs, Settings settings)
         {
             var elasticClientFactory = new ElasticClientFactory();
-            var elasticClient = elasticClientFactory.CreateElasticClient(Addresses.HttpLocalhost);
+            var elasticClient = elasticClientFactory.CreateElasticClient(settings.Addresses.HttpLocalhost);
             var importer = new Importer<Doc>(elasticClient);
-            importer.Import(docs, Indexes.DocsIndex);
+            importer.Import(docs, settings.Indexes.DocsIndex);
         }
 
     }

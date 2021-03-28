@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.Extensions.Configuration;
 using Moq;
 using Nest;
 using Phase10Library;
@@ -12,7 +13,12 @@ namespace Phase10LibraryTest
         [Fact]
         public void SearchDocs_ShouldReturnResultWithoutAnyException_WhenParameterIsValid()
         {
-            
+            var configuration = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json", false, true)
+                .Build();
+
+            var settings = configuration.Get<Settings>();
+
             const string name2 = "1";
             const string content2 = "street";
             const string content1 = "street stories";
@@ -30,7 +36,7 @@ namespace Phase10LibraryTest
                     .Search(It.IsAny<Func<SearchDescriptor<Doc>, ISearchRequest>>()))
                 .Returns(mockSearchResponse.Object);
             var elasticResponseValidator = new ElasticResponseValidator();
-            var searchController = new SearchController(mockingElasticClient.Object, elasticResponseValidator);
+            var searchController = new SearchController(mockingElasticClient.Object, elasticResponseValidator, settings);
             var expectedDocs = new List<string>
             {
                 "2",

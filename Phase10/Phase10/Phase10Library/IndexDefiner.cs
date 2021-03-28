@@ -8,14 +8,16 @@ namespace Phase10Library
     {
         private readonly IElasticClient _client;
         private readonly ElasticResponseValidator _elasticResponseValidator;
+        private readonly Settings _settings;
         private const int MaxNgramDiff = 7;
         private const int MinGram = 3;
         private const int MaxGram = 10;
 
-        public IndexDefiner(IElasticClient client, ElasticResponseValidator elasticResponseValidator)
+        public IndexDefiner(IElasticClient client, ElasticResponseValidator elasticResponseValidator, Settings settings)
         {
             _client = client;
             _elasticResponseValidator = elasticResponseValidator;
+            _settings = settings;
         }
 
         public void CreateIndex(string index)
@@ -43,7 +45,7 @@ namespace Phase10Library
         private IPromise<IIndexSettings> CreateSettings(IndexSettingsDescriptor settingsDescriptor)
         {
             return settingsDescriptor
-                .Setting(KeyWords.MaxNgramDiff, MaxNgramDiff)
+                .Setting(_settings.KeyWords.MaxNgramDiff, MaxNgramDiff)
                 .Analysis(CreateAnalysis);
         }
 
@@ -52,7 +54,7 @@ namespace Phase10Library
             return mappingDescriptor
                 .Properties(pr => pr
                     .AddNameFieldMapping()
-                    .AddContentFieldMapping());
+                    .AddContentFieldMapping(_settings));
         }
 
         private IAnalysis CreateAnalysis(AnalysisDescriptor analysisDescriptor)
@@ -62,18 +64,19 @@ namespace Phase10Library
                 .Analyzers(CreateAnalyzers);
         }
 
-        private static IPromise<IAnalyzers> CreateAnalyzers(AnalyzersDescriptor analyzersDescriptor)
+        private IPromise<IAnalyzers> CreateAnalyzers(AnalyzersDescriptor analyzersDescriptor)
         {
             return analyzersDescriptor
-                .Custom(Analyzers.NgramAnalyzer, custom => custom
-                    .Tokenizer(KeyWords.Standard)
-                    .Filters(TokenFilters.LowerCase, TokenFilters.WordDelimiter, TokenFilters.EnglishStopWords, TokenFilters.NgramFilter));
+                .Custom(_settings.Analyzers.NgramAnalyzer, custom => custom
+                    .Tokenizer(_settings.KeyWords.Standard)
+                    .Filters(_settings.TokenFilters.LowerCase, _settings.TokenFilters.WordDelimiter,
+                        _settings.TokenFilters.EnglishStopWords, _settings.TokenFilters.NgramFilter));
         }
 
-        private static IPromise<ITokenFilters> CreateTokenFilters(TokenFiltersDescriptor tokenFiltersDescriptor)
+        private IPromise<ITokenFilters> CreateTokenFilters(TokenFiltersDescriptor tokenFiltersDescriptor)
         {
             return tokenFiltersDescriptor
-                .NGram(TokenFilters.NgramFilter, ng => ng
+                .NGram(_settings.TokenFilters.NgramFilter, ng => ng
                     .MinGram(MinGram)
                     .MaxGram(MaxGram));
         }
