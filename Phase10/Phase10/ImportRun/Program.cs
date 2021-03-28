@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Phase10Library;
 
 namespace ImportRun
@@ -11,7 +10,6 @@ namespace ImportRun
             var configuration = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json", false, true)
                 .Build();
-
             var settings = configuration.Get<Settings>();
 
             var elasticClientFactory = new ElasticClientFactory();

@@ -58,7 +58,7 @@ namespace Phase10LibraryTest
                     new MatchQuery
                     {
                         Field = Field,
-                        Query = unsignedWordString.ToString(),
+                        Query = unsignedWordString,
                         Operator = Operator.And
                     }
                 },
