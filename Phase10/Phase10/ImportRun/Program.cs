@@ -5,11 +5,11 @@ namespace ImportRun
 {
     class Program
     {
+        private const string AppsettingsJsonFile = "appsettings.json";
+
         static void Main(string[] args)
         {
-            var configuration = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json", false, true)
-                .Build();
+            var configuration = GetConfiguration();
             var settings = configuration.Get<Settings>();
             
             var elasticClientFactory = new ElasticClientFactory();
@@ -18,6 +18,14 @@ namespace ImportRun
             var elasticResponseValidator = new ElasticResponseValidator();
             var indexDefiner = new IndexDefiner(elasticClient, elasticResponseValidator, settings);
             indexDefiner.CreateIndex(settings.Indexes.DocsIndex);
+        }
+
+        private static IConfigurationRoot GetConfiguration()
+        {
+            var configuration = new ConfigurationBuilder()
+                .AddJsonFile(AppsettingsJsonFile, false, true)
+                .Build();
+            return configuration;
         }
     }
 }

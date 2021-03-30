@@ -6,11 +6,14 @@ namespace IndexRun
 {
     class Program
     {
-        
+        private const int IndexOfFileNameStartInRelatedPath = 37;
+
+        private const string AppsettingsJsonFile = "appsettings.json";
+
         static void Main(string[] args)
         {
             var configuration = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json", false, true)
+                .AddJsonFile(AppsettingsJsonFile, false, true)
                 .Build();
 
             var settings = configuration.Get<Settings>();
@@ -19,10 +22,11 @@ namespace IndexRun
             var filePaths = fileNamesExtractor.GetFilesRelatedPaths(settings.Addresses.FolderRelativePath);
             
             var fileReader = new FileReader();
-            var docs = fileReader.GetDocs(filePaths, 37);
+            var docs = fileReader.GetDocs(filePaths, IndexOfFileNameStartInRelatedPath);
             
             IndexDocs(docs, settings);
         }
+
         private static void IndexDocs(IEnumerable<Doc> docs, Settings settings)
         {
             var elasticClientFactory = new ElasticClientFactory();
