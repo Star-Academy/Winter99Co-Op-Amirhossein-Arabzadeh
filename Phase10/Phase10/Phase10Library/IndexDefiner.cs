@@ -1,11 +1,15 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
+using Elasticsearch.Net;
 using Nest;
 
 namespace Phase10Library
 {
     public class IndexDefiner : IIndexDefiner
     {
+        private const string LogfileTxt = "logfile.txt";
+
         private readonly IElasticClient _client;
         private readonly ElasticResponseValidator _elasticResponseValidator;
         private readonly Settings _settings;
@@ -26,8 +30,28 @@ namespace Phase10Library
             var response = _client.Indices.Create(index, s => s
                 .Settings(CreateSettings)
                 .Map<Doc>(CreateMapping));
-            Console.WriteLine(response.ServerError);
+            if (response.ServerError is not null)
+            {
+                LogException(response.ServerError);    
+            }
             _elasticResponseValidator.Validate(response);
+        }
+        
+        private void LogException(ServerError serverError)
+        {
+            StreamWriter log;
+            
+            if (!File.Exists(LogfileTxt))
+            {
+                log = new StreamWriter(LogfileTxt);
+            }
+            else
+            {
+                log = File.AppendText(LogfileTxt);
+            }
+
+            log.WriteLine("Exception happened in FileReader.GetFileContent: " + serverError.Error);
+            log.Close();
         }
 
         private void ValidateIndexName(string index)
@@ -45,7 +69,7 @@ namespace Phase10Library
         private IPromise<IIndexSettings> CreateSettings(IndexSettingsDescriptor settingsDescriptor)
         {
             return settingsDescriptor
-                .Setting(_settings.KeyWords.MaxNgramDiff, MaxNgramDiff)
+                .Setting(KeyWords.MaxNgramDiff, MaxNgramDiff)
                 .Analysis(CreateAnalysis);
         }
 
@@ -67,16 +91,18 @@ namespace Phase10Library
         private IPromise<IAnalyzers> CreateAnalyzers(AnalyzersDescriptor analyzersDescriptor)
         {
             return analyzersDescriptor
-                .Custom(_settings.Analyzers.NgramAnalyzer, custom => custom
-                    .Tokenizer(_settings.KeyWords.Standard)
-                    .Filters(_settings.TokenFilters.LowerCase, _settings.TokenFilters.WordDelimiter,
-                        _settings.TokenFilters.EnglishStopWords, _settings.TokenFilters.NgramFilter));
+                .Custom(Analyzers.NgramAnalyzer, custom => custom
+                    .Tokenizer(KeyWords.Standard)
+                    .Filters(TokenFilters.LowerCase,
+                        TokenFilters.WordDelimiter,
+                        TokenFilters.EnglishStopWords,
+                        TokenFilters.NgramFilter));
         }
 
         private IPromise<ITokenFilters> CreateTokenFilters(TokenFiltersDescriptor tokenFiltersDescriptor)
         {
             return tokenFiltersDescriptor
-                .NGram(_settings.TokenFilters.NgramFilter, ng => ng
+                .NGram(TokenFilters.NgramFilter, ng => ng
                     .MinGram(MinGram)
                     .MaxGram(MaxGram));
         }

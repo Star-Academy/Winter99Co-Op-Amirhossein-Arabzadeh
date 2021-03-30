@@ -18,9 +18,7 @@ namespace Phase10LibraryTest
             new object[] {WhiteSpace,ProperContent},
             new object[] {null,ProperContent},
         };
-
         
-
         [Theory]
         [MemberData(nameof(GetDocArguments))]
         public void Doc_ShouldThrowArgumentException_WhenParametersAreInvalid(string id, string content)
@@ -38,7 +36,5 @@ namespace Phase10LibraryTest
             Assert.Equal(docName, doc.Name);
             Assert.Equal(docContent, doc.Content);
         }
-
-       
     }
 }

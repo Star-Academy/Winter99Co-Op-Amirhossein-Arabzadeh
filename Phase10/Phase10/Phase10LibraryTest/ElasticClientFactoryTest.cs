@@ -8,20 +8,22 @@ namespace Phase10LibraryTest
 {
     public class ElasticClientFactoryTest
     {
+        private const string AppsettingsJson = "test-appsettings.json";
+
         [Fact]
         public void CreateElasticClient_ShouldCreateClientProperly_WhenParametersAreValid()
         {
             var configuration = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json", false, true)
+                .AddJsonFile(AppsettingsJson, false, true)
                 .Build();
 
             var settings = configuration.Get<Settings>();
 
             var elasticClientFactory = new ElasticClientFactory();
-            var elasticClient = elasticClientFactory.CreateElasticClient(settings.Addresses.HttpLocalhost);
+            var elasticClient = elasticClientFactory.CreateElasticClient(settings.Addresses.host);
             Assert.NotNull(elasticClient);
         }
-
+        
         public static IEnumerable<object[]> CreateElasticClientInvalidArguments = new List<object[]>
         {
             new object[] {"   "},

@@ -9,6 +9,7 @@ namespace Phase10LibraryTest
     public class PartitionerTest
     {
         private readonly IPartitioner _partitioner;
+        
         public PartitionerTest()
         { 
             _partitioner = new Partitioner();
@@ -27,11 +28,8 @@ namespace Phase10LibraryTest
                 
             };
             Assert.Equal(expectedReturningList, _partitioner.GetSignedWords(sampleSearchingTerm, "+"));
-
         }
-
         
-
         public static IEnumerable<object[]> GetWantedSignedWordsInvalidArguments = new List<object[]>
         {
             new object[] {It.IsAny<string>(), null},
@@ -40,6 +38,7 @@ namespace Phase10LibraryTest
             new object[] {" " , It.IsAny<string>()},
             new object[] {"   " , It.IsAny<string>()},
         };
+        
         [Theory]
         [MemberData(nameof(GetWantedSignedWordsInvalidArguments))]
         public void GetWantedSignedWords_ShouldThrowArgumentException_WhenParametersAreInvalid(string searchingTerm,
@@ -62,7 +61,6 @@ namespace Phase10LibraryTest
                 
             };
             Assert.Equal(expectedReturningList, _partitioner.GetUnSignedWords(sampleSearchingTerm));
-
         }
         public static IEnumerable<object[]> GetUnsignedWordsInvalidArguments = new List<object[]>
         {
@@ -70,6 +68,7 @@ namespace Phase10LibraryTest
             new object[] {" "},
             new object[] {"   "},
         };
+        
         [Theory]
         [MemberData(nameof(GetUnsignedWordsInvalidArguments))]
         public void GetUnsignedWords_ShouldThrowArgumentException_WhenParametersAreInvalid(string searchingTerm)

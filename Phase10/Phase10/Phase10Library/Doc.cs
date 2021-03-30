@@ -1,9 +1,15 @@
 ﻿using System;
+using System.IO;
 
 namespace Phase10Library
 {
     public class Doc
     {
+        private const string LogfileTxt = "logfile.txt";
+
+        public string Name { get;}
+        public string Content { get;}
+        
         public Doc(string name, string content)
         {
             Validate(name, content);
@@ -14,28 +20,41 @@ namespace Phase10Library
         private void Validate(string name, string content)
         {
             ValidateId(name);
-            TryValidateContent(content);
-        }
-
-        private void TryValidateContent(string content)
-        {
-            try
-            {
-                ValidateContent(content);
-            }
-            catch (ArgumentException exception)
-            {
-                Console.WriteLine(exception.Message);
-                throw new ArgumentException("Provide content is wither null or empty");
-            }
+            ValidateContent(content);
         }
 
         private void ValidateContent(string content)
         {
-            if (string.IsNullOrWhiteSpace(content))
+            try
             {
-                throw new ArgumentException("Doc content is either null or white space or id is negative:\n"); 
+                if (string.IsNullOrWhiteSpace(content))
+                {
+                    throw new ArgumentException("Doc content is either null or white space or id is negative:\n"); 
+                }
             }
+            catch (ArgumentException exception)
+            {
+                LogException(exception);
+
+                throw new ArgumentException("Provide content is wither null or empty");
+            }
+        }
+
+        private void LogException(ArgumentException exception)
+        {
+            StreamWriter log;
+            
+            if (!File.Exists(LogfileTxt))
+            {
+                log = new StreamWriter(LogfileTxt);
+            }
+            else
+            {
+                log = File.AppendText(LogfileTxt);
+            }
+
+            log.WriteLine("Exception happened in Doc.TryValidateContent: " + exception.Message);
+            log.Close();
         }
 
         private void ValidateId(string id)
@@ -45,9 +64,5 @@ namespace Phase10Library
                 throw new ArgumentException("Provided Id is either null or whiteSpace");
             }
         }
-
-        public string Name { get;}
-        public string Content { get;}
-        
     }
 }

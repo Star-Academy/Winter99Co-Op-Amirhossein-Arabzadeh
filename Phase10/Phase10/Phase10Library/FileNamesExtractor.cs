@@ -9,10 +9,10 @@ namespace Phase10Library
         public string[] GetFilesRelatedPaths([NotNull] string folderRelativePath)
         {
             CheckIfPathIsWhiteSpaceOrNull(folderRelativePath);
-            return TryToGetFilesRelatedPath(folderRelativePath);
+            return GetFilesRelatedPath(folderRelativePath);
         }
 
-        private string[] TryToGetFilesRelatedPath(string folderRelativePath)
+        private string[] GetFilesRelatedPath(string folderRelativePath)
         {
             try
             {

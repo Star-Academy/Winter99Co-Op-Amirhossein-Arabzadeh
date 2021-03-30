@@ -11,6 +11,7 @@ namespace Phase10LibraryTest
     public class QueryCreatorTest
     {
         private const string Field = "Content";
+        
         [Fact]
         public void GetQueryContainer_ShouldReturnWantedSearchQuery_WhenParametersAreValid()
         {

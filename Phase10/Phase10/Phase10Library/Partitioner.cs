@@ -5,12 +5,6 @@ using System.Text.RegularExpressions;
 
 namespace Phase10Library
 {
-    public interface IPartitioner
-    {
-        List<string> GetSignedWords(string searchingTerm, string sign);
-        List<string> GetUnSignedWords(string searchingTerm);
-    }
-
     public class Partitioner : IPartitioner
     {
         public List<string> GetSignedWords(string searchingTerm, string sign)

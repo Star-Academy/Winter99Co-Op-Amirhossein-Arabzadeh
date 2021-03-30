@@ -15,7 +15,11 @@ namespace Phase10Library
         private ConnectionSettings CreateConnectionSettings(Uri uri)
         {
             var connectionSettings = new ConnectionSettings(uri);
+            
+            #if DEBUG
             connectionSettings.EnableDebugMode();
+            #endif
+            
             return connectionSettings;
         }
 

@@ -10,11 +10,13 @@ namespace Phase10LibraryTest
 {
     public class SearchControllerTest
     {
+        private const string AppsettingsJson = "test-appsettings.json";
+
         [Fact]
         public void SearchDocs_ShouldReturnResultWithoutAnyException_WhenParameterIsValid()
         {
             var configuration = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json", false, true)
+                .AddJsonFile(AppsettingsJson, false, true)
                 .Build();
 
             var settings = configuration.Get<Settings>();
@@ -37,13 +39,14 @@ namespace Phase10LibraryTest
                 .Returns(mockSearchResponse.Object);
             var elasticResponseValidator = new ElasticResponseValidator();
             var searchController = new SearchController(mockingElasticClient.Object, elasticResponseValidator, settings);
+            const string doc1Name = "1";
+            const string doc2Name = "2";
             var expectedDocs = new List<string>
             {
-                "2",
-                "1"
+                doc2Name,
+                doc1Name
             };
             Assert.Equal(expectedDocs, searchController.SearchDocs(input));
         }
-
     }
 }

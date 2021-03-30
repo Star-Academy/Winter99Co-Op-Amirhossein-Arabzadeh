@@ -10,25 +10,27 @@ namespace Phase10LibraryTest
 {
     public class FileReaderTest
     {
+        private const string WhiteSpace = "   ";
+        private const string ProperFilepath = "properFilePath";
+        private const int IndexOfFileNameStartInRelatedPath = 37;
+
+
         [Fact]
         public void GetDocs_ShouldThrowArgumentNullException_WhenParameterIsNull()
         {
             var fileReader = new FileReader();
-            void Action() => fileReader.GetDocs((List<string>) null, 37);
+            void Action() => fileReader.GetDocs((List<string>) null, IndexOfFileNameStartInRelatedPath);
             Assert.Throws<ArgumentNullException>(Action);
         }
-        
+
         [Fact]
         public void GetDocs_ShouldThrowArgumentException_WhenParameterIsEmpty()
         {
             var filePaths = new List<string>();
             var fileReader = new FileReader();
-            void Action() => fileReader.GetDocs(filePaths, 37);
+            void Action() => fileReader.GetDocs(filePaths, IndexOfFileNameStartInRelatedPath);
             Assert.Throws<ArgumentException>(Action);
         }
-        
-        private const string WhiteSpace = "   ";
-        private const string ProperFilepath = "properFilePath";
 
         public static IEnumerable<object[]> GetDocsInvalidArguments = new List<object[]>
         {
@@ -74,8 +76,7 @@ namespace Phase10LibraryTest
             var docs = fileReader.GetDocs(filePaths, 8);
             Assert.Equal(3, docs.Count());
         }
-
-
+        
         [Fact]
         public void GetDocs_ShouldReturnFileNotFoundException_WhenParameterHasNotExistingFilePaths()
         {
@@ -87,8 +88,5 @@ namespace Phase10LibraryTest
             void Action() => fileReader.GetDocs(filePaths, It.IsAny<int>());
             Assert.Throws<FileNotFoundException>(Action);
         }
-        
-
     }
-    
 }

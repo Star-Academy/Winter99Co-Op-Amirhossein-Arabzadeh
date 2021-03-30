@@ -9,6 +9,7 @@ namespace Phase10LibraryTest
     public class FileNamesExtractorTest
     {
         private readonly IFileNamesExtractor _folderFileNamesExtractor;
+        
         public FileNamesExtractorTest()
         { 
             _folderFileNamesExtractor = new FileNamesExtractor();
@@ -19,10 +20,12 @@ namespace Phase10LibraryTest
         {
             const string relativeDirectoryPath = "../../../../Resources/SmallEnglishData";
             string[] fileNames = {"58043", "58044"};
-            Assert.Equal(fileNames, from fileName in _folderFileNamesExtractor.GetFilesRelatedPaths(relativeDirectoryPath)
-                select fileName.Substring(39));
-        }
+            const int StartIndexOfFileName = 39;
 
+            Assert.Equal(fileNames, from fileName in _folderFileNamesExtractor.GetFilesRelatedPaths(relativeDirectoryPath)
+                select fileName.Substring(StartIndexOfFileName));
+        }
+        
         [Fact]
         public void GetFilesNames_ShouldThrowDirectoryNotFoundException_WhenInputIsInvalid()
         {
@@ -32,6 +35,7 @@ namespace Phase10LibraryTest
             
             Assert.Throws<DirectoryNotFoundException>(action);
         }
+        
         [Theory]
         [InlineData("    ")]
         [InlineData("   ")]
@@ -42,9 +46,5 @@ namespace Phase10LibraryTest
             Action action = () => _folderFileNamesExtractor.GetFilesRelatedPaths(relativePath);
             Assert.Throws<ArgumentNullException>(action);
         }
-        
-        
     }
-
-    
 }
