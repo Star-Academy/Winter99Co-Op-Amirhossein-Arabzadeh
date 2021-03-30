@@ -30,7 +30,7 @@ namespace IndexRun
         private static void IndexDocs(IEnumerable<Doc> docs, Settings settings)
         {
             var elasticClientFactory = new ElasticClientFactory();
-            var elasticClient = elasticClientFactory.CreateElasticClient(settings.Addresses.host);
+            var elasticClient = elasticClientFactory.CreateElasticClient(settings.Addresses.Host);
             var importer = new Importer<Doc>(elasticClient);
             importer.Import(docs, settings.Indexes.DocsIndex);
         }

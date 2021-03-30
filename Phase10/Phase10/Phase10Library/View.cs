@@ -5,7 +5,7 @@
         public void Run(Settings settings)
         {
             IElasticClientFactory elasticClientFactory = new ElasticClientFactory();
-            var myElasticClient = elasticClientFactory.CreateElasticClient(settings.Addresses.host);
+            var myElasticClient = elasticClientFactory.CreateElasticClient(settings.Addresses.Host);
             
             IInputGetter inputGetter = new InputGetter();
             var input = inputGetter.GetInput();

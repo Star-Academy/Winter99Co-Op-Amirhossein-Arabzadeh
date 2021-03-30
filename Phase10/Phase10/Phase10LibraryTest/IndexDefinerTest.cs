@@ -23,7 +23,7 @@ namespace Phase10LibraryTest
             var settings = configuration.Get<Settings>();
 
             const string indexName = "my_docs_test";
-            var uri = new Uri(settings.Addresses.host);
+            var uri = new Uri(settings.Addresses.Host);
             IElasticClient client = new ElasticClient(uri);
             var elasticResponseValidator = new ElasticResponseValidator();
             var indexDefiner = new IndexDefiner(client, elasticResponseValidator, settings);
@@ -68,7 +68,7 @@ namespace Phase10LibraryTest
 
             var settings = configuration.Get<Settings>();
 
-            var url = new Uri(settings.Addresses.host);
+            var url = new Uri(settings.Addresses.Host);
             IElasticClient client = new ElasticClient(url);
             
             var elasticResponseValidator = new ElasticResponseValidator();

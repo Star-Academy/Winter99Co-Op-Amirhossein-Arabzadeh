@@ -35,7 +35,7 @@ namespace Phase10Library
             var pipelineFailuresException = Assembly.GetExecutingAssembly().GetTypes()
                 .Where(type => typeof(IPipelineFailureException).IsAssignableFrom(type))
                 .Where(type => !type.IsAbstract && !type.IsInterface)
-                .Where(type => !type.IsPublic)
+                .Where(type => type.IsPublic)
                 .ToList();
             return pipelineFailuresException;
         }

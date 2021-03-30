@@ -20,7 +20,7 @@ namespace Phase10LibraryTest
             var settings = configuration.Get<Settings>();
 
             var elasticClientFactory = new ElasticClientFactory();
-            var elasticClient = elasticClientFactory.CreateElasticClient(settings.Addresses.host);
+            var elasticClient = elasticClientFactory.CreateElasticClient(settings.Addresses.Host);
             Assert.NotNull(elasticClient);
         }
         

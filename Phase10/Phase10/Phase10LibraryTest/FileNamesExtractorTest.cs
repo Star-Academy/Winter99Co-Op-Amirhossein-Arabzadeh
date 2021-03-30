@@ -20,10 +20,10 @@ namespace Phase10LibraryTest
         {
             const string relativeDirectoryPath = "../../../../Resources/SmallEnglishData";
             string[] fileNames = {"58043", "58044"};
-            const int StartIndexOfFileName = 39;
+            var startIndexOfFileName = relativeDirectoryPath.Length + 1;
 
             Assert.Equal(fileNames, from fileName in _folderFileNamesExtractor.GetFilesRelatedPaths(relativeDirectoryPath)
-                select fileName.Substring(StartIndexOfFileName));
+                select fileName.Substring(startIndexOfFileName));
         }
         
         [Fact]

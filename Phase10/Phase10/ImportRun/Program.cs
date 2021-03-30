@@ -13,7 +13,7 @@ namespace ImportRun
             var settings = configuration.Get<Settings>();
             
             var elasticClientFactory = new ElasticClientFactory();
-            var elasticClient = elasticClientFactory.CreateElasticClient(settings.Addresses.host);
+            var elasticClient = elasticClientFactory.CreateElasticClient(settings.Addresses.Host);
             
             var elasticResponseValidator = new ElasticResponseValidator();
             var indexDefiner = new IndexDefiner(elasticClient, elasticResponseValidator, settings);
