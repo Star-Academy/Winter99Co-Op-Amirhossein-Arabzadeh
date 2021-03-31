@@ -1,8 +1,9 @@
-﻿namespace InvertedIndexLibrary
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace InvertedIndexLibrary
 {
     public interface IFileNamesExtractor
-    { 
-        string[] GetFilesRelatedPaths(string folderRelativePath);
-
+    {
+        string[] GetFilesRelatedPaths([NotNull] string folderRelativePath);
     }
 }

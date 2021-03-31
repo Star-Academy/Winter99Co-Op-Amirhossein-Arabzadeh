@@ -7,7 +7,7 @@ namespace InvertedIndexLibrary
 {
     public class Partitioner : IPartitioner
     {
-        public List<string> GetWantedSignedWords(string searchingTerm, string sign)
+        public List<string> GetSignedWords(string searchingTerm, string sign)
         {
             ValidateInputStrings(searchingTerm, sign);
             var searchingTerms = (Regex.Split(searchingTerm, "\\s")).ToList();

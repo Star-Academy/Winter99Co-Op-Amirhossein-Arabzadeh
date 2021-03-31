@@ -25,7 +25,7 @@ namespace InvertedIndexTest
                 "ghasem",
                 
             };
-            Assert.Equal(expectedReturningList, _partitioner.GetWantedSignedWords(sampleSearchingTerm, "+"));
+            Assert.Equal(expectedReturningList, _partitioner.GetSignedWords(sampleSearchingTerm, "+"));
 
         }
         public static IEnumerable<object[]> GetWantedSignedWordsInvalidArguments = new List<object[]>
@@ -42,7 +42,7 @@ namespace InvertedIndexTest
             string sign)
         {
             Action action = () =>
-                _partitioner.GetWantedSignedWords(searchingTerm, sign);
+                _partitioner.GetSignedWords(searchingTerm, sign);
             Assert.Throws<ArgumentException>(action);
         }
 

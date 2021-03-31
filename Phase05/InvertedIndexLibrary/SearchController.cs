@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace InvertedIndexLibrary
@@ -7,17 +8,15 @@ namespace InvertedIndexLibrary
     {
         private readonly IPartitioner _partitioner;
         private readonly IListOperator _listOperator;
-        private readonly IIndexController _indexController;
         private List<string> _unsignedWords;
         private List<string> _plusSignedWords;
         private List<string> _minusSignedWords;
 
-        public SearchController(IIndexController indexController)
+        public SearchController(InvertedIndexContext invertedIndexContext)
         {
             _partitioner = new Partitioner();
-            IListCalculator listCalculator = new ListCalculator();
-            _listOperator = new ListOperator(listCalculator);
-            _indexController = indexController;
+            IListCalculator listCalculator = new ListCalculator(invertedIndexContext);
+            _listOperator = new ListOperator(listCalculator, invertedIndexContext);
             _unsignedWords = new List<string>();
             _minusSignedWords = new List<string>();
             _plusSignedWords = new List<string>();
@@ -26,24 +25,22 @@ namespace InvertedIndexLibrary
         public IEnumerable<string> SearchDocs(string input)
         {
             PartitionInputWords(input);
-            List<string> docsSearchingResultSet = new List<string>();
-            var tableOfWordsAsKeyAndContainingDocsAsValue = _indexController.GetInvertedIndexTable();
-            docsSearchingResultSet = GetIntersectedUnsignedWordsDocsSet(docsSearchingResultSet, tableOfWordsAsKeyAndContainingDocsAsValue);
+            var docsSearchingResultSet = new List<string>();
+            docsSearchingResultSet = GetIntersectedUnsignedWordsDocsSet(docsSearchingResultSet);
 
-            docsSearchingResultSet = GetIntersectedResultSetWithAllPlusSignedWordsDocs(docsSearchingResultSet, tableOfWordsAsKeyAndContainingDocsAsValue);
+            docsSearchingResultSet = GetIntersectedResultSetWithAllPlusSignedWordsDocs(docsSearchingResultSet);
 
-            docsSearchingResultSet = GetResultSetWithoutMinusSignedWords(docsSearchingResultSet, tableOfWordsAsKeyAndContainingDocsAsValue);
+            docsSearchingResultSet = GetResultSetWithoutMinusSignedWords(docsSearchingResultSet);
             
             return docsSearchingResultSet;
         }
 
-        private List<string> GetResultSetWithoutMinusSignedWords(List<string> docsSearchingResultSet,
-            Dictionary<string, List<string>> tableOfWordsAsKeyAndContainingDocsAsValue)
+        private List<string> GetResultSetWithoutMinusSignedWords(List<string> docsSearchingResultSet)
         {
             if (IsResultSetAndMinusSignedWordsNotEmpty(docsSearchingResultSet))
             {
                 docsSearchingResultSet = _listOperator.GetDocsExcludingMinusSignedWords(_minusSignedWords,
-                    docsSearchingResultSet, tableOfWordsAsKeyAndContainingDocsAsValue);
+                    docsSearchingResultSet);
             }
 
             return docsSearchingResultSet;
@@ -54,25 +51,23 @@ namespace InvertedIndexLibrary
             return _minusSignedWords.Count > 0 && docsSearchingResultSet.Count > 0;
         }
 
-        private List<string> GetIntersectedResultSetWithAllPlusSignedWordsDocs(List<string> docsSearchingResultSet,
-            Dictionary<string, List<string>> tableOfWordsAsKeyAndContainingDocsAsValue)
+        private List<string> GetIntersectedResultSetWithAllPlusSignedWordsDocs(List<string> docsSearchingResultSet)
         {
             if (IsResultSetAndPlusSignedWordsNotEmpty(docsSearchingResultSet))
             {
                 docsSearchingResultSet = _listOperator.GetDocsWithoutPlusWords(_plusSignedWords,
-                    docsSearchingResultSet, tableOfWordsAsKeyAndContainingDocsAsValue);
+                    docsSearchingResultSet);
             }
 
             return docsSearchingResultSet;
         }
 
-        private bool IsResultSetAndPlusSignedWordsNotEmpty(List<string> docsSearchingResultSet)
+        private bool IsResultSetAndPlusSignedWordsNotEmpty(ICollection docsSearchingResultSet)
         {
             return _plusSignedWords.Count > 0 && docsSearchingResultSet.Count > 0;
         }
 
-        private List<string> GetIntersectedUnsignedWordsDocsSet(List<string> docsSearchingResultSet,
-            Dictionary<string, List<string>> tableOfWordsAsKeyAndContainingDocsAsValue)
+        private List<string> GetIntersectedUnsignedWordsDocsSet(List<string> docsSearchingResultSet)
         {
             if (_unsignedWords.Count <= 0)
             {
@@ -80,12 +75,11 @@ namespace InvertedIndexLibrary
             }
 
             docsSearchingResultSet =
-                _listOperator.InitializeResultSetByFirstUnsignedInputWordDocs(_unsignedWords.ElementAt(0),
-                    tableOfWordsAsKeyAndContainingDocsAsValue);
+                _listOperator.InitializeResultSetByFirstUnsignedInputWordDocs(_unsignedWords.ElementAt(0));
             if (docsSearchingResultSet.Count > 0)
             {
                 docsSearchingResultSet = _listOperator.GetIntersectedUnsignedWordsContainingDocs(_unsignedWords,
-                    docsSearchingResultSet, tableOfWordsAsKeyAndContainingDocsAsValue);
+                    docsSearchingResultSet);
             }
             
             return docsSearchingResultSet;
@@ -94,8 +88,8 @@ namespace InvertedIndexLibrary
         private void PartitionInputWords(string input)
         {
             _unsignedWords = _partitioner.GetUnSignedWords(input);
-            _minusSignedWords = _partitioner.GetWantedSignedWords(input, "-");
-            _plusSignedWords = _partitioner.GetWantedSignedWords(input, "+");
+            _minusSignedWords = _partitioner.GetSignedWords(input, "-");
+            _plusSignedWords = _partitioner.GetSignedWords(input, "+");
         }
     }
 }

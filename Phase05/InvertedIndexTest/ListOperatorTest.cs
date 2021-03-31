@@ -6,92 +6,96 @@ using Xunit;
 
 namespace InvertedIndexTest
 {
-    public class ListOperatorTest
+    
+    public class ListOperatorTest : IDisposable
     {
-        private static readonly SampleDataProvider SampleDataProvider = SampleDataProvider.GetInstance();
         private static ListOperator _listOperator;
-        private readonly Mock<IListCalculator> _listCalculator; 
+        private readonly Mock<IListCalculator> _listCalculator;
+        private readonly InvertedIndexContext _invertedIndexContext;
+
 
         public ListOperatorTest()
         {
+            var testDbContextFactory = new TestDbContextFactory();
+            _invertedIndexContext = testDbContextFactory.Seed();
+            
             _listCalculator = new Mock<IListCalculator>();
-            _listOperator = new ListOperator(_listCalculator.Object);
+            _listOperator = new ListOperator(_listCalculator.Object, _invertedIndexContext);
         }
 
         [Fact]
         public void 
             InitializeResultSetByFirstUnsignedInputWordDocs_ShouldReturnInitializedResultSet_WhenParametersAreValid()
         {
-            string unsignedWord = "ali";
-            List<string> expectedReturningList = new List<string>
+            const string unsignedWord = "ali";
+            var expectedReturningList = new List<string>
             {
                 "1",
                 "2",
                 "3"
             };
             Assert.Equal(expectedReturningList, _listOperator.InitializeResultSetByFirstUnsignedInputWordDocs(
-                unsignedWord, SampleDataProvider.Table));
+                unsignedWord));
         }
         public static IEnumerable<object[]> InitializeResultSetByFirstUnsignedInputWordDocsArguments = new List<object[]>
         {
-            new object[] {It.IsAny<string>(), new Dictionary<string, List<string>>()},
-            new object[] {"", SampleDataProvider.Table},
-            new object[] {" ", SampleDataProvider.Table},
-            new object[] {"   ", SampleDataProvider.Table},
-            new object[] {null, SampleDataProvider.Table},
+            new object[] {It.IsAny<string>()},
+            new object[] {""},
+            new object[] {" "},
+            new object[] {"   "},
+            new object[] {null},
         };
 
         [Theory]
         [MemberData(nameof(InitializeResultSetByFirstUnsignedInputWordDocsArguments))]
         public void
             InitializeResultSetByFirstUnsignedInputWordDocs_ShouldReturnArgumentException_WhenArgumentsAreInvalid(string 
-                unSignedWord, Dictionary<string, List<string>> table)
+                unSignedWord)
         {
-            Action action = () => _listOperator.InitializeResultSetByFirstUnsignedInputWordDocs(unSignedWord, table);
-            Assert.Throws<ArgumentException>(action);
+            void Action() => _listOperator.InitializeResultSetByFirstUnsignedInputWordDocs(unSignedWord);
+            Assert.Throws<ArgumentException>(Action);
         }
 
         [Fact]
         public void
             IntersectUnsignedWordsContainingDocs_ShouldReturnIntersectedSetOfUnsignedWordsContainingDocs_WhenParametersAreValid()
         {
-            List<string> unsignedWords = new List<string>
+            var unsignedWords = new List<string>
             {
                 "ali",
-                "reza",
-                "javad"
+                "hasan"
             };
-            List<string> inputResultList = new List<string>
+            var inputResultList = new List<string>
             {
                 "1",
                 "2",
                 "3"
             };
-            List<string> expectedReturn = new List<string>
+            var expectedReturn = new List<string>
             {
                 "1"
             };
             Assert.Equal(expectedReturn, _listOperator.GetIntersectedUnsignedWordsContainingDocs(unsignedWords,
-                inputResultList, SampleDataProvider.Table));
+                inputResultList));
         }
         public static IEnumerable<object[]> GetIntersectedUnsignedWordsContainingDocsArguments = new List<object[]>
         {
-            new object[] {It.IsAny<List<string>>(),It.IsAny<List<string>>(), new Dictionary<string, List<string>>()},
-            new object[] {null,It.IsAny<List<string>>(), It.IsAny<Dictionary<string, List<string>>>()},
-            new object[] {new List<string>(),It.IsAny<List<string>>(), SampleDataProvider.Table},
-            new object[] {It.IsAny<List<string>>(),It.IsAny<List<string>>(), null},
-            new object[] {It.IsAny<List<string>>(),null, It.IsAny<Dictionary<string, List<string>>>()},
-            new object[] {It.IsAny<List<string>>(),new List<string>(), It.IsAny<Dictionary<string, List<string>>>()},
+            new object[] {It.IsAny<List<string>>(),It.IsAny<List<string>>()},
+            new object[] {null,It.IsAny<List<string>>()},
+            new object[] {new List<string>(),It.IsAny<List<string>>()},
+            new object[] {It.IsAny<List<string>>(),It.IsAny<List<string>>()},
+            new object[] {It.IsAny<List<string>>(),null},
+            new object[] {It.IsAny<List<string>>(),new List<string>()},
         };
 
         [Theory]
         [MemberData(nameof(GetIntersectedUnsignedWordsContainingDocsArguments))]
         public void
             GetIntersectedUnsignedWordsContainingDocs_ShouldReturnArgumentException_WhenArgumentsAreInvalid(List<string>
-                unSignedWord, List<string> inputResultList, Dictionary<string, List<string>> table)
+                unSignedWord, List<string> inputResultList)
         {
-            Action action = () => _listOperator.GetIntersectedUnsignedWordsContainingDocs(unSignedWord,inputResultList, table);
-            Assert.Throws<ArgumentException>(action);
+            void Action() => _listOperator.GetIntersectedUnsignedWordsContainingDocs(unSignedWord, inputResultList);
+            Assert.Throws<ArgumentException>(Action);
         }
         
         
@@ -106,13 +110,13 @@ namespace InvertedIndexTest
                 "3",
             };
             _listCalculator.Setup(x => x.GetDocsOfWordsList(
-                It.IsAny<List<string>>(), It.IsAny<Dictionary<string, List<string>>>())).Returns(plusSignedWordsDocs);
-            List<string> plusSignedWords = new List<string>
+                It.IsAny<List<string>>())).Returns(plusSignedWordsDocs);
+            var plusSignedWords = new List<string>
             {
                 "ali",
                 "reza",
             };
-            List<string> inputResultList = new List<string>
+            var inputResultList = new List<string>
             {
                 "1",
                 "2",
@@ -120,33 +124,33 @@ namespace InvertedIndexTest
                 "10",
                 "35",
             };
-            List<string> expectedReturn = new List<string>
+            var expectedReturn = new List<string>
             {
                 "1",
                 "2",
                 "3",
             };
             Assert.Equal(expectedReturn, _listOperator.GetDocsWithoutPlusWords(plusSignedWords,
-                inputResultList, SampleDataProvider.Table));
+                inputResultList));
         }
         public static IEnumerable<object[]> GetRemovedDocsWithoutPlusWordsArguments = new List<object[]>
         {
-            new object[] {It.IsAny<List<string>>(),It.IsAny<List<string>>(), new Dictionary<string, List<string>>()},
-            new object[] {null,It.IsAny<List<string>>(), It.IsAny<Dictionary<string, List<string>>>()},
-            new object[] {new List<string>(),It.IsAny<List<string>>(), SampleDataProvider.Table},
-            new object[] {It.IsAny<List<string>>(),It.IsAny<List<string>>(), null},
-            new object[] {It.IsAny<List<string>>(),null, It.IsAny<Dictionary<string, List<string>>>()},
-            new object[] {It.IsAny<List<string>>(),new List<string>(), It.IsAny<Dictionary<string, List<string>>>()},
+            new object[] {It.IsAny<List<string>>(),It.IsAny<List<string>>()},
+            new object[] {null,It.IsAny<List<string>>()},
+            new object[] {new List<string>(),It.IsAny<List<string>>()},
+            new object[] {It.IsAny<List<string>>(),It.IsAny<List<string>>()},
+            new object[] {It.IsAny<List<string>>(),null},
+            new object[] {It.IsAny<List<string>>(),new List<string>()},
         };
         
         [Theory]
         [MemberData(nameof(GetRemovedDocsWithoutPlusWordsArguments))]
         public void
             GetRemovedDocsWithoutPlusWords_ShouldReturnArgumentException_WhenArgumentsAreInvalid(List<string>
-                plusSignedWords, List<string> inputResultList, Dictionary<string, List<string>> table)
+                plusSignedWords, List<string> inputResultList)
         {
-            Action action = () => _listOperator.GetDocsWithoutPlusWords(plusSignedWords,inputResultList, table);
-            Assert.Throws<ArgumentException>(action);
+            void Action() => _listOperator.GetDocsWithoutPlusWords(plusSignedWords, inputResultList);
+            Assert.Throws<ArgumentException>(Action);
         }
         [Fact]
         public void
@@ -159,13 +163,13 @@ namespace InvertedIndexTest
                 "3",
             };
             _listCalculator.Setup(x => x.GetDocsOfWordsList(
-                It.IsAny<List<string>>(), It.IsAny<Dictionary<string, List<string>>>())).Returns(plusSignedWordsDocs);
-            List<string> minusSignedWords = new List<string>
+                It.IsAny<List<string>>())).Returns(plusSignedWordsDocs);
+            var minusSignedWords = new List<string>
             {
                 "ali",
                 "reza",
             };
-            List<string> inputResultList = new List<string>
+            var inputResultList = new List<string>
             {
                 "1",
                 "2",
@@ -173,33 +177,40 @@ namespace InvertedIndexTest
                 "10",
                 "35",
             };
-            List<string> expectedReturn = new List<string>
+            var expectedReturn = new List<string>
             {
                 "10",
                 "35",
             };
             Assert.Equal(expectedReturn, _listOperator.GetDocsExcludingMinusSignedWords(minusSignedWords,
-                inputResultList, SampleDataProvider.Table));
+                inputResultList));
         }
         public static IEnumerable<object[]> GetRemovedDocsContainingMinusSignedWordsArguments = new List<object[]>
         {
-            new object[] {It.IsAny<List<string>>(),It.IsAny<List<string>>(), new Dictionary<string, List<string>>()},
-            new object[] {null,It.IsAny<List<string>>(), It.IsAny<Dictionary<string, List<string>>>()},
-            new object[] {new List<string>(),It.IsAny<List<string>>(), SampleDataProvider.Table},
-            new object[] {It.IsAny<List<string>>(),It.IsAny<List<string>>(), null},
-            new object[] {It.IsAny<List<string>>(),null, It.IsAny<Dictionary<string, List<string>>>()},
-            new object[] {It.IsAny<List<string>>(),new List<string>(), It.IsAny<Dictionary<string, List<string>>>()},
+            new object[] {It.IsAny<List<string>>(),It.IsAny<List<string>>()},
+            new object[] {null,It.IsAny<List<string>>()},
+            new object[] {new List<string>(),It.IsAny<List<string>>()},
+            new object[] {It.IsAny<List<string>>(),It.IsAny<List<string>>()},
+            new object[] {It.IsAny<List<string>>(),null},
+            new object[] {It.IsAny<List<string>>(),new List<string>()},
         };
         
         [Theory]
         [MemberData(nameof(GetRemovedDocsContainingMinusSignedWordsArguments))]
         public void
             GetRemovedDocsContainingMinusSignedWords_ShouldReturnArgumentException_WhenArgumentsAreInvalid(List<string>
-                minusSignedWords, List<string> inputResultList, Dictionary<string, List<string>> table)
+                minusSignedWords, List<string> inputResultList)
         {
-            Action action = () => _listOperator.GetDocsExcludingMinusSignedWords(minusSignedWords,inputResultList, table);
-            Assert.Throws<ArgumentException>(action);
+            void Action() => _listOperator.GetDocsExcludingMinusSignedWords(minusSignedWords, inputResultList);
+            Assert.Throws<ArgumentException>(Action);
         }
-        
+
+
+        public void Dispose()
+        {
+            _invertedIndexContext.Database.EnsureDeleted();
+            _invertedIndexContext.Dispose();
+        }
+
     }
 }

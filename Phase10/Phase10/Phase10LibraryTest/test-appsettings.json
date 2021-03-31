@@ -1,0 +1,16 @@
+{
+    "Logging": {
+        "LogLevel": {
+            "Default": "Debug",
+            "System": "Information",
+            "Microsoft": "Information"
+        }
+    },
+    "Addresses": {
+        "FolderRelativePath": "../../../../Resources/SmallEnglishData",
+        "host": "http://localhost:9200"
+    },
+    "Indexes": {
+        "DocsIndex": "my_docs_test"
+    }
+}

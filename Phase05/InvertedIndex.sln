@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InvertedIndexLibrary", "Inv
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InvertedIndexTest", "InvertedIndexTest\InvertedIndexTest.csproj", "{0A855EEE-0CC2-430B-8B47-1A57EABC56F7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViewRun", "ViewRun\ViewRun.csproj", "{A4B52D2D-4DA2-45B2-B077-B23497B7618B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{0A855EEE-0CC2-430B-8B47-1A57EABC56F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0A855EEE-0CC2-430B-8B47-1A57EABC56F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0A855EEE-0CC2-430B-8B47-1A57EABC56F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4B52D2D-4DA2-45B2-B077-B23497B7618B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4B52D2D-4DA2-45B2-B077-B23497B7618B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4B52D2D-4DA2-45B2-B077-B23497B7618B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4B52D2D-4DA2-45B2-B077-B23497B7618B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

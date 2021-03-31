@@ -1,48 +1,60 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace InvertedIndexLibrary
 {
     public class ListCalculator : IListCalculator
     {
-        public ISet<string> GetDocsOfWordsList(List<string> words, Dictionary<string, List<string>> table)
-        {
-            ValidateListAndDictionary(words, table);
-            var setOfContainingDocsOfWords = new HashSet<string>();
-            IterateWordsListToTakeContainingDocsFromTable(words, table, setOfContainingDocsOfWords);
+        private readonly InvertedIndexContext _invertedIndexContext;
 
+        public ListCalculator(InvertedIndexContext invertedIndexContext)
+        {
+            _invertedIndexContext = invertedIndexContext;
+        }
+
+        public ISet<string> GetDocsOfWordsList(List<string> words)
+        {
+            ValidateListAndDictionary(words);
+            var setOfContainingDocsOfWords = GetContainingDocsFromTable(words);
             return setOfContainingDocsOfWords;
         }
 
-        private void IterateWordsListToTakeContainingDocsFromTable(IEnumerable<string> partition, Dictionary<string, List<string>> table,
-            ISet<string> setOfContainingDocsOfPartitionTerms)
+        private ISet<string> GetContainingDocsFromTable(IEnumerable<string> partition)
         {
+            var setOfContainingDocsOfPartitionTerms = new HashSet<string>();
             foreach (var term in partition)
             {
-                if (!table.ContainsKey(term))
+                var searchItemDocsList = GetSearchItemDocsList(term);
+                if (searchItemDocsList is null)
                 {
                     continue;
                 }
-
-                setOfContainingDocsOfPartitionTerms.UnionWith(table[term]);
+                var docs = searchItemDocsList.Docs.Select(doc => doc.Id.ToString()).ToList();
+                setOfContainingDocsOfPartitionTerms.UnionWith(docs);
             }
+            return setOfContainingDocsOfPartitionTerms;
+
         }
 
-        private void ValidateListAndDictionary(ICollection partition, Dictionary<string, List<string>> table)
+        private SearchItem GetSearchItemDocsList(string term)
+        {
+            var searchItemDocsList = _invertedIndexContext.SearchingItems
+                .Include(x => x.Docs)
+                .FirstOrDefault(x => x.Term == term.ToLower());
+            return searchItemDocsList;
+        }
+
+        private void ValidateListAndDictionary(ICollection<string> partition)
         {
             if (IsNullOrEmpty(partition))
             {
                 throw new ArgumentException(nameof(partition));
             }
             
-            if (IsNullOrEmpty(table))
-            {
-                throw new ArgumentException(nameof(table));
-            }
         }
-        private bool IsNullOrEmpty(ICollection collection)
+        private bool IsNullOrEmpty<T>(ICollection<T> collection)
         {
             return collection== null ||  collection.Count == 0;
         }
@@ -56,17 +68,17 @@ namespace InvertedIndexLibrary
             return returnList;
         }
 
-        private void ValidateSetAndList(ICollection<string> set, ICollection list)
+        private void ValidateSetAndList(ICollection<string> set, ICollection<string> list)
         {
-            if (IsSetOrListNullOrEmpty(set, list))
+            if (IsNullOrEmpty(set))
             {
                 throw new ArgumentException("Set or List is either null or empty");
             }
-        }
 
-        private bool IsSetOrListNullOrEmpty(ICollection<string> set, ICollection list)
-        {
-            return set is null || list is null || set.Count == 0 || list.Count == 0;
+            if (IsNullOrEmpty(list))
+            {
+                throw new ArgumentException("Set or List is either null or empty");
+            }
         }
 
         public List<string> AndListWithSet(ISet<string> set, List<string> list)

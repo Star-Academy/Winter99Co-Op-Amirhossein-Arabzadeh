@@ -6,37 +6,56 @@ using Xunit;
 
 namespace InvertedIndexTest
 {
-    public class ListCalculatorTest
+    public class ListCalculatorTest : IDisposable
     {
         private static IListCalculator _listCalculator;
-        
         private static readonly SampleDataProvider SampleDataProvider = SampleDataProvider.GetInstance();
+        private readonly InvertedIndexContext _invertedIndexContext;
+
 
         public ListCalculatorTest()
         {
-            _listCalculator = new ListCalculator();
+            var testDbContextFactory = new TestDbContextFactory();
+            _invertedIndexContext = testDbContextFactory.Seed();
+            _listCalculator = new ListCalculator(_invertedIndexContext);
+            
         }
 
         [Fact]
         public void CreateSetOfDifferentPartitions_ShouldReturnSetOfDocsContainingPartitionList_WhenParametersAreValid()
         {
-            Assert.Equal(SampleDataProvider.ExpectedSet, _listCalculator.GetDocsOfWordsList(SampleDataProvider.Partition, SampleDataProvider.Table));
+            
+            Assert.Equal(new HashSet<string>{"1", "2"}, _listCalculator.GetDocsOfWordsList(new List<string>
+            {
+                "hasan",
+                "reza",
+            }));
+            
+            
         }
+
+
+        public void Dispose()
+        {
+            _invertedIndexContext.Database.EnsureDeleted();
+            _invertedIndexContext.Dispose();
+        }
+
 
         [Theory]
         [MemberData(nameof(InvalidListAndDictionaryArguments))]
         public void
             CreateSetOfDifferentPartitions_ShouldThrowArgumentException_WhenParametersAreInvalid(
-                List<string> partition, Dictionary<string, List<string>> table)
+                List<string> partition)
         {
-            Action action =  () => _listCalculator.GetDocsOfWordsList(partition, table);
-            Assert.Throws<ArgumentException>(action);
+            void Action() => _listCalculator.GetDocsOfWordsList(partition);
+            Assert.Throws<ArgumentException>(Action);
         }
 
         [Fact]
         public void MinusElementsOfSetFromList_ShouldReturnInputListWithoutElementOfInputSet_WhenParametersAreValid()
         {
-            List<string> sampleInputList = (from number in  Enumerable.Range(1, 60)
+            var sampleInputList = (from number in  Enumerable.Range(1, 60)
                     select number.ToString()).ToList();
             ISet<string> sampleInputSet = (from number in  Enumerable.Range(1, 60)
                 select number.ToString()).ToHashSet();
@@ -60,18 +79,18 @@ namespace InvertedIndexTest
             MinusElementsOfSetFromList_ShouldThrowArgumentException_WhenParametersAreInvalid(
                 ISet<string> set, List<string> list)
         {
-            Action action = () => _listCalculator.MinusElementsOfSetFromList(set, list);
-            Assert.Throws<ArgumentException>(action);
+            void Action() => _listCalculator.MinusElementsOfSetFromList(set, list);
+            Assert.Throws<ArgumentException>(Action);
         }
         [Fact]
         public void AndListWithSet_ShouldReturnInputListWithoutElementOfInputSet_WhenParametersAreValid()
         {
-            List<string> sampleInputList = (from number in  Enumerable.Range(1, 60)
+            var sampleInputList = (from number in  Enumerable.Range(1, 60)
                 select number.ToString()).ToList();
             ISet<string> sampleInputSet = (from number in  Enumerable.Range(1, 5)
                 select number.ToString()).ToHashSet();
             
-            List<string> expectedList = new List<string>
+            var expectedList = new List<string>
             {
                 "1",
                 "2",
@@ -88,12 +107,12 @@ namespace InvertedIndexTest
             AndListWithSet_ShouldThrowArgumentException_WhenParametersAreInvalid(
                 ISet<string> set, List<string> list)
         {
-            Action action = () => _listCalculator.AndListWithSet(set, list);
-            Assert.Throws<ArgumentException>(action);
+            void Action() => _listCalculator.AndListWithSet(set, list);
+            Assert.Throws<ArgumentException>(Action);
         }
 
 
-        public static IEnumerable<Object[]> InvalidSetAndListArguments = new List<object[]>
+        public static IEnumerable<object[]> InvalidSetAndListArguments = new List<object[]>
         {
             new object[] {null, null},
             new object[] {new HashSet<string>(), null},
@@ -103,13 +122,11 @@ namespace InvertedIndexTest
         };
 
 
-        public static IEnumerable<Object[]> InvalidListAndDictionaryArguments = new List<object[]>
+        public static IEnumerable<object[]> InvalidListAndDictionaryArguments = new List<object[]>
         {
-            new object[] {null, null},
-            new object[] {new List<string>(), null},
-            new object[] {new List<string>(), SampleDataProvider.Table},
-            new object[] {SampleDataProvider.Partition, null},
-            new object[] {SampleDataProvider.Partition, new Dictionary<string, List<string>>()},
+            new object[] {null},
+            new object[] {new List<string>()},
+            new object[] {new List<string>()},
         };
     }
 }

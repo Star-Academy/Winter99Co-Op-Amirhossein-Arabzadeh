@@ -8,6 +8,7 @@ namespace InvertedIndexLibrary
 {
     public class Tokenizer : ITokenizer
     {
+        private int i = 0;
         public List<WordOccurrence> TokenizeFiles(IEnumerable<string> filePaths)
         {
             var tokens = new List<WordOccurrence>(); 
@@ -32,7 +33,7 @@ namespace InvertedIndexLibrary
             return tokens;
         }
 
-        private static string[] ValidateExistenceOfFile(string filePath)
+        private static IEnumerable<string> ValidateExistenceOfFile(string filePath)
         {
             string[] lines;
             try
@@ -49,8 +50,7 @@ namespace InvertedIndexLibrary
 
         private IEnumerable<WordOccurrence> TokenizeLine(string line, string filePath)
         {
-            var terms = Regex.Split(line, @"\s");
-
+            var terms = Regex.Split(line.ToLower(), @"\W+");
             return terms.Select(term => new WordOccurrence(term.ToLower(), Path.GetFileName(filePath))).ToList();
         }
     }

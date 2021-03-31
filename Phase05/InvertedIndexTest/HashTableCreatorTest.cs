@@ -15,7 +15,7 @@ namespace InvertedIndexTest
         public void CreateHashTable_ShouldReturnValidTableOfWordsAsKeyAndDocsAsValue_WhenParameterIsValid()
         {
 
-            Dictionary<string, List<string>> expectedTable = new Dictionary<string, List<string>>
+            var expectedTable = new Dictionary<string, List<string>>
             {
                 ["ali"] = new List<string> {"1", "2", "3"},
                 ["reza"] = new List<string> {"1"},

@@ -2,95 +2,129 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace InvertedIndexLibrary
 {
     public class ListOperator : IListOperator
     {
         private readonly IListCalculator _listCalculator;
+        private readonly InvertedIndexContext _invertedIndexContext;
 
-        public ListOperator(IListCalculator listCalculator)
+        public ListOperator(IListCalculator listCalculator, InvertedIndexContext invertedIndexContext)
         {
+            _invertedIndexContext = invertedIndexContext;
             _listCalculator = listCalculator;
         }
 
-        public List<string> InitializeResultSetByFirstUnsignedInputWordDocs(string unsignedWord, Dictionary<string, List<string>> table)
+        public List<string> InitializeResultSetByFirstUnsignedInputWordDocs(string unsignedWord)
         {
-            ValidateStringAndDictionary(unsignedWord, table);
+            ValidateStringAndDictionary(unsignedWord);
             var setOfDocsContainingUnsignedWord = new List<string>();
-            if (table.ContainsKey(unsignedWord))
+
+            var searchItem = GetSearchItemFromDb(unsignedWord);
+
+            if (searchItem == null)
             {
-                setOfDocsContainingUnsignedWord.AddRange(table[unsignedWord]);
+                return setOfDocsContainingUnsignedWord;
             }
 
+            var searchItemDocs = searchItem.Docs;
+            
+            if (searchItemDocs.Count == 0) return setOfDocsContainingUnsignedWord;
+
+            var docsNames = searchItemDocs.Select(doc => doc.Id.ToString()).ToList();
+            
+            setOfDocsContainingUnsignedWord.AddRange(docsNames);
+
             return setOfDocsContainingUnsignedWord;
+            
         }
 
-        private void ValidateStringAndDictionary(string unsignedWord, ICollection table)
+        private SearchItem GetSearchItemFromDb(string unsignedWord)
+        {
+            var searchItem = _invertedIndexContext
+                .SearchingItems.Include(d => d.Docs).FirstOrDefault(x => x.Term.ToLower() == unsignedWord);
+            return searchItem;
+        }
+
+        private bool IsNullOrEmpty<T>(ICollection<T> collection)
+        {
+            return collection== null ||  collection.Count == 0;
+        }
+        private void ValidateStringAndDictionary(string unsignedWord)
         {
             if (string.IsNullOrWhiteSpace(unsignedWord))
             {
-                throw new ArgumentException("unsignedWord or table are either null or empty");
-            }
-
-            if (table is null || table.Count == 0)
-            {
-                throw new ArgumentException("unsignedWord or table are either null or empty");
+                throw new ArgumentException("unsignedWord is null or empty");
             }
         }
 
-        public List<string> GetIntersectedUnsignedWordsContainingDocs(List<string> unSignedWords, List<string> result, Dictionary<string, List<string>> table)
+        public List<string> GetIntersectedUnsignedWordsContainingDocs(List<string> unSignedWords, List<string> result)
         {
-            ValidateListsAndDictionary(unSignedWords, result, table);
-            var tempResult = IterateUnsignedWordsToIntersectDocsList(unSignedWords, table, result);
+            ValidateListsAndDictionary(unSignedWords, result);
+            var tempResult = GetIntersectedDocsList(unSignedWords, result);
             return tempResult;
         }
 
-        private List<string> IterateUnsignedWordsToIntersectDocsList(IEnumerable<string> unSignedWords, Dictionary<string, List<string>> table, IEnumerable<string> result)
+        private List<string> GetIntersectedDocsList(IEnumerable<string> unSignedWords, IEnumerable<string> result)
         {
+
             var tempResult = new List<string>(result);
-            
+
             foreach (var unSignedWord in unSignedWords)
             {
-                if (!table.TryGetValue(unSignedWord, out var docs))
-                {
-                    continue;
-                }
-                tempResult = tempResult.Intersect(docs).ToList();
+                var searchItem = GetSearchItem(unSignedWord);
+                if (searchItem == null) continue;
+                var docsNames = GetDocsName(searchItem);
+                tempResult = tempResult.Intersect(docsNames).ToList();
             }
 
             return tempResult;
+        
         }
 
-        private void ValidateListsAndDictionary(ICollection words, ICollection result, ICollection table)
+        private List<string> GetDocsName(SearchItem searchItem)
         {
-            if (AreListsOrDictionaryNullOrEmpty(words, result, table))
+            var list = searchItem.Docs.Select(doc => doc.Id.ToString()).ToList();
+            return list;
+        }
+
+        private SearchItem GetSearchItem(string unSignedWord)
+        {
+            var searchItem = _invertedIndexContext.SearchingItems.Include(x => x.Docs)
+                .FirstOrDefault(x => x.Term.Equals(unSignedWord));
+            return searchItem;
+        }
+
+        private void ValidateListsAndDictionary(ICollection<string> words, ICollection<string> result)
+        {
+            if (IsNullOrEmpty(words))
+            {
+                throw new ArgumentException("One or more of the parameters is either null or empty");
+            }
+
+            if (IsNullOrEmpty(result))
             {
                 throw new ArgumentException("One or more of the parameters is either null or empty");
             }
         }
 
-        private bool AreListsOrDictionaryNullOrEmpty(ICollection unSignedWords, ICollection result, ICollection table)
+        public List<string> GetDocsWithoutPlusWords(List<string> plusSignedWords, List<string> result)
         {
-            return unSignedWords is null || result is null || table is null || unSignedWords.Count == 0 || result.Count == 0 ||
-                   table.Count == 0;
-        }
-
-        public List<string> GetDocsWithoutPlusWords(List<string> plusSignedWords, List<string> result, Dictionary<string, List<string>> table)
-        {
-            ValidateListsAndDictionary(plusSignedWords, result, table);
+            ValidateListsAndDictionary(plusSignedWords, result);
             var docsContainingPlusSignedWords =
-                _listCalculator.GetDocsOfWordsList(plusSignedWords, table);
+                _listCalculator.GetDocsOfWordsList(plusSignedWords);
             
             return result.Intersect(docsContainingPlusSignedWords).ToList();
         }
 
-        public List<string> GetDocsExcludingMinusSignedWords(List<string> minusSignedWords, List<string> result, Dictionary<string, List<string>> table)
+        public List<string> GetDocsExcludingMinusSignedWords(List<string> minusSignedWords, List<string> result)
         {
-            ValidateListsAndDictionary(minusSignedWords, result, table);
+            ValidateListsAndDictionary(minusSignedWords, result);
             var tempResult = new List<string>(result);
             var minusSignedWordsContainingDocs =
-                _listCalculator.GetDocsOfWordsList(minusSignedWords, table);
+                _listCalculator.GetDocsOfWordsList(minusSignedWords);
             tempResult = tempResult.Except(minusSignedWordsContainingDocs).ToList();
             return tempResult;
         }
