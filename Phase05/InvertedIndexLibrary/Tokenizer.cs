@@ -7,8 +7,7 @@ using System.Text.RegularExpressions;
 namespace InvertedIndexLibrary
 {
     public class Tokenizer : ITokenizer
-    {
-        private int i = 0;
+    { 
         public List<WordOccurrence> TokenizeFiles(IEnumerable<string> filePaths)
         {
             var tokens = new List<WordOccurrence>(); 
