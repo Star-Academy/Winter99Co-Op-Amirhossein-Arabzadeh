@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Phase10LibraryTest", "Phase
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImportRun", "ImportRun\ImportRun.csproj", "{8D647B3C-F0ED-4D89-8E8F-C1BA8679366C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplication", "WebApplication\WebApplication.csproj", "{B856E9A5-4485-4FDA-B11C-209022EB2442}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +38,9 @@ Global
 		{8D647B3C-F0ED-4D89-8E8F-C1BA8679366C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8D647B3C-F0ED-4D89-8E8F-C1BA8679366C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8D647B3C-F0ED-4D89-8E8F-C1BA8679366C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B856E9A5-4485-4FDA-B11C-209022EB2442}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B856E9A5-4485-4FDA-B11C-209022EB2442}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B856E9A5-4485-4FDA-B11C-209022EB2442}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B856E9A5-4485-4FDA-B11C-209022EB2442}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
