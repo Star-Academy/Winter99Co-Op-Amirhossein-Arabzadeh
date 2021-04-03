@@ -19,7 +19,7 @@ namespace Phase10LibraryTest
         public void GetDocs_ShouldThrowArgumentNullException_WhenParameterIsNull()
         {
             var fileReader = new FileReader();
-            void Action() => fileReader.GetDocs((List<string>) null, IndexOfFileNameStartInRelatedPath);
+            void Action() => fileReader.GetDocs(null, IndexOfFileNameStartInRelatedPath);
             Assert.Throws<ArgumentNullException>(Action);
         }
 

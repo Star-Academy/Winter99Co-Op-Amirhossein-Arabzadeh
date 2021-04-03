@@ -21,18 +21,18 @@ namespace Phase10Library
                     .Fields(f => f
                         .Text(tpd=>tpd
                             .Name(n => n.Content)
-                            .SetAnalyzer(settings))
-                        .SetKeyWord(settings)));
+                            .SetAnalyzer())
+                        .SetKeyWord()));
         }
         
-        private static ITextProperty SetAnalyzer(this TextPropertyDescriptor<Doc> selector, Settings settings)
+        private static ITextProperty SetAnalyzer(this TextPropertyDescriptor<Doc> selector)
         {
             return selector
                 .Analyzer(Analyzers.NgramAnalyzer);
             
         }
         
-        private static PropertiesDescriptor<Doc> SetKeyWord(this PropertiesDescriptor<Doc> selector, Settings settings)
+        private static PropertiesDescriptor<Doc> SetKeyWord(this PropertiesDescriptor<Doc> selector)
         {
             return selector
                 .Keyword(ng => ng

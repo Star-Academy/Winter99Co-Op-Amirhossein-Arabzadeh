@@ -30,7 +30,7 @@ namespace Phase10Library
                 throw new ArgumentNullException("filePaths");
             }
 
-            if (filePaths.Count() == 0)
+            if (!filePaths.Any())
             {
                 throw new ArgumentException("provided filePaths enumerable is empty");
             }

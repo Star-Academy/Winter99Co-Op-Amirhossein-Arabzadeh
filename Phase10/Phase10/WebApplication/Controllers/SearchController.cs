@@ -1,8 +1,5 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
-using Phase10Library;
 
 namespace WebApplication.Controllers
 {
@@ -12,7 +9,7 @@ namespace WebApplication.Controllers
     {
         private readonly Phase10Library.SearchController _searchController;
 
-        public SearchController(ILogger<SearchController> logger, Phase10Library.SearchController searchController)
+        public SearchController(Phase10Library.SearchController searchController)
         {
             _searchController = searchController;
         }
