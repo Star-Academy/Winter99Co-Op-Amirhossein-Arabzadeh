@@ -35,8 +35,6 @@ namespace Phase10Library
             catch (ArgumentException exception)
             {
                 LogException(exception);
-
-                throw new ArgumentException("Provide content is wither null or empty");
             }
         }
 

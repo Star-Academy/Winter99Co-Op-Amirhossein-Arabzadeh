@@ -18,14 +18,6 @@ namespace Phase10LibraryTest
             new object[] {WhiteSpace,ProperContent},
             new object[] {null,ProperContent},
         };
-        
-        [Theory]
-        [MemberData(nameof(GetDocArguments))]
-        public void Doc_ShouldThrowArgumentException_WhenParametersAreInvalid(string id, string content)
-        {
-            void Action() => new Doc(id, content);
-            Assert.Throws<ArgumentException>(Action);
-        }
 
         [Fact]
         public void Doc_ShouldCreateDocWithoutException_WhenParametersAreValid()

@@ -8,31 +8,19 @@ namespace WebApplication.Controllers
 {
     [ApiController]
     [Route("[controller]/[Action]")]
-    public class SearchController
+    public class SearchController : ControllerBase
     {
-        private readonly ILogger<SearchController> _logger;
+        private readonly Phase10Library.SearchController _searchController;
 
-        public SearchController(ILogger<SearchController> logger)
+        public SearchController(ILogger<SearchController> logger, Phase10Library.SearchController searchController)
         {
-            _logger = logger;
+            _searchController = searchController;
         }
 
         [HttpGet]
-        public IEnumerable<string> Get(string input)
+        public IEnumerable<string> Get([FromBody] string input)
         {
-            var configuration = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json", false, true)
-                .Build();
-
-            var settings = configuration.Get<Settings>();
-
-            IElasticClientFactory elasticClientFactory = new ElasticClientFactory();
-            var myElasticClient = elasticClientFactory.CreateElasticClient(settings.Addresses.Host);
-            
-            var elasticResponseValidator = new ElasticResponseValidator();
-            
-            var searchController = new Phase10Library.SearchController(myElasticClient, elasticResponseValidator, settings);
-            var docsSearchingResultSet = searchController.SearchDocs(input);
+            var docsSearchingResultSet = _searchController.SearchDocs(input);
 
             return docsSearchingResultSet;
         }

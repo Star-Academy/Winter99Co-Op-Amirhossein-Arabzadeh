@@ -6,7 +6,7 @@ namespace Phase10Library
 {
     public class SearchController
     {
-        private const string Content = "Content";
+        private const string Content = "content";
         private const string PlusSign = "+";
         private const string MinusSign = "-";
         private const int MaxSizeOfResultsFromElasticSearch = 1000;
@@ -33,17 +33,11 @@ namespace Phase10Library
         public IEnumerable<string> SearchDocs(string input)
         {
             PartitionInputWords(input);
-            var docsSearchingResultSet = GetResultSetFromElasticsearch(_unsignedWords,
+            var docsSearchingResultSet = GetResultSetOfSearch(_unsignedWords,
                 _plusSignedWords, _minusSignedWords);
             return docsSearchingResultSet;
         }
-
-        private IEnumerable<string> GetResultSetFromElasticsearch(IEnumerable<string> unsignedWords,
-            IEnumerable<string> plusSignedWords, IEnumerable<string> minusSignedWords)
-        {
-            return GetResultSetOfSearch(unsignedWords,
-                plusSignedWords, minusSignedWords);
-        }
+        
         private IEnumerable<string> GetResultSetOfSearch(IEnumerable<string> unsignedWords,
             IEnumerable<string> plusSignedWords, IEnumerable<string> minusSignedWords)
         {
@@ -73,21 +67,21 @@ namespace Phase10Library
         private string GetMinusSignedWordString(IEnumerable<string> minusSignedWords)
         {
             var minusSignedWordString = "";
-            string.Join(minusSignedWordString, minusSignedWords);
+            minusSignedWordString = string.Join(minusSignedWordString, minusSignedWords);
             return minusSignedWordString;
         }
 
         private string GetPlusSignedWordString(IEnumerable<string> plusSignedWords)
         {
             var plusSignedWordString = "";
-            string.Join(plusSignedWordString, plusSignedWords);
+            plusSignedWordString = string.Join(plusSignedWordString, plusSignedWords);
             return plusSignedWordString;
         }
 
         private string GetUnsignedWordString(IEnumerable<string> unsignedWords)
         {
             var unsignedWordString = "";
-            string.Join(unsignedWordString, unsignedWords);
+            unsignedWordString = string.Join(unsignedWordString, unsignedWords);
             return unsignedWordString;
         }
 
